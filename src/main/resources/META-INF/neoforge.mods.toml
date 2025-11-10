@@ -14,8 +14,8 @@ displayName="${mod_name}"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
-#[[mixins]]
-#config="${mod_id}.mixins.json"
+[[mixins]]
+config="${mod_id}.mixins.json"
 
 
 #[[accessTransformers]]
@@ -36,18 +36,18 @@ ordering="NONE"
 side="BOTH"
 
 
-#[[dependencies.${mod_id}]]
-#modId="resourcefullib"
-#type="required"
-#versionRange="[3.0.11, )"
-#ordering="NONE"
-#side="BOTH"
+[[dependencies.${mod_id}]]
+modId="resourcefullib"
+type="required"
+versionRange="[3.0.11, )"
+ordering="NONE"
+side="BOTH"
 
-#[[dependencies.${mod_id}]]
-#modId="fzzy_config"
-#type="required"
-#versionRange="[0.7.2+1.21+neoforge, )"
-#ordering="NONE"
-#side="BOTH"
+[[dependencies.${mod_id}]]
+modId="fzzy_config"
+type="required"
+versionRange="[0.7.2+1.21+neoforge, )"
+ordering="NONE"
+side="BOTH"
 
 

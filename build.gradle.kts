@@ -28,7 +28,8 @@ val parchmentMCVersion : String by project
 val parchmentMappingsVersion : String by project
 
 // Dependencies
-
+val resourcefulLibVersion : String by project
+val fzzyConfigVersion : String by project
 
 group = modGroupId
 version = modVersion
@@ -38,6 +39,21 @@ repositories {
     maven {
         name = "Kotlin for Forge"
         setUrl("https://thedarkcolour.github.io/KotlinForForge/")
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = uri("https://maven.blamejared.com/")
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = uri("https://modmaven.dev")
+    }
+    maven { url = uri("https://maven.resourcefulbees.com/repository/maven-public/") }
+    maven {
+        name = "FzzyMaven"
+        url = uri("https://maven.fzzyhmstrs.me/")
     }
 }
 neoForge {
@@ -93,7 +109,14 @@ configurations {
 
 dependencies {
 
+    jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
+    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
+    implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
+
+
 }
+
+
 
 tasks.withType<ProcessResources>{
     val replaceProperties = mapOf(
@@ -116,6 +139,7 @@ tasks.withType<ProcessResources>{
         expand(replaceProperties)
     }
 }
+
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
