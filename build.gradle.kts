@@ -1,9 +1,17 @@
+import groovy.lang.Closure
+import org.slf4j.event.Level
+import java.io.IOException
+import java.util.*
+
+
 plugins {
     id("java")
+    id("eclipse")
     id("java-library")
     id("idea")
     id("maven-publish")
-    id("net.neoforged.moddev") version("2.0.115")
+    id("net.neoforged.moddev") version "2.0.137"
+    id("me.shedaniel.unified-publishing") version "0.1.+"
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -31,8 +39,14 @@ val parchmentMappingsVersion : String by project
 val resourcefulLibVersion : String by project
 val fzzyConfigVersion : String by project
 
+// Dev
+var env = project.properties["env"]
+val devVersion : String by project
+
 group = modGroupId
 version = modVersion
+
+
 
 repositories {
     mavenCentral()
@@ -56,46 +70,18 @@ repositories {
         url = uri("https://maven.fzzyhmstrs.me/")
     }
 }
-neoForge {
-    version = neoVersion
-    parchment {
-        mappingsVersion = parchmentMappingsVersion
-        minecraftVersion = parchmentMCVersion
-    }
-    runs {
-        create("client") {
-            client()
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-        }
-        create("server") {
-            server()
-            programArgument("--nogui")
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-        }
-        create("gameTestServer") {
-            type = "gameTestServer"
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-        }
-        create("data") {
-            data()
-            programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath())
-        }
-        configureEach {
-            systemProperty("forge.logging.markers", "REGISTRIES")
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-    mods {
-        modId.let {
-            create("sourceSet") {
-                sourceSet(sourceSets.main.orNull)
-            }
-        }
 
+
+
+java {
+    toolchain {
+        // Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
+        languageVersion = JavaLanguageVersion.of(21)
     }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 sourceSets {
     getByName("main") {
         resources.srcDir("src/generated/resources")
@@ -103,46 +89,109 @@ sourceSets {
 }
 
 
-configurations {
-    runtimeClasspath.get().extendsFrom(create("localRuntime"))
+neoForge {
+    version = neoVersion
+    parchment {
+        mappingsVersion = parchmentMappingsVersion
+        minecraftVersion = parchmentMCVersion
+    }
+
+    runs {
+        withType {
+            client()
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        }
+        withType {
+            server()
+            programArgument("--nogui")
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        }
+        withType {
+            type = "gameTestServer"
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        }
+        withType {
+            data()
+            programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath())
+        }
+        configureEach {
+            systemProperty("forge.logging.markers", "REGISTRIES")
+            logLevel = Level.DEBUG
+        }
+    }
+
 }
 
 dependencies {
-
     jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
-
-
 }
+tasks {
 
+    withType<ProcessResources> {
+        val replaceProperties = mapOf(
+            "minecraft_version" to mcVersion,
+            "minecraft_version_range" to mcVersionRange,
+            "neo_version" to neoVersion,
+            "neo_version_range" to neoVersionRange,
+            "loader_version_range" to loaderVersionRange,
+            "mod_id" to modId,
+            "mod_name" to modName,
+            "mod_license" to modLicense,
+            "mod_version" to modVersion,
+            "mod_authors" to modAuthors,
+            "mod_description" to modDescription
+        )
 
+        inputs.properties(replaceProperties)
 
-tasks.withType<ProcessResources>{
-    val replaceProperties = mapOf(
-        "minecraft_version" to mcVersion,
-        "minecraft_version_range" to mcVersionRange,
-        "neo_version" to neoVersion,
-        "neo_version_range" to neoVersionRange,
-        "loader_version_range" to loaderVersionRange,
-        "mod_id" to modId,
-        "mod_name" to modName,
-        "mod_license" to modLicense,
-        "mod_version" to modVersion,
-        "mod_authors" to modAuthors,
-        "mod_description" to modDescription
-    )
-
-    inputs.properties(replaceProperties)
-
-    filesMatching("META-INF/neoforge.mods.toml") {
-        expand(replaceProperties)
+        filesMatching("META-INF/neoforge.mods.toml") {
+            expand(replaceProperties)
+        }
+    }
+    withType<JavaCompile> {
+        options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+    }
+    withType<Jar> {
+        when(env) {
+            "dev" -> archiveFileName = "${modName}-${modVersion}.$env+$devVersion.jar"
+            "release" -> archiveFileName = "$modVersion-${modVersion}.jar"
+        }
     }
 }
 
+if (env != "dev") {
+    unifiedPublishing {
+        project {
+            displayName = "Potion Totems [$modVersion]"
+            version = modVersion
+            changelog = file("CHANGELOG.md").readText()
+            releaseType = "release"
+            gameVersions = listOf("1.21.1")
+            gameLoaders = listOf("neoforge")
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+
+            mainPublication(tasks.jar.get())
+            relations {
+                depends { listOf("resourceful-lib", "fzzy_config") }
+                includes {}
+                optional {}
+                conflicts {}
+            }
+            curseforge {
+                token = providers.gradleProperty("CF_TOKEN").get()
+                var projectId = "1329049"
+                id = projectId
+                mainPublication(tasks.jar.get())
+            }
+            modrinth {
+                token = providers.gradleProperty("MODRINTH_TOKEN").get()
+                id = "QNJVJEMv"
+                mainPublication(tasks.jar.get())
+            }
+        }
+    }
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
@@ -152,6 +201,29 @@ idea {
         isDownloadJavadoc = true
     }
 }
+
+fun setEnv(value : String) {
+    env = value
+}
+
+fun String.runCommand(
+    workingDir: File = File("."),
+    timeoutAmount: Long = 60,
+    timeoutUnit: TimeUnit = TimeUnit.SECONDS
+): String = ProcessBuilder(split("\\s(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)".toRegex()))
+    .directory(workingDir)
+    .redirectOutput(ProcessBuilder.Redirect.PIPE)
+    .redirectError(ProcessBuilder.Redirect.PIPE)
+    .start()
+    .apply { waitFor(timeoutAmount, timeoutUnit) }
+    .run {
+        val error = errorStream.bufferedReader().readText().trim()
+        if (error.isNotEmpty()) {
+            throw IOException(error)
+        }
+        inputStream.bufferedReader().readText().trim()
+    }
+
 
 
 

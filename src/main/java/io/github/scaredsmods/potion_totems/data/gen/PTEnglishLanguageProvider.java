@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.datagen;
+package io.github.scaredsmods.potion_totems.data.gen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.init.PTBlocks;
@@ -53,5 +53,8 @@ public class PTEnglishLanguageProvider extends LanguageProvider {
         add("potion_totems.be.advanced_infuser.name", "Advanced Totem Infuser");
         add("potion_totems.gui.advanced_infuser.title", "Advanced Totem Infuser");
         add("entity.minecraft.villager.potion_totems.totem_master", "Totem Master");
+
+
+
     }
 }

@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.datagen;
+package io.github.scaredsmods.potion_totems.data.gen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.init.PTItems;

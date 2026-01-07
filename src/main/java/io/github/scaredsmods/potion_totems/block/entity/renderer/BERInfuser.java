@@ -30,7 +30,7 @@ public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack totem = blockEntity.itemStackHandler.getStackInSlot(0);
         ItemStack blackTotem = new ItemStack(PTItems.INFUSER_TOTEM_PH_1.get());
-
+        ItemStack potion = blockEntity.itemStackHandler.getStackInSlot(1);
         Direction FACING = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         switch (FACING) {
@@ -45,6 +45,15 @@ public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
                 poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(0.5f, 1.05f, (1 / 10000f));
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(270));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
+                poseStack.popPose();
             }
             case NORTH -> {
                 poseStack.pushPose();
@@ -56,6 +65,15 @@ public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
+                poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(1f, 1.01f, 0.5f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
                 poseStack.popPose();
             }
             case EAST -> {
@@ -69,6 +87,15 @@ public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
                 poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(0.5f, 1.01f, 1f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
+                poseStack.popPose();
             }
             case SOUTH -> {
                 poseStack.pushPose();
@@ -79,6 +106,14 @@ public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
+                poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(1/ 1000f, 1.01f, 0.5f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
                 poseStack.popPose();
             }
         }

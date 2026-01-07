@@ -33,7 +33,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(PTBlocks.INFUSER.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(PTBlocks.ADVANCED_INFUSER.get(), RenderType.CUTOUT);
+        ItemBlockRenderTypes.setRenderLayer(PTBlocks.ADVANCED_INFUSER.get(), RenderType.cutout());
     }
 
     @SubscribeEvent

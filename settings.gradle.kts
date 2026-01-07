@@ -1,5 +1,7 @@
 pluginManagement {
     repositories {
+        maven { url = uri("https://maven.architectury.dev/") }
+        maven("https://maven.neoforged.net/releases")
         gradlePluginPortal()
     }
 }

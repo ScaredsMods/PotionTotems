@@ -1,34 +1,51 @@
 package io.github.scaredsmods.potion_totems.block.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.BlockEntityAdvancedInfuser;
 import io.github.scaredsmods.potion_totems.init.PTItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvancedInfuser> {
     public BERAdvancedInfuser(BlockEntityRendererProvider.Context context) {
     }
 
+    private static final ResourceLocation OUTLINE = PotionTotems.id("textures/item/infuser_totem_placeholder_2.png");
+
     @Override
     public void render(BlockEntityAdvancedInfuser blockEntity, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+        Minecraft mc = Minecraft.getInstance();
+        ItemRenderer itemRenderer = mc.getItemRenderer();
         ItemStack totem = blockEntity.stackHandler.getStackInSlot(0);
         ItemStack blackTotem = new ItemStack(PTItems.INFUSER_TOTEM_PH_2.get());
+        ItemStack potion = blockEntity.stackHandler.getStackInSlot(1);
+
+        //TODO: Add potion rendering
 
         Direction FACING = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
@@ -44,6 +61,15 @@ public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvanc
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
                 poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(0.5f, 1.05f, (1 / 10000f));
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(270));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
+                poseStack.popPose();
             }
             case NORTH -> {
                 poseStack.pushPose();
@@ -55,6 +81,15 @@ public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvanc
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
+                poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(1f, 1.01f, 0.5f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
                 poseStack.popPose();
             }
             case EAST -> {
@@ -68,6 +103,15 @@ public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvanc
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
                 poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(0.5f, 1.01f, 1f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
+                poseStack.popPose();
             }
             case SOUTH -> {
                 poseStack.pushPose();
@@ -78,6 +122,14 @@ public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvanc
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
                 itemRenderer.renderStatic(blackTotem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                         OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 2);
+                poseStack.popPose();
+
+                poseStack.pushPose();
+                poseStack.translate(1/ 1000f, 1.01f, 0.5f);
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(270));
+                itemRenderer.renderStatic(potion, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
+                        OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 3);
                 poseStack.popPose();
             }
         }

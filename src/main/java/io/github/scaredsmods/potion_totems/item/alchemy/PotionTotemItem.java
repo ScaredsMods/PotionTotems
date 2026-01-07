@@ -5,6 +5,7 @@ import io.github.scaredsmods.potion_totems.config.PTCommonConfig;
 import io.github.scaredsmods.potion_totems.init.PTConfigs;
 import io.github.scaredsmods.potion_totems.item.TotemItem;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -67,7 +68,7 @@ public class PotionTotemItem extends Item implements TotemItem {
     }
     @Override
     public String getDescriptionId(ItemStack stack) {
-        return Potion.getName(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion(), this.getDescriptionId() + ".effect");
+        return Potion.getName(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion(), this.getDescriptionId() + ".effect.");
     }
 
     private void addVanillaEffects(LivingEntity entity) {
