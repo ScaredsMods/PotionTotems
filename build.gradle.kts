@@ -159,6 +159,16 @@ tasks {
             "release" -> archiveFileName = "$modVersion-${modVersion}.jar"
         }
     }
+    register("uploadArtifacts") {
+        group = "upload"
+        when(env) {
+            "release" -> {
+                dependsOn("publishUnified")
+                println("Release $modVersion: Artifacts were published!")
+            }
+            "dev" -> println("Dev environment found. No artifacts were published!")
+        }
+    }
 }
 
 if (env != "dev") {

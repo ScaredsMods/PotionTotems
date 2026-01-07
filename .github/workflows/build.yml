@@ -21,3 +21,5 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Upload to curseforge/modrinth
+        run: ./gradlew uploadArtifacts
