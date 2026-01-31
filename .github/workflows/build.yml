@@ -21,5 +21,8 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Upload to curseforge/modrinth
+      - name: Publish to CurseForge and Modrinth
         run: ./gradlew uploadArtifacts
+        env:
+          CF_TOKEN: ${{ secrets.CF_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}

@@ -218,13 +218,13 @@ if (env != "dev") {
                 conflicts {}
             }
             curseforge {
-                token = providers.gradleProperty("CF_TOKEN").get()
+                token = providers.environmentVariable("CF_TOKEN").orElse("CF_TOKEN").get()
                 var projectId = "1329049"
                 id = projectId
                 mainPublication(tasks.jar.get())
             }
             modrinth {
-                token = providers.gradleProperty("MODRINTH_TOKEN").get()
+                token = providers.environmentVariable("MODRINTH_TOKEN").orElse("MODRINTH_TOKEN").get()
                 id = "QNJVJEMv"
                 mainPublication(tasks.jar.get())
             }
