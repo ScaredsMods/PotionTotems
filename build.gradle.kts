@@ -184,7 +184,7 @@ tasks {
     withType<Jar> {
         when(env) {
             "dev" -> archiveFileName = "${modName}-${modVersion}.$env+$devVersion.jar"
-            "release" -> archiveFileName = "$modVersion-${modVersion}.jar"
+            "release" -> archiveFileName = "$modName-${modVersion}.jar"
         }
     }
     register("uploadArtifacts") {
