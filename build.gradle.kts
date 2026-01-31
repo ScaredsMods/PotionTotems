@@ -39,7 +39,7 @@ val emiVersion : String by project
 // Dev
 var env = project.properties["env"]
 val devVersion : String by project
-val uuid : String = providers.gradleProperty("playerUUID").get()
+
 
 group = modGroupId
 version = modVersion
@@ -99,7 +99,7 @@ neoForge {
     runs {
         val client : RunModel by creating {
             client()
-            programArguments.addAll("--username=ScaredRabbitNL", "--uuid=$uuid")
+            programArguments.addAll("--username=ScaredRabbitNL", "--uuid=67e129a0-7954-4ad0-bc39-d2ecf97e7a1a")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
