@@ -1,8 +1,7 @@
 package io.github.scaredsmods.potion_totems.block.entity;
 
-import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.init.PTItems;
-import io.github.scaredsmods.potion_totems.lib.block.entity.BlockEntityBaseInfuser;
+import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import io.github.scaredsmods.potion_totems.util.PotionUtils;
 import net.minecraft.core.BlockPos;
@@ -25,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class BlockEntityInfuser extends BlockEntityBaseInfuser {
+public class InfuserBlockEntity extends BaseInfuserBlockEntity {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -42,7 +41,8 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
     public static final int POTION_INPUT_SLOT = 1;
     public static final int INFUSED_TOTEM_OUTPUT_SLOT = 2;
     public static final int BOTTLE_OUTPUT_SLOT = 3;
-    private int maxProgress = 72;
+
+    private int maxProgress = 600;
     private int currentProgress = 0;
 
 
@@ -50,8 +50,8 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0  -> BlockEntityInfuser.this.currentProgress;
-                case 1 -> BlockEntityInfuser.this.maxProgress;
+                case 0  -> InfuserBlockEntity.this.currentProgress;
+                case 1 -> InfuserBlockEntity.this.maxProgress;
                 default -> 2;
             };
         }
@@ -59,8 +59,8 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
         @Override
         public void set(int index, int value) {
             switch (index){
-                case 0: BlockEntityInfuser.this.currentProgress = value;
-                case 1: BlockEntityInfuser.this.maxProgress = value;
+                case 0: InfuserBlockEntity.this.currentProgress = value;
+                case 1: InfuserBlockEntity.this.maxProgress = value;
             }
         }
 
@@ -70,8 +70,8 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
         }
     };
 
-    public BlockEntityInfuser(BlockPos pos, BlockState blockState) {
-        super(PTBlockEntities.BE_INFUSER.get(), pos, blockState);
+    public InfuserBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.BE_INFUSER.get(), pos, blockState);
 
     }
 
@@ -91,7 +91,7 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
 
     protected void resetProgress() {
         currentProgress = 0;
-        maxProgress = 72;
+        maxProgress = 600;
     }
     protected void increaseCraftingProgress() {
         currentProgress++;
@@ -102,7 +102,7 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
     protected void craftItem() {
         ItemStack in1 = itemStackHandler.getStackInSlot(TOTEM_INPUT_SLOT);     // TOTEM
         ItemStack in2 = itemStackHandler.getStackInSlot(POTION_INPUT_SLOT);    // POTION
-        ItemStack output1 = new ItemStack(PTItems.INFUSED_TOTEM.get());
+        ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
 
         PotionUtils.copyContents(in2, output1);
@@ -127,7 +127,7 @@ public class BlockEntityInfuser extends BlockEntityBaseInfuser {
         ItemStack in1 = itemStackHandler.getStackInSlot(TOTEM_INPUT_SLOT);
         ItemStack in2 = itemStackHandler.getStackInSlot(POTION_INPUT_SLOT);
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
-        ItemStack output1 = new ItemStack(PTItems.INFUSED_TOTEM.get());
+        ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
         return (in1.is(Items.TOTEM_OF_UNDYING) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), itemStackHandler))
                 &&
                 (in2.is(Items.POTION) && canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount(), itemStackHandler));

@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.network.IContainerFactory;
 
-public class PTMenuTypes {
+public class ModMenuTypes {
 
     public static final ResourcefulRegistry<MenuType<?>> MENUS = ResourcefulRegistries.create(BuiltInRegistries.MENU, PotionTotems.MOD_ID);
     public static final RegistryEntry<MenuType<InfuserMenu>> INFUSER_MENU = registerMenuType("infuser_menu" , InfuserMenu::new);

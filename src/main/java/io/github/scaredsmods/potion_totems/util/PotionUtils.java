@@ -1,31 +1,17 @@
 package io.github.scaredsmods.potion_totems.util;
 
-import io.github.scaredsmods.potion_totems.init.PTItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class PotionUtils {
-
-    public static ItemStack makePotionStack(Item item, Holder<Potion> potion, int count) {
-        ItemStack itemstack = new ItemStack(item);
-        itemstack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
-        return itemstack;
-    }
 
     public static void copyContents(ItemStack source, ItemStack target) {
         if (source.has(DataComponents.POTION_CONTENTS)) {
@@ -34,7 +20,7 @@ public class PotionUtils {
         }
     }
 
-    public static <T> void copyDataComponent(@NotNull ItemStack source, ItemStack target, DataComponentType<T> dataComponentType) {
+    public static <T> void copyDataComponent(@Nonnull ItemStack source, ItemStack target, DataComponentType<T> dataComponentType) {
         if (source.has(dataComponentType)) {
             target.set(dataComponentType, source.get(dataComponentType));
         }
@@ -66,31 +52,5 @@ public class PotionUtils {
             target.set(DataComponents.POTION_CONTENTS, newContents);
 
         }
-    }
-
-    public static void makeItemName(ItemStack source, ItemStack target) {
-        if (source.getItem() == PTItems.INFUSED_TOTEM.get()) {
-            if (source.has(DataComponents.POTION_CONTENTS)) {
-                PotionContents contents = source.get(DataComponents.POTION_CONTENTS);
-                if (contents == null) {}
-                contents.forEachEffect(effectInstance -> {
-                    ResourceLocation loc = BuiltInRegistries.MOB_EFFECT.getKey(effectInstance.getEffect().value());
-                    if (loc == null) {}
-                    String namespace = loc.getNamespace();
-                    String name = loc.getPath();
-                    String capitalizedName = name.substring(0, 1).toUpperCase() + name.substring(1);
-                    if (namespace.equals("minecraft") || namespace.equals("potion_totems")) {
-                        target.set(DataComponents.ITEM_NAME, Component.literal("Infused Totem of " + capitalizedName));
-                    }
-                });
-            }
-        }
-    }
-
-    public static ItemStack makePotionStack(List<Holder<Potion>> list, RandomSource random) {
-        Holder<Potion> potion = list.get(random.nextInt(list.size()));
-        ItemStack stack = new ItemStack(Items.POTION,1);
-        stack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
-        return stack;
     }
 }

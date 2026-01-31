@@ -1,8 +1,8 @@
 package io.github.scaredsmods.potion_totems.screen.menu;
 
-import io.github.scaredsmods.potion_totems.block.entity.BlockEntityAdvancedInfuser;
-import io.github.scaredsmods.potion_totems.init.PTBlocks;
-import io.github.scaredsmods.potion_totems.init.PTMenuTypes;
+import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.init.ModBlocks;
+import io.github.scaredsmods.potion_totems.init.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class AdvancedInfuserMenu extends AbstractContainerMenu {
 
-    public final BlockEntityAdvancedInfuser blockEntity;
+    public final AdvancedInfuserBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
@@ -24,8 +24,8 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
     }
 
     public AdvancedInfuserMenu(int containerId, Inventory pInv, BlockEntity entity, ContainerData data) {
-        super(PTMenuTypes.ADVANCED_INFUSER_MENU.get(), containerId);
-        this.blockEntity = (BlockEntityAdvancedInfuser) entity;
+        super(ModMenuTypes.ADVANCED_INFUSER_MENU.get(), containerId);
+        this.blockEntity = (AdvancedInfuserBlockEntity) entity;
         this.level = pInv.player.level();
         this.data = data;
 
@@ -108,7 +108,7 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, PTBlocks.ADVANCED_INFUSER.get());
+                pPlayer, ModBlocks.ADVANCED_INFUSER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

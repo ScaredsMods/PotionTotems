@@ -1,8 +1,8 @@
 package io.github.scaredsmods.potion_totems.data.gen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.init.PTBlocks;
-import io.github.scaredsmods.potion_totems.init.PTPotions;
+import io.github.scaredsmods.potion_totems.init.ModBlocks;
+import io.github.scaredsmods.potion_totems.init.ModPotions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -11,9 +11,9 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class PTEnglishLanguageProvider extends LanguageProvider {
+public class ModEnglishLanguageProvider extends LanguageProvider {
 
-    public PTEnglishLanguageProvider(PackOutput output) {
+    public ModEnglishLanguageProvider(PackOutput output) {
         super(output, PotionTotems.MOD_ID, "en_us");
     }
 
@@ -30,7 +30,7 @@ public class PTEnglishLanguageProvider extends LanguageProvider {
             add("item.potion_totems.infused_totem.effect." + effectName, "Infused Totem of " + formattedName);
         });
 
-        PTPotions.POTIONS.stream().forEach(potionRegistryEntry -> {
+        ModPotions.POTIONS.stream().forEach(potionRegistryEntry -> {
             ResourceLocation id = potionRegistryEntry.getId();
             String potionName = id.getPath();
 
@@ -46,8 +46,8 @@ public class PTEnglishLanguageProvider extends LanguageProvider {
         add("item.potion_totems.infused_totem.effect.empty", "Infused Totem");
         add("item.potion_totems.infused_totem.effect.custom", "Infused Totem");
         add("itemGroup.potion_totems.totems", "Potion Totems");
-        add(PTBlocks.INFUSER.get(), "Infuser");
-        add(PTBlocks.ADVANCED_INFUSER.get(), "Advanced Infuser");
+        add(ModBlocks.INFUSER.get(), "Infuser");
+        add(ModBlocks.ADVANCED_INFUSER.get(), "Advanced Infuser");
         add("potion_totems.be.infuser.name", "Totem Infuser");
         add("potion_totems.gui.infuser.title", "Totem Infuser");
         add("potion_totems.be.advanced_infuser.name", "Advanced Totem Infuser");

@@ -1,17 +1,13 @@
-import groovy.lang.Closure
+import net.neoforged.moddevgradle.dsl.ModModel
+import net.neoforged.moddevgradle.dsl.RunModel
 import org.slf4j.event.Level
-import java.io.IOException
-import java.util.*
-
 
 plugins {
     id("java")
-    id("eclipse")
-    id("java-library")
     id("idea")
     id("maven-publish")
     id("net.neoforged.moddev") version "2.0.137"
-    id("me.shedaniel.unified-publishing") version "0.1.+"
+    id("me.shedaniel.unified-publishing") version "0.1.13"
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -38,15 +34,15 @@ val parchmentMappingsVersion : String by project
 // Dependencies
 val resourcefulLibVersion : String by project
 val fzzyConfigVersion : String by project
+val emiVersion : String by project
 
 // Dev
 var env = project.properties["env"]
 val devVersion : String by project
+val uuid : String = providers.gradleProperty("playerUUID").get()
 
 group = modGroupId
 version = modVersion
-
-
 
 repositories {
     mavenCentral()
@@ -68,6 +64,10 @@ repositories {
     maven {
         name = "FzzyMaven"
         url = uri("https://maven.fzzyhmstrs.me/")
+    }
+    maven {
+        name = "TerraformersMC"
+        url = uri("https://maven.terraformersmc.com/")
     }
 }
 
@@ -97,20 +97,28 @@ neoForge {
     }
 
     runs {
-        withType {
+        val client : RunModel by creating {
             client()
+            programArguments.addAll("--username=ScaredRabbitNL", "--uuid=$uuid")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
-        withType {
+
+        val client2 : RunModel by creating {
+            client()
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            programArguments.addAll("--username=ScaredRabbitNL2")
+        }
+
+        val server : RunModel by creating {
             server()
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
-        withType {
+        val gameTestServer : RunModel by creating {
             type = "gameTestServer"
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
-        withType {
+        val data : RunModel by creating {
             data()
             programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath())
         }
@@ -120,12 +128,32 @@ neoForge {
         }
     }
 
+    mods {
+        // define mod <-> source bindings
+        // these are used to tell the game which sources are for which mod
+        // mostly optional in a single mod project
+        // but multi mod projects should define one per mod
+        modId.let {
+            val sourceSet : ModModel by creating {
+                sourceSet(sourceSets.main.get())
+            }
+        }
+    }
+
+}
+
+
+configurations {
+    runtimeClasspath.get().extendsFrom(create("localRuntime"))
 }
 
 dependencies {
     jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
+
+    compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
+    runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
 }
 tasks {
 
@@ -164,7 +192,7 @@ tasks {
         when(env) {
             "release" -> {
                 dependsOn("publishUnified")
-                println("Release $modVersion: Artifacts were published!")
+                println("Release $modVersion: Artifacts were published to curseforge and modrinth!")
             }
             "dev" -> println("Dev environment found. No artifacts were published!")
         }
@@ -215,26 +243,5 @@ idea {
 fun setEnv(value : String) {
     env = value
 }
-
-fun String.runCommand(
-    workingDir: File = File("."),
-    timeoutAmount: Long = 60,
-    timeoutUnit: TimeUnit = TimeUnit.SECONDS
-): String = ProcessBuilder(split("\\s(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)".toRegex()))
-    .directory(workingDir)
-    .redirectOutput(ProcessBuilder.Redirect.PIPE)
-    .redirectError(ProcessBuilder.Redirect.PIPE)
-    .start()
-    .apply { waitFor(timeoutAmount, timeoutUnit) }
-    .run {
-        val error = errorStream.bufferedReader().readText().trim()
-        if (error.isNotEmpty()) {
-            throw IOException(error)
-        }
-        inputStream.bufferedReader().readText().trim()
-    }
-
-
-
 
 

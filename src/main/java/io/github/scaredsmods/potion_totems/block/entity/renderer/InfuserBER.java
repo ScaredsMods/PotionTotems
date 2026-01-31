@@ -2,8 +2,8 @@ package io.github.scaredsmods.potion_totems.block.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import io.github.scaredsmods.potion_totems.block.entity.BlockEntityInfuser;
-import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,17 +19,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class BERInfuser implements BlockEntityRenderer<BlockEntityInfuser> {
+public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity> {
 
-    public BERInfuser(BlockEntityRendererProvider.Context context) {
+    public InfuserBER(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(BlockEntityInfuser blockEntity, float partialTick, PoseStack poseStack,
+    public void render(InfuserBlockEntity blockEntity, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack totem = blockEntity.itemStackHandler.getStackInSlot(0);
-        ItemStack blackTotem = new ItemStack(PTItems.INFUSER_TOTEM_PH_1.get());
+        ItemStack blackTotem = new ItemStack(ModItems.INFUSER_TOTEM_PH_1.get());
         ItemStack potion = blockEntity.itemStackHandler.getStackInSlot(1);
         Direction FACING = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 

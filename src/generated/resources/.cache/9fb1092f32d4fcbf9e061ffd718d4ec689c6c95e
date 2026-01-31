@@ -1,3 +1,5 @@
-// 1.21.1	2025-11-09T19:01:25.7822815	Recipes
+// 1.21.1	2026-01-10T15:37:10.8207732	Recipes
+07c1815fb444b7c7f2f22fbed0e2c3c6c74437d4 data/potion_totems/advancement/recipes/brewing/advanced_infuser.json
 b42efa5ff5340222abbaa01d449f0679644ce5e2 data/potion_totems/advancement/recipes/brewing/infuser.json
+459ae6c073d584832ac14a43d30cba039259db9c data/potion_totems/recipe/advanced_infuser.json
 71fd2882b9980fd88701c405cdcd0a555fd9622c data/potion_totems/recipe/infuser.json

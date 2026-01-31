@@ -2,9 +2,8 @@ package io.github.scaredsmods.potion_totems.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.block.entity.BlockEntityInfuser;
-import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.lib.block.BaseHorizontalBlock;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -99,14 +98,14 @@ public class InfuserBlock extends BaseHorizontalBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityInfuser(pos, state);
+        return new InfuserBlockEntity(pos, state);
     }
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()){
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof BlockEntityInfuser infuserBlockEntity) {
+            if (blockEntity instanceof InfuserBlockEntity infuserBlockEntity) {
                 infuserBlockEntity.drops();
             }
         }
@@ -119,7 +118,7 @@ public class InfuserBlock extends BaseHorizontalBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof BlockEntityInfuser baseInfuserBlockEntity) {
+            if (blockEntity instanceof InfuserBlockEntity baseInfuserBlockEntity) {
                 player.openMenu(new SimpleMenuProvider(baseInfuserBlockEntity, Component.translatable(PotionTotems.MOD_ID + ".gui.infuser.title")), pos);
             }else {
                 throw new IllegalStateException("Missing container provider");
@@ -133,7 +132,7 @@ public class InfuserBlock extends BaseHorizontalBlock {
         if (level.isClientSide()){
             return null;
         }
-        return createTickerHelper(blockEntityType, PTBlockEntities.BE_INFUSER.get(), (level1, pos, state1, blockEntity) ->
+        return createTickerHelper(blockEntityType, ModBlockEntities.BE_INFUSER.get(), (level1, pos, state1, blockEntity) ->
                 blockEntity.tick(level1, pos, state1));
     }
 }

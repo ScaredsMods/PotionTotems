@@ -1,8 +1,7 @@
 package io.github.scaredsmods.potion_totems.block.entity;
 
-import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.init.PTItems;
-import io.github.scaredsmods.potion_totems.lib.block.entity.BlockEntityBaseInfuser;
+import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import io.github.scaredsmods.potion_totems.screen.menu.AdvancedInfuserMenu;
 import io.github.scaredsmods.potion_totems.util.PotionUtils;
 import net.minecraft.core.BlockPos;
@@ -29,10 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
+public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 
     public final ItemStackHandler stackHandler = new ItemStackHandler(4) {
-
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -49,7 +47,7 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
     public static final int POTION_INPUT_SLOT = 1;
     public static final int INFUSED_TOTEM_OUTPUT_SLOT = 2;
     public static final int BOTTLE_OUTPUT_SLOT = 3;
-    private int maxProgress = 72;
+    private int maxProgress = 1200;
     private int currentProgress = 0;
 
     private final ContainerData data = new ContainerData() {
@@ -57,8 +55,8 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
         public int get(int index) {
 
             return switch (index) {
-                case 0 -> BlockEntityAdvancedInfuser.this.currentProgress;
-                case 1 -> BlockEntityAdvancedInfuser.this.maxProgress;
+                case 0 -> AdvancedInfuserBlockEntity.this.currentProgress;
+                case 1 -> AdvancedInfuserBlockEntity.this.maxProgress;
                 default -> 2;
             };
         }
@@ -66,8 +64,8 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
         @Override
         public void set(int index, int value) {
             switch (index){
-                case 0: BlockEntityAdvancedInfuser.this.currentProgress = value;
-                case 1: BlockEntityAdvancedInfuser.this.maxProgress = value;
+                case 0: AdvancedInfuserBlockEntity.this.currentProgress = value;
+                case 1: AdvancedInfuserBlockEntity.this.maxProgress = value;
             }
         }
 
@@ -90,13 +88,13 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
             resetProgress();
         }
     }
-    public BlockEntityAdvancedInfuser(BlockPos pos, BlockState blockState) {
-        super(PTBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState, Component.translatable("potion_totems.be.advanced_infuser.name"));
+    public AdvancedInfuserBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState, Component.translatable("potion_totems.be.advanced_infuser.name"));
     }
     protected void craftItem() {
         ItemStack in1 = stackHandler.getStackInSlot(INFUSED_TOTEM_INPUT_SLOT);     // TOTEM
         ItemStack in2 = stackHandler.getStackInSlot(POTION_INPUT_SLOT);    // POTION
-        ItemStack output1 = new ItemStack(PTItems.INFUSED_TOTEM.get(), 1);
+        ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get(), 1);
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
         PotionContents contents = in1.get(DataComponents.POTION_CONTENTS);
 
@@ -134,7 +132,7 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
 
     protected void resetProgress() {
         currentProgress = 0;
-        maxProgress = 72;
+        maxProgress = 1200;
     }
 
     public void drops() {
@@ -142,7 +140,6 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
         for (int i = 0; i < stackHandler.getSlots(); i++) {
             inventory.setItem(i, stackHandler.getStackInSlot(i));
         }
-
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
     protected boolean hasRecipe(Level level, BlockPos pos) {
@@ -151,9 +148,9 @@ public class BlockEntityAdvancedInfuser extends BlockEntityBaseInfuser {
         ItemStack in2 = stackHandler.getStackInSlot(POTION_INPUT_SLOT);
 
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
-        ItemStack output1 = new ItemStack(PTItems.INFUSED_TOTEM.get());
+        ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
 
-        return (in1.is(PTItems.INFUSED_TOTEM.get()) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), stackHandler))
+        return (in1.is(ModItems.INFUSED_TOTEM.get()) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), stackHandler))
                 &&
                 (in2.is(Items.POTION) && canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount(), stackHandler));
     }

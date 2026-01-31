@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "potion_totems:item/totem_base",
     "layer1": "potion_totems:item/totem_eye"

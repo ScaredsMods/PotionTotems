@@ -1,17 +1,19 @@
 package io.github.scaredsmods.potion_totems.event;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.init.PTPotions;
-import io.github.scaredsmods.potion_totems.init.PTVillagers;
+import io.github.scaredsmods.potion_totems.init.ModPotions;
+import io.github.scaredsmods.potion_totems.init.ModVillagers;
 import io.github.scaredsmods.potion_totems.util.PotionType;
 import io.github.scaredsmods.potion_totems.util.VillagerUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 
 import java.util.List;
@@ -23,14 +25,14 @@ public class ModGameEvents {
 
     private static final List<Holder<Potion>> regularPotionsTier1 = List.of(Potions.INFESTED, Potions.OOZING, Potions.LUCK, Potions.LEAPING, Potions.HEALING);
     private static final List<Holder<Potion>> regularPotionsTier2 = List.of(Potions.NIGHT_VISION, Potions.STRONG_REGENERATION, Potions.POISON);
-    private static final List<Holder<Potion>> regularPotionsTier3 = List.of(PTPotions.AGGRESSION.holder(), Potions.STRONG_STRENGTH, Potions.STRONG_POISON);
+    private static final List<Holder<Potion>> regularPotionsTier3 = List.of(ModPotions.AGGRESSION.holder(), Potions.STRONG_STRENGTH, Potions.STRONG_POISON);
     private static final List<Holder<Potion>> potionTotemsTier1 = List.of(Potions.INVISIBILITY, Potions.LEAPING, Potions.FIRE_RESISTANCE);
     private static final List<Holder<Potion>> potionTotemsTier2 = List.of(Potions.HEALING, Potions.REGENERATION, Potions.STRENGTH);
-    private static final List<Holder<Potion>> potionTotemsTier3 = List.of(PTPotions.AGGRESSION.holder());
+    private static final List<Holder<Potion>> potionTotemsTier3 = List.of(ModPotions.AGGRESSION.holder());
 
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
-        if(event.getType() == PTVillagers.TOTEM_MASTER.get()) {
+        if(event.getType() == ModVillagers.TOTEM_MASTER.get()) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
             int emeraldCost = 32;
@@ -48,6 +50,11 @@ public class ModGameEvents {
         }
     }
 
-
+    @SubscribeEvent
+    public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        event.getBuilder().addMix(Potions.WATER, Items.NETHERITE_INGOT, ModPotions.POSITIVE.holder());
+        event.getBuilder().addMix(Potions.WATER, Items.NETHER_STAR, ModPotions.NEGATIVE.holder());
+        event.getBuilder().addMix(Potions.WATER, Items.DRAGON_HEAD, ModPotions.NEUTRAL.holder());
+    }
 
 }

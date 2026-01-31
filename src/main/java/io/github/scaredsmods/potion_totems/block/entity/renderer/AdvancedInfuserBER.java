@@ -1,17 +1,13 @@
 package io.github.scaredsmods.potion_totems.block.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.block.entity.BlockEntityAdvancedInfuser;
-import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -23,26 +19,21 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
-public class BERAdvancedInfuser implements BlockEntityRenderer<BlockEntityAdvancedInfuser> {
-    public BERAdvancedInfuser(BlockEntityRendererProvider.Context context) {
+public class AdvancedInfuserBER implements BlockEntityRenderer<AdvancedInfuserBlockEntity> {
+    public AdvancedInfuserBER(BlockEntityRendererProvider.Context context) {
     }
 
     private static final ResourceLocation OUTLINE = PotionTotems.id("textures/item/infuser_totem_placeholder_2.png");
 
     @Override
-    public void render(BlockEntityAdvancedInfuser blockEntity, float partialTick, PoseStack poseStack,
+    public void render(AdvancedInfuserBlockEntity blockEntity, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
         ItemStack totem = blockEntity.stackHandler.getStackInSlot(0);
-        ItemStack blackTotem = new ItemStack(PTItems.INFUSER_TOTEM_PH_2.get());
+        ItemStack blackTotem = new ItemStack(ModItems.INFUSER_TOTEM_PH_2.get());
         ItemStack potion = blockEntity.stackHandler.getStackInSlot(1);
 
         //TODO: Add potion rendering

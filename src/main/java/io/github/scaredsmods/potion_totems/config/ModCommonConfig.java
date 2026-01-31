@@ -1,19 +1,28 @@
 package io.github.scaredsmods.potion_totems.config;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import me.fzzyhmstrs.fzzy_config.annotations.ClientModifiable;
+import me.fzzyhmstrs.fzzy_config.annotations.Comment;
+import me.fzzyhmstrs.fzzy_config.annotations.Version;
+import me.fzzyhmstrs.fzzy_config.annotations.WithPerms;
 import me.fzzyhmstrs.fzzy_config.api.FileType;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
+import me.fzzyhmstrs.fzzy_config.screen.entry.ConfigEntry;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedString;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import org.jetbrains.annotations.NotNull;
 
-public class PTCommonConfig extends Config {
+import java.util.ArrayList;
 
-    public PTCommonConfig() {
-        super(PotionTotems.id("potion_totems-common"));
+@Version(version = 1)
+public class ModCommonConfig extends Config {
+
+    public ModCommonConfig() {
+        super(PotionTotems.id("common"));
     }
-
 
     public InfusedTotemSection infusedTotemSection = new InfusedTotemSection();
     public static class InfusedTotemSection extends ConfigSection {

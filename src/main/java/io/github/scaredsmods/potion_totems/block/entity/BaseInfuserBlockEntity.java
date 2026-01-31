@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.lib.block.entity;
+package io.github.scaredsmods.potion_totems.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -14,15 +14,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-public abstract class BlockEntityBaseInfuser extends BlockEntity implements MenuProvider {
+public abstract class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider {
 
     private final Component displayName;
 
-    public BlockEntityBaseInfuser(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public BaseInfuserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         this(type, pos, state, null);
     }
 
-    public BlockEntityBaseInfuser(BlockEntityType<?> type, BlockPos pos, BlockState blockState, Component displayName) {
+    public BaseInfuserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, Component displayName) {
         super(type, pos, blockState);
         this.displayName = displayName;
     }

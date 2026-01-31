@@ -22,9 +22,9 @@ public class DataGenerators {
         ExistingFileHelper exFileHelper = e.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> provider = e.getLookupProvider();
 
-        generator.addProvider(e.includeServer(), new PTRecipesProvider(packOutput, provider));
-        generator.addProvider(e.includeClient(), new PTItemModelProvider(packOutput, exFileHelper));
-        generator.addProvider(true, new PTEnglishLanguageProvider(packOutput));
+        generator.addProvider(e.includeServer(), new ModRecipesProvider(packOutput, provider));
+        generator.addProvider(e.includeClient(), new ModItemModelProvider(packOutput, exFileHelper));
+        generator.addProvider(true, new ModEnglishLanguageProvider(packOutput));
     }
 
 }

@@ -1,11 +1,9 @@
-package io.github.scaredsmods.potion_totems.item.alchemy;
+package io.github.scaredsmods.potion_totems.item;
 
 
-import io.github.scaredsmods.potion_totems.config.PTCommonConfig;
-import io.github.scaredsmods.potion_totems.init.PTConfigs;
-import io.github.scaredsmods.potion_totems.item.TotemItem;
+import io.github.scaredsmods.potion_totems.config.ModCommonConfig;
+import io.github.scaredsmods.potion_totems.init.ModConfigs;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -79,7 +77,7 @@ public class PotionTotemItem extends Item implements TotemItem {
 
     private void addEffects(LivingEntity entity, ItemStack stack) {
         PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
-        PTCommonConfig.InfusedTotemSection infusedTotemSection = PTConfigs.ptCommonConfig.infusedTotemSection;
+        ModCommonConfig.InfusedTotemSection infusedTotemSection = ModConfigs.commonConfig.infusedTotemSection;
         Collection<MobEffectInstance> vanillaEffects = List.of(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1), new MobEffectInstance(MobEffects.REGENERATION, 900, 1), new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800));
         if (contents != null) {
             if (contents.hasEffects() && !(new HashSet<>(contents.customEffects()).containsAll(vanillaEffects))) {

@@ -1,6 +1,6 @@
 package io.github.scaredsmods.potion_totems.util;
 
-import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPredicate;
@@ -43,7 +43,7 @@ public class VillagerUtils {
             ItemStack stack;
             switch (type) {
                 case POTION_TOTEM -> {
-                    stack = new ItemStack(PTItems.INFUSED_TOTEM.get());
+                    stack = new ItemStack(ModItems.INFUSED_TOTEM.get());
                     stack.set(DataComponents.POTION_CONTENTS, contents);
                     ItemStack itemCostB = new ItemStack(Items.POTION);
                     ItemCost potionCost = new ItemCost(itemCostB.getItemHolder(), 1, DataComponentPredicate.allOf(itemCostB.getComponents()), itemCostB);
@@ -74,7 +74,7 @@ public class VillagerUtils {
             ItemStack stack;
             switch (type) {
                 case POTION_TOTEM -> {
-                    stack = new ItemStack(PTItems.INFUSED_TOTEM.get());
+                    stack = new ItemStack(ModItems.INFUSED_TOTEM.get());
                     stack.set(DataComponents.POTION_CONTENTS, contents);
                     ItemStack itemCostB = new ItemStack(Items.POTION);
                     itemCostB.set(DataComponents.POTION_CONTENTS, contents);
@@ -104,7 +104,7 @@ public class VillagerUtils {
             ItemStack stack;
             switch (type) {
                 case POTION_TOTEM -> {
-                    stack = new ItemStack(PTItems.INFUSED_TOTEM.get());
+                    stack = new ItemStack(ModItems.INFUSED_TOTEM.get());
                     stack.set(DataComponents.POTION_CONTENTS, contents);
                     ItemStack itemCostB = new ItemStack(Items.POTION);
                     itemCostB.set(DataComponents.POTION_CONTENTS, contents);
@@ -133,7 +133,7 @@ public class VillagerUtils {
             ItemStack stack;
             switch (type) {
                 case POTION_TOTEM -> {
-                    stack = new ItemStack(PTItems.INFUSED_TOTEM.get());
+                    stack = new ItemStack(ModItems.INFUSED_TOTEM.get());
                     stack.set(DataComponents.POTION_CONTENTS, contents);
                     ItemStack itemCostB = new ItemStack(Items.POTION);
                     itemCostB.set(DataComponents.POTION_CONTENTS, contents);

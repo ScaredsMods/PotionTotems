@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.lib.block;
+package io.github.scaredsmods.potion_totems.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
