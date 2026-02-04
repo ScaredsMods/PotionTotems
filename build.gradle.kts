@@ -8,6 +8,7 @@ plugins {
     id("maven-publish")
     id("net.neoforged.moddev") version "2.0.137"
     id("me.shedaniel.unified-publishing") version "0.1.13"
+    id("com.diffplug.spotless") version("6.19.0")
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -198,6 +199,18 @@ tasks {
         }
     }
 }
+
+spotless {
+    java {
+        licenseHeaderFile(file("HEADER"))
+        removeUnusedImports()
+        indentWithTabs()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+
 
 if (env != "dev") {
     unifiedPublishing {
