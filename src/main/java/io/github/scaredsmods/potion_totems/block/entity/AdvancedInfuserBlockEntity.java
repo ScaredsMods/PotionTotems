@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -41,6 +42,8 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,13 +51,15 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 
 	public final ItemStackHandler stackHandler = new ItemStackHandler(4) {
 		@Override
-		protected void onContentsChanged(int slot) {
+		public void onContentsChanged(int slot) {
 			setChanged();
 			if (!(level == null) && !level.isClientSide()) {
 				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 			}
 		}
 	};
+
+
 
 
 	//Infused Totem input  -> Infused totem output
@@ -91,6 +96,10 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 		}
 	};
 
+	public AdvancedInfuserBlockEntity(BlockPos pos, BlockState blockState) {
+		super(ModBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState, Component.translatable("potion_totems.be.advanced_infuser.name"));
+	}
+
 	public void tick(Level level, BlockPos blockPos, BlockState blockState) {
 		if(hasRecipe(level, blockPos)) {
 			increaseCraftingProgress();
@@ -104,12 +113,10 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 			resetProgress();
 		}
 	}
-	public AdvancedInfuserBlockEntity(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState, Component.translatable("potion_totems.be.advanced_infuser.name"));
-	}
+
 	protected void craftItem() {
 		ItemStack in1 = stackHandler.getStackInSlot(INFUSED_TOTEM_INPUT_SLOT);     // TOTEM
-		ItemStack in2 = stackHandler.getStackInSlot(POTION_INPUT_SLOT);    // POTION
+		ItemStack in2 = stackHandler.getStackInSlot(POTION_INPUT_SLOT);    		  // POTION
 		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get(), 1);
 		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
 		PotionContents contents = in1.get(DataComponents.POTION_CONTENTS);
@@ -170,10 +177,17 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 				&&
 				(in2.is(Items.POTION) && canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount(), stackHandler));
 	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		drops();
+		super.preRemoveSideEffects(pos, state);
+	}
+
 	@Override
 	public void setChanged() {
 		super.setChanged();
-		if (level != null && level.isClientSide) {
+		if (level != null && level.isClientSide()) {
 			// Request a re-render when data changes
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
 		}
@@ -185,20 +199,19 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		stackHandler.deserializeNBT(registries, tag.getCompound("inventory"));
-		currentProgress = tag.getInt("potion_totems.advanced_infuser.currentProgress");
-		maxProgress = tag.getInt("potion_totems.advanced_infuser.max_progress");
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		stackHandler.deserialize(input);
+		currentProgress = input.getInt("potion_totems.advanced_infuser.currentProgress").get();
+		maxProgress = input.getInt("potion_totems.advanced_infuser.max_progress").get();
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		tag.put("inventory", stackHandler.serializeNBT(registries));
-		tag.putInt("potion_totems.advanced_infuser.currentProgress", currentProgress);
-		tag.putInt("potion_totems.advanced_infuser.max_progress", maxProgress);
-
-		super.saveAdditional(tag, registries);
+	protected void saveAdditional(ValueOutput output) {
+		stackHandler.serialize(output);
+		output.putInt("potion_totems.advanced_infuser.currentProgress", currentProgress);
+		output.putInt("potion_totems.advanced_infuser.max_progress", maxProgress);
+		super.saveAdditional(output);
 	}
 
 	@Override
@@ -211,8 +224,9 @@ public class AdvancedInfuserBlockEntity extends BaseInfuserBlockEntity {
 		return saveWithoutMetadata(registries);
 	}
 
+
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-		loadAdditional(pkt.getTag(), lookupProvider);
+	public void onDataPacket(Connection net, ValueInput valueInput) {
+		loadAdditional(valueInput);
 	}
 }

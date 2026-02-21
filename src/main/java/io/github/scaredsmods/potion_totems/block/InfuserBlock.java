@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,7 +24,8 @@ import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -118,20 +120,7 @@ public class InfuserBlock extends BaseHorizontalBlock {
 	}
 
 	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		if (state.getBlock() != newState.getBlock()){
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof InfuserBlockEntity infuserBlockEntity) {
-				infuserBlockEntity.drops();
-			}
-		}
-		super.onRemove(state, level, pos, newState, movedByPiston);
-	}
-
-
-
-	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (!level.isClientSide()) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof InfuserBlockEntity baseInfuserBlockEntity) {
@@ -140,7 +129,7 @@ public class InfuserBlock extends BaseHorizontalBlock {
 				throw new IllegalStateException("Missing container provider");
 			}
 		}
-		return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -151,4 +140,6 @@ public class InfuserBlock extends BaseHorizontalBlock {
 		return createTickerHelper(blockEntityType, ModBlockEntities.BE_INFUSER.get(), (level1, pos, state1, blockEntity) ->
 				blockEntity.tick(level1, pos, state1));
 	}
+
+
 }

@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,7 +24,8 @@ import io.github.scaredsmods.potion_totems.util.PotionType;
 import io.github.scaredsmods.potion_totems.util.VillagerUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.npc.VillagerTrades;
+
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
@@ -36,7 +38,7 @@ import java.util.List;
 
 
 
-@EventBusSubscriber(modid = PotionTotems.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = PotionTotems.MOD_ID)
 public class ModGameEvents {
 
 	private static final List<Holder<Potion>> regularPotionsTier1 = List.of(Potions.INFESTED, Potions.OOZING, Potions.LUCK, Potions.LEAPING, Potions.HEALING);
@@ -48,7 +50,7 @@ public class ModGameEvents {
 
 	@SubscribeEvent
 	public static void addCustomTrades(VillagerTradesEvent event) {
-		if(event.getType() == ModVillagers.TOTEM_MASTER.get()) {
+		if(event.getType() == ModVillagers.TOTEM_MASTER.holder().getKey()) {
 			Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
 			int emeraldCost = 32;

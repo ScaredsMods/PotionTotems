@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -16,19 +17,18 @@
 */
 package io.github.scaredsmods.potion_totems.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
-	private static final ResourceLocation GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui.png");
-	private static final ResourceLocation ARROW_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_arrow_progress.png");
+	private static final Identifier GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui.png");
+	private static final Identifier ARROW_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_arrow_progress.png");
 
 
 	public InfuserScreen(InfuserMenu menu, Inventory playerInventory, Component title) {
@@ -36,14 +36,10 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
 	}
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, GUI_TEXTURE);
-
 		int x = (width - imageWidth) / 2;
 		int y = (height - imageHeight) / 2;
 
-		guiGraphics.blit(GUI_TEXTURE, x ,y ,0 ,0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x ,y ,0 ,0, imageWidth, imageHeight, 256, 256);
 		renderProgressArrow(guiGraphics, x,y);
 	}
 
@@ -55,7 +51,7 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
 
 	private void renderProgressArrow(GuiGraphics graphics, int x, int y) {
 		if (menu.isCrafting()) {
-			graphics.blit(ARROW_TEXTURE, x + 35, y + 14, 0, 0 , menu.getScaledArrowProgress(), 57, 96, 57);
+			graphics.blit(RenderPipelines.GUI_TEXTURED, ARROW_TEXTURE, x + 35, y + 14, 0, 0 , menu.getScaledArrowProgress(), 57, 96, 57);
 		}
 	}
 

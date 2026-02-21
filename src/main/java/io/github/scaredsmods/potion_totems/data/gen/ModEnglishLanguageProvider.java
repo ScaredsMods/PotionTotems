@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -18,10 +19,11 @@ package io.github.scaredsmods.potion_totems.data.gen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.init.ModBlocks;
+import io.github.scaredsmods.potion_totems.init.ModItems;
 import io.github.scaredsmods.potion_totems.init.ModPotions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import java.util.Arrays;
@@ -35,8 +37,11 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 
 	@Override
 	protected void addTranslations() {
-		BuiltInRegistries.POTION.holders().forEach(holder -> {
-			ResourceLocation id = BuiltInRegistries.POTION.getKey(holder.value());
+		add(ModItems.INFUSED_TOTEM.get(), "Infused Totem");
+		add(ModItems.INFUSER_TOTEM_PH_1.get(), "Placeholder 1");
+		add(ModItems.INFUSER_TOTEM_PH_2.get(), "Placeholder 2");
+		BuiltInRegistries.POTION.forEach(potion -> {
+			Identifier id = BuiltInRegistries.POTION.getKey(potion);
 			String effectName = id.getPath();
 
 			String formattedName = Arrays.stream(effectName.split("_"))
@@ -47,7 +52,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		});
 
 		ModPotions.POTIONS.stream().forEach(potionRegistryEntry -> {
-			ResourceLocation id = potionRegistryEntry.getId();
+			Identifier id = potionRegistryEntry.getId();
 			String potionName = id.getPath();
 
 			String formattedName = Arrays.stream(potionName.split("_"))
@@ -69,8 +74,6 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		add("potion_totems.be.advanced_infuser.name", "Advanced Totem Infuser");
 		add("potion_totems.gui.advanced_infuser.title", "Advanced Totem Infuser");
 		add("entity.minecraft.villager.potion_totems.totem_master", "Totem Master");
-
-
 
 	}
 }

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "potion_totems:item/infused_totem",
+    "tints": [
+      {
+        "type": "potion_totems:from_potion",
+        "default": 0
+      }
+    ]
+  }
+}

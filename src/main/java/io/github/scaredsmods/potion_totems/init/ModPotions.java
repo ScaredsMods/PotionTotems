@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -20,6 +21,7 @@ import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,32 +33,37 @@ public class ModPotions {
 
 	public static final ResourcefulRegistry<Potion> POTIONS = ResourcefulRegistries.create(BuiltInRegistries.POTION, PotionTotems.MOD_ID);
 
-	public static final HolderRegistryEntry<Potion> AGGRESSION = POTIONS.registerHolder("aggression", () -> new Potion(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 6000, 1),
+	public static final HolderRegistryEntry<Potion> AGGRESSION = POTIONS.registerHolder("aggression", () -> new Potion("aggressive",new MobEffectInstance(MobEffects.STRENGTH, 6000, 1),
 			new MobEffectInstance(MobEffects.REGENERATION, 6000, 1), new MobEffectInstance(MobEffects.HEALTH_BOOST, 6000, 1),
 			new MobEffectInstance(MobEffects.INFESTED, 6000)
 	));
 
-	public static final HolderRegistryEntry<Potion> POSITIVE = POTIONS.registerHolder("positive", () -> new Potion(positiveEffects()));
-	public static final HolderRegistryEntry<Potion> NEGATIVE = POTIONS.registerHolder("negative", () -> new Potion(negativeEffects()));
-	public static final HolderRegistryEntry<Potion> NEUTRAL = POTIONS.registerHolder("neutral", () -> new Potion(neutralEffects()));
+	public static final HolderRegistryEntry<Potion> POSITIVE = POTIONS.registerHolder("positive", () -> new Potion("positive", addEffects(MobEffectCategory.BENEFICIAL)));
+	public static final HolderRegistryEntry<Potion> NEGATIVE = POTIONS.registerHolder("negative", () -> new Potion("negative", addEffects(MobEffectCategory.HARMFUL)));
+	public static final HolderRegistryEntry<Potion> NEUTRAL = POTIONS.registerHolder("neutral", () -> new Potion("neutral", addEffects(MobEffectCategory.NEUTRAL)));
 
-	private static MobEffectInstance[] positiveEffects() {
-		return BuiltInRegistries.MOB_EFFECT.holders()
-				.filter(effect -> effect.value().isBeneficial())
-				.map(effect -> new MobEffectInstance(effect, 12000, 1))
+	private static MobEffectInstance[] addEffects(MobEffectCategory category) {
+		return BuiltInRegistries.MOB_EFFECT.stream()
+				.filter(effect -> effect.getCategory() == category)
+				.map(Holder::direct)
+				.map(holder -> new MobEffectInstance(holder, 12000,1))
 				.toArray(MobEffectInstance[]::new);
 	}
 
-	private static MobEffectInstance[] negativeEffects() {
-		return BuiltInRegistries.MOB_EFFECT.holders()
-				.filter(effect -> effect.value().getCategory() == MobEffectCategory.HARMFUL)
-				.map(effect -> new MobEffectInstance(effect, 12000, 1))
+	private static MobEffectInstance[] addEffects(MobEffectCategory category, int duration) {
+		return BuiltInRegistries.MOB_EFFECT.stream()
+				.filter(effect -> effect.getCategory() == category)
+				.map(Holder::direct)
+				.map(holder -> new MobEffectInstance(holder, duration,1))
 				.toArray(MobEffectInstance[]::new);
 	}
-	private static MobEffectInstance[] neutralEffects() {
-		return BuiltInRegistries.MOB_EFFECT.holders()
-				.filter(effect -> effect.value().getCategory() == MobEffectCategory.NEUTRAL)
-				.map(effect -> new MobEffectInstance(effect, 12000, 1))
+
+	private static MobEffectInstance[] addEffects(MobEffectCategory category, int duration, int amplifier) {
+		return BuiltInRegistries.MOB_EFFECT.stream()
+				.filter(effect -> effect.getCategory() == category)
+				.map(Holder::direct)
+				.map(holder -> new MobEffectInstance(holder, duration,amplifier))
 				.toArray(MobEffectInstance[]::new);
 	}
+
 }

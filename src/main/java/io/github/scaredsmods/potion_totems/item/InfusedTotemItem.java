@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -29,9 +30,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 
@@ -39,10 +37,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class PotionTotemItem extends Item implements TotemItem {
+public class InfusedTotemItem extends Item implements TotemItem {
 
-	public PotionTotemItem() {
-		super(new Properties().stacksTo(1).rarity(Rarity.RARE).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
+	public InfusedTotemItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -73,22 +71,20 @@ public class PotionTotemItem extends Item implements TotemItem {
 		}
 	}
 
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-		PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
-		if (potioncontents != null) {
-			potioncontents.addPotionTooltip(tooltipComponents::add, 1.0F, context.tickRate());
-		}
-	}
-	@Override
-	public String getDescriptionId(ItemStack stack) {
-		return Potion.getName(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion(), this.getDescriptionId() + ".effect.");
-	}
-
 	private void addVanillaEffects(LivingEntity entity) {
 		entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
 		entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
 		entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800));
+	}
+
+	@Override
+	public Component getName(ItemStack stack) {
+		PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+		if (contents == null || contents.potion().isEmpty()) {
+			return Component.translatable(this.getDescriptionId() + ".effect.empty");
+		}
+		String potionName = contents.potion().get().value().name();
+		return Component.translatable(this.getDescriptionId() + ".effect." + potionName);
 	}
 
 	private void addEffects(LivingEntity entity, ItemStack stack) {
@@ -97,7 +93,7 @@ public class PotionTotemItem extends Item implements TotemItem {
 		Collection<MobEffectInstance> vanillaEffects = List.of(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1), new MobEffectInstance(MobEffects.REGENERATION, 900, 1), new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800));
 		if (contents != null) {
 			if (contents.hasEffects() && !(new HashSet<>(contents.customEffects()).containsAll(vanillaEffects))) {
-				contents.forEachEffect(instance -> entity.addEffect(new MobEffectInstance(instance.getEffect(),infusedTotemSection.duration.get(), infusedTotemSection.amplifier.get())));
+				contents.forEachEffect(instance -> entity.addEffect(new MobEffectInstance(instance.getEffect(),infusedTotemSection.duration.get(), infusedTotemSection.amplifier.get())), 1);
 			}
 		}
 	}

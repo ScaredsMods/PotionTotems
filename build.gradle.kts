@@ -6,7 +6,7 @@ plugins {
     id("java")
     id("idea")
     id("maven-publish")
-    id("net.neoforged.moddev") version "2.0.137"
+    id("net.neoforged.moddev") version "2.0.140"
     id("me.shedaniel.unified-publishing") version "0.1.13"
     id("com.diffplug.spotless") version("6.19.0")
 }
@@ -36,6 +36,7 @@ val parchmentMappingsVersion : String by project
 val resourcefulLibVersion : String by project
 val fzzyConfigVersion : String by project
 val emiVersion : String by project
+val kffVersion : String by project
 
 // Dev
 var env = project.properties["env"]
@@ -120,9 +121,10 @@ neoForge {
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
         val data : RunModel by creating {
-            data()
+            clientData()
             programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath())
         }
+
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
             logLevel = Level.DEBUG
@@ -149,12 +151,14 @@ configurations {
 }
 
 dependencies {
-    jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
-    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:$resourcefulLibVersion")
+    jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-$mcVersion:$resourcefulLibVersion")
+    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-$mcVersion:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
 
-    compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
-    runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
+    implementation("thedarkcolour:kotlinforforge-neoforge:$kffVersion")
+
+    //compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
+    //runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
 }
 tasks {
 
@@ -202,6 +206,11 @@ tasks {
 
 spotless {
     java {
+        targetExclude(
+            "src/main/java/io/github/scaredsmods/potion_totems/item/TotemItem.java",
+            "src/main/java/io/github/scaredsmods/potion_totems/mixin/client/ClientPacketListenerMixin.java",
+            "src/main/java/io/github/scaredsmods/potion_totems/mixin/LivingEntityMixin.java"
+        )
         licenseHeaderFile(file("HEADER"))
         removeUnusedImports()
         indentWithTabs()
@@ -209,8 +218,6 @@ spotless {
         endWithNewline()
     }
 }
-
-
 
 if (env != "dev") {
     unifiedPublishing {

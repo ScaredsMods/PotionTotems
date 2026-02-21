@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,30 +24,21 @@ import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+
 
 public class ModVillagers {
-
-
-
 	public static final ResourcefulRegistry<PoiType> POI_TYPES = ResourcefulRegistries.create(BuiltInRegistries.POINT_OF_INTEREST_TYPE, PotionTotems.MOD_ID);
 	public static final ResourcefulRegistry<VillagerProfession> VILLAGER_PROFESSIONS = ResourcefulRegistries.create(BuiltInRegistries.VILLAGER_PROFESSION, PotionTotems.MOD_ID);
-
-
-
 	public static final HolderRegistryEntry<PoiType> TOTEM_MASTER_POI = POI_TYPES.registerHolder("totem_master_poi", () ->
 			new PoiType(ImmutableSet.copyOf(ModBlocks.INFUSER.get().getStateDefinition().getPossibleStates()), 1, 1));
 
-	public static final RegistryEntry<VillagerProfession> TOTEM_MASTER = VILLAGER_PROFESSIONS.register("totem_master", () ->
-			new VillagerProfession("totem_master", holder -> holder.value() == TOTEM_MASTER_POI.holder().value(),
+	public static final HolderRegistryEntry<VillagerProfession> TOTEM_MASTER = VILLAGER_PROFESSIONS.registerHolder("totem_master", () ->
+			new VillagerProfession(Component.literal("totem_master"), holder -> holder.value() == TOTEM_MASTER_POI.holder().value(),
 					poiTypeHolder -> poiTypeHolder.value() == TOTEM_MASTER_POI.holder().value(), ImmutableSet.of(), ImmutableSet.of(),
 					SoundEvents.VILLAGER_WORK_CLERIC));
-
-
-
-
-
 
 }

@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,7 +24,7 @@ import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -97,9 +99,6 @@ public class AdvancedInfuserBlock extends BaseHorizontalBlock {
 			Shapes.join(Block.box(3.25, 16, 4.25, 10.75, 21.75, 11.75), Block.box(5.75, 16.1, 6.15, 8.25, 24.8, 9.899999999999999), BooleanOp.OR)
 	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-
-
-
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
@@ -119,19 +118,10 @@ public class AdvancedInfuserBlock extends BaseHorizontalBlock {
 	protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
-	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		if (state.getBlock() != newState.getBlock()){
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof AdvancedInfuserBlockEntity infuserBlockEntity) {
-				infuserBlockEntity.drops();
-			}
-		}
-		super.onRemove(state, level, pos, newState, movedByPiston);
-	}
+
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (!level.isClientSide()) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof AdvancedInfuserBlockEntity baseInfuserBlockEntity) {
@@ -140,7 +130,7 @@ public class AdvancedInfuserBlock extends BaseHorizontalBlock {
 				throw new IllegalStateException("Missing container provider");
 			}
 		}
-		return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

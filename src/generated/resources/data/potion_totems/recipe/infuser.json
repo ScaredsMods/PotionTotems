@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:glass_bottle"
-    },
-    "L": {
-      "tag": "minecraft:logs"
-    },
-    "T": {
-      "item": "minecraft:totem_of_undying"
-    }
+    "B": "minecraft:glass_bottle",
+    "L": "#minecraft:logs",
+    "T": "minecraft:totem_of_undying"
   },
   "pattern": [
     " T ",

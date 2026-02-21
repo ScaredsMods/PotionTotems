@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,9 @@ package io.github.scaredsmods.potion_totems;
 
 import io.github.scaredsmods.potion_totems.init.*;
 import io.github.scaredsmods.potion_totems.pack.Resourcepack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -36,7 +39,6 @@ public class PotionTotems {
 	public static final Resourcepack GENERATED_PACK = new Resourcepack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", 34);
 
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
-		ModItems.PLACEHOLDER_ITEMS.init();
 		ModItems.ITEMS.init();
 		ModItems.TABS.init();
 		ModBlocks.BLOCKS.init();
@@ -48,9 +50,12 @@ public class PotionTotems {
 		ModConfigs.init();
 	}
 
-	public static ResourceLocation id(String name) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+	public static Identifier id(String name) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, name);
 	}
 
+	public static <T> ResourceKey<T> key(String name, ResourceKey<Registry<T>> key) {
+		return ResourceKey.create(key, PotionTotems.id(name));
+	}
 
 }

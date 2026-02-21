@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -37,6 +38,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -150,26 +153,27 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		itemStackHandler.deserializeNBT(registries, tag.getCompound("inventory"));
-		currentProgress = tag.getInt("potion_totems.infuser.currentProgress");
-		maxProgress = tag.getInt("potion_totems.infuser.max_progress");
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		itemStackHandler.deserialize(input);
+		currentProgress = input.getInt("potion_totems.infuser.currentProgress").get();
+		maxProgress = input.getInt("potion_totems.infuser.max_progress").get();
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		tag.put("inventory", itemStackHandler.serializeNBT(registries));
-		tag.putInt("potion_totems.infuser.currentProgress", currentProgress);
-		tag.putInt("potion_totems.infuser.max_progress", maxProgress);
-
-		super.saveAdditional(tag, registries);
+	protected void saveAdditional(ValueOutput output) {
+		itemStackHandler.serialize(output);
+		output.putInt("potion_totems.infuser.currentProgress", currentProgress);
+		output.putInt("potion_totems.infuser.max_progress", maxProgress);
+		super.saveAdditional(output);
 	}
+
+
 
 	@Override
 	public void setChanged() {
 		super.setChanged();
-		if (level != null && level.isClientSide) {
+		if (level != null && level.isClientSide()) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
 		}
 	}

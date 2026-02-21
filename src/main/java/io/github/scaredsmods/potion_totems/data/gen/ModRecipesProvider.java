@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -22,21 +23,21 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModRecipesProvider extends RecipeProvider {
+public class ModRecipesProvider extends RecipeProvider   {
 
-	public ModRecipesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-		super(output, registries);
+
+	protected ModRecipesProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
+		super(registries, recipeOutput);
 	}
 
 	@Override
-	protected void buildRecipes(RecipeOutput recipeOutput) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.INFUSER.get())
+	protected void buildRecipes() {
+		shaped(RecipeCategory.BREWING, ModBlocks.INFUSER.get())
 				.pattern(" T ")
 				.pattern("LLL")
 				.pattern("LBL")
@@ -46,9 +47,9 @@ public class ModRecipesProvider extends RecipeProvider {
 				.unlockedBy("has_totem", has(Items.TOTEM_OF_UNDYING))
 				.unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
 				.unlockedBy("has_log", has(ItemTags.LOGS))
-				.save(recipeOutput);
+				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.ADVANCED_INFUSER.get())
+		shaped(RecipeCategory.BREWING, ModBlocks.ADVANCED_INFUSER.get())
 				.pattern("TTT")
 				.pattern("LLL")
 				.pattern("LBL")
@@ -58,6 +59,23 @@ public class ModRecipesProvider extends RecipeProvider {
 				.unlockedBy("has_totem", has(Items.TOTEM_OF_UNDYING))
 				.unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
 				.unlockedBy("has_log", has(ItemTags.LOGS))
-				.save(recipeOutput);
+				.save(output);
+	}
+
+	public static class Runner extends RecipeProvider.Runner {
+
+		protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+			super(packOutput, registries);
+		}
+
+		@Override
+		protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+			return new ModRecipesProvider(registries, output);
+		}
+
+		@Override
+		public String getName() {
+			return "PotionTotems - Recipes";
+		}
 	}
 }

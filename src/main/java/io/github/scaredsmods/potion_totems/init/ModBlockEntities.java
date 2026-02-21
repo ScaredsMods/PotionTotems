@@ -1,4 +1,5 @@
 /*
+	This file is part of PotionTotems, licensed under the Lesser General Public License version 3 (LGPL-3.0)
 	Copyright (C) 2025 ScaredRabbitNL
 
 	This program is free software: you can redistribute it and/or modify
@@ -30,8 +31,8 @@ public class ModBlockEntities {
 	public static final ResourcefulRegistry<BlockEntityType<?>> TYPES = ResourcefulRegistries.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, PotionTotems.MOD_ID);
 
 	public static final RegistryEntry<BlockEntityType<InfuserBlockEntity>> BE_INFUSER = TYPES.register("infuser" , () ->
-			BlockEntityType.Builder.of(InfuserBlockEntity::new, ModBlocks.INFUSER.get()).build(null));
+			new BlockEntityType<>(InfuserBlockEntity::new, ModBlocks.INFUSER.get()));
 
 	public static final RegistryEntry<BlockEntityType<AdvancedInfuserBlockEntity>> BE_ADVANCED_INFUSER = TYPES.register("advanced_infuser", () ->
-			BlockEntityType.Builder.of(AdvancedInfuserBlockEntity::new, ModBlocks.ADVANCED_INFUSER.get()).build(null));
+			new BlockEntityType<>(AdvancedInfuserBlockEntity::new, ModBlocks.ADVANCED_INFUSER.get()));
 }
