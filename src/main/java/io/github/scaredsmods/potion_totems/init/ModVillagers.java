@@ -19,7 +19,6 @@ package io.github.scaredsmods.potion_totems.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
-import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
