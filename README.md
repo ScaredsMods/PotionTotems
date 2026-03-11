@@ -22,16 +22,3 @@ Dying after your death? Not today! Or maybe today? It all depends on the potion 
 
 ![strip](https://raw.githubusercontent.com/ScaredRabbitNL/resources/main/PotionTotems/strip.png)
 
-![](https://raw.githubusercontent.com/ScaredRabbitNL/resources/refs/heads/main/badges/compact_planned_features_46h.png)
-
-**Infuser related**
-
-**▶️ Better model and textures for the Infuser**
-
-**▶️ Make the Infuser use power**
-
-**▶️ Improve Infuser textures**
-
-**▶️ Add a BlockEntityRenderer to the Infuser**
-
-![strip](https://raw.githubusercontent.com/ScaredRabbitNL/resources/main/PotionTotems/strip.png)

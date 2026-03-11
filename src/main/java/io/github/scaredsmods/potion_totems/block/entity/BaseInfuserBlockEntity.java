@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider {
@@ -54,17 +54,17 @@ public abstract class BaseInfuserBlockEntity extends BlockEntity implements Menu
 	}
 
 
-	public boolean canInsertIntoSlot (ItemStack output, int slot, int count, ItemStackHandler itemStackHandler) {
+	public boolean canInsertIntoSlot (ItemStack output, int slot, int count, ItemStacksResourceHandler itemStackHandler) {
 		return canInsertItemIntoOutputSlot(output, slot, itemStackHandler) && canInsertAmountIntoOutputSlot(count, slot, itemStackHandler);
 	}
 
-	public boolean canInsertItemIntoOutputSlot(ItemStack output, int slot, ItemStackHandler itemStackHandler) {
-		return itemStackHandler.getStackInSlot(slot).isEmpty() ||
-				itemStackHandler.getStackInSlot(slot).getItem() == output.getItem();
+	public boolean canInsertItemIntoOutputSlot(ItemStack output, int slot, ItemStacksResourceHandler itemStackHandler) {
+		return itemStackHandler.getResource(slot).isEmpty() ||
+				itemStackHandler.getResource(slot).getItem() == output.getItem();
 	}
-	public boolean canInsertAmountIntoOutputSlot(int count, int slot, ItemStackHandler itemStackHandler) {
-		int maxCount = itemStackHandler.getStackInSlot(slot).isEmpty() ? 64 : itemStackHandler.getStackInSlot(slot).getMaxStackSize();
-		int currentCount = itemStackHandler.getStackInSlot(slot).getCount();
+	public boolean canInsertAmountIntoOutputSlot(int count, int slot, ItemStacksResourceHandler itemStackHandler) {
+		int maxCount = itemStackHandler.getResource(slot).isEmpty() ? 64 : itemStackHandler.getResource(slot).getMaxStackSize();
+		int currentCount = itemStackHandler.getAmountFrom(itemStackHandler.getResource(slot).toStack());
 
 		return maxCount >= currentCount + count;
 	}

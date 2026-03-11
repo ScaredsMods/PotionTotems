@@ -38,13 +38,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class InfuserBlockEntity extends BaseInfuserBlockEntity {
-	public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) {
+	public final ItemStacksResourceHandler itemStackHandler = new ItemStacksResourceHandler(4) {
 		@Override
-		protected void onContentsChanged(int slot) {
+		protected void onContentsChanged(int index, ItemStack previousContents) {
 			setChanged();
 			if(!level.isClientSide()) {
 				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -117,32 +119,40 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 		return this.currentProgress >= this.maxProgress;
 	}
 	protected void craftItem() {
-		ItemStack in1 = itemStackHandler.getStackInSlot(TOTEM_INPUT_SLOT);     // TOTEM
-		ItemStack in2 = itemStackHandler.getStackInSlot(POTION_INPUT_SLOT);    // POTION
+		ItemResource totemResource = itemStackHandler.getResource(TOTEM_INPUT_SLOT);     // TOTEM
+		ItemResource potionResource = itemStackHandler.getResource(POTION_INPUT_SLOT);    // POTION
+
+		ItemStack totemStack = totemResource.toStack();
+		ItemStack potionStack = potionResource.toStack();
+
+		ItemResource outputResource1 = itemStackHandler.getResource(INFUSED_TOTEM_OUTPUT_SLOT);
+		ItemResource outputResource2 = itemStackHandler.getResource(BOTTLE_OUTPUT_SLOT);
+
 		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
 		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
 
-		PotionUtils.copyContents(in2, output1);
+		PotionUtils.copyContents(potionStack, output1);
 
-		itemStackHandler.extractItem(TOTEM_INPUT_SLOT, 1, false);
-		itemStackHandler.extractItem(POTION_INPUT_SLOT, 1, false);
+		itemStackHandler.extract(TOTEM_INPUT_SLOT, totemResource, 1, Transaction.openRoot());
+		itemStackHandler.extract(POTION_INPUT_SLOT, potionResource,1, Transaction.openRoot());
 
-		ItemStack currentOutput1 = itemStackHandler.getStackInSlot(INFUSED_TOTEM_OUTPUT_SLOT);
+		ItemStack currentOutput1 = itemStackHandler.getResource(INFUSED_TOTEM_OUTPUT_SLOT).toStack();
 		if (currentOutput1.isEmpty()) {
-			itemStackHandler.setStackInSlot(INFUSED_TOTEM_OUTPUT_SLOT, output1);
+			itemStackHandler.insert(INFUSED_TOTEM_OUTPUT_SLOT, outputResource1, 1, Transaction.openRoot());
+
 		} else {
 			currentOutput1.grow(1);
 		}
-		ItemStack currentOutput2 = itemStackHandler.getStackInSlot(BOTTLE_OUTPUT_SLOT);
+		ItemStack currentOutput2 = itemStackHandler.getResource(BOTTLE_OUTPUT_SLOT).toStack();
 		if (currentOutput2.isEmpty()) {
-			itemStackHandler.setStackInSlot(BOTTLE_OUTPUT_SLOT, output2);
+			itemStackHandler.set(BOTTLE_OUTPUT_SLOT, outputResource2, 1);
 		} else {
 			currentOutput2.grow(1);
 		}
 	}
 	protected boolean hasRecipe(Level level, BlockPos pos) {
-		ItemStack in1 = itemStackHandler.getStackInSlot(TOTEM_INPUT_SLOT);
-		ItemStack in2 = itemStackHandler.getStackInSlot(POTION_INPUT_SLOT);
+		ItemStack in1 = itemStackHandler.getResource(TOTEM_INPUT_SLOT).toStack();
+		ItemStack in2 = itemStackHandler.getResource(POTION_INPUT_SLOT).toStack();
 		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
 		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
 		return (in1.is(Items.TOTEM_OF_UNDYING) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), itemStackHandler))
@@ -177,9 +187,9 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	public void drops() {
-		SimpleContainer inventory = new SimpleContainer(itemStackHandler.getSlots());
-		for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-			inventory.setItem(i, itemStackHandler.getStackInSlot(i));
+		SimpleContainer inventory = new SimpleContainer(itemStackHandler.size());
+		for (int i = 0; i < itemStackHandler.size(); i++) {
+			inventory.setItem(i, itemStackHandler.getResource(i).toStack());
 		}
 		Containers.dropContents(this.level, this.worldPosition, inventory);
 	}
@@ -192,4 +202,6 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
+
+
 }
