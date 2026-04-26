@@ -47,3 +47,6 @@ bin/
 
 ### Rest ###
 run
+run/
+logs
+logs/
