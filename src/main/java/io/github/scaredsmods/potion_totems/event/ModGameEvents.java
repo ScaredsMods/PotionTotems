@@ -18,24 +18,16 @@
 package io.github.scaredsmods.potion_totems.event;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.init.ModPotions;
-import io.github.scaredsmods.potion_totems.init.ModVillagers;
-import io.github.scaredsmods.potion_totems.util.PotionType;
-import io.github.scaredsmods.potion_totems.util.VillagerUtils;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import io.github.scaredsmods.potion_totems.registry.ModPotions;
 import net.minecraft.core.Holder;
-
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 
 import java.util.List;
-
 
 
 @EventBusSubscriber(modid = PotionTotems.MOD_ID)
@@ -48,6 +40,7 @@ public class ModGameEvents {
 	private static final List<Holder<Potion>> potionTotemsTier2 = List.of(Potions.HEALING, Potions.REGENERATION, Potions.STRENGTH);
 	private static final List<Holder<Potion>> potionTotemsTier3 = List.of(ModPotions.AGGRESSION.holder());
 
+	/*
 	@SubscribeEvent
 	public static void addCustomTrades(VillagerTradesEvent event) {
 		if(event.getType() == ModVillagers.TOTEM_MASTER.holder().getKey()) {
@@ -67,6 +60,8 @@ public class ModGameEvents {
 
 		}
 	}
+
+	 */
 
 	@SubscribeEvent
 	public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {

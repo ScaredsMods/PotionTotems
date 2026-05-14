@@ -53,19 +53,22 @@ public abstract class BaseInfuserBlockEntity extends BlockEntity implements Menu
 		return this.displayName;
 	}
 
-
-	public boolean canInsertIntoSlot (ItemStack output, int slot, int count, ItemStacksResourceHandler itemStackHandler) {
-		return canInsertItemIntoOutputSlot(output, slot, itemStackHandler) && canInsertAmountIntoOutputSlot(count, slot, itemStackHandler);
+	// Single overload - ItemStackHandler is gone in 26.1, everyone uses ItemStacksResourceHandler
+	public boolean canInsertIntoSlot(ItemStack output, int slot, int count, ItemStacksResourceHandler handler) {
+		return canInsertItemIntoOutputSlot(output, slot, handler)
+				&& canInsertAmountIntoOutputSlot(count, slot, handler);
 	}
 
-	public boolean canInsertItemIntoOutputSlot(ItemStack output, int slot, ItemStacksResourceHandler itemStackHandler) {
-		return itemStackHandler.getResource(slot).isEmpty() ||
-				itemStackHandler.getResource(slot).getItem() == output.getItem();
+	public boolean canInsertItemIntoOutputSlot(ItemStack output, int slot, ItemStacksResourceHandler handler) {
+		return handler.getResource(slot).isEmpty()
+				|| handler.getResource(slot).getItem() == output.getItem();
 	}
-	public boolean canInsertAmountIntoOutputSlot(int count, int slot, ItemStacksResourceHandler itemStackHandler) {
-		int maxCount = itemStackHandler.getResource(slot).isEmpty() ? 64 : itemStackHandler.getResource(slot).getMaxStackSize();
-		int currentCount = itemStackHandler.getAmountFrom(itemStackHandler.getResource(slot).toStack());
 
+	public boolean canInsertAmountIntoOutputSlot(int count, int slot, ItemStacksResourceHandler handler) {
+		int maxCount = handler.getResource(slot).isEmpty()
+				? 64
+				: handler.getResource(slot).getMaxStackSize();
+		int currentCount = handler.getAmountFrom(handler.getResource(slot).toStack());
 		return maxCount >= currentCount + count;
 	}
 
@@ -90,6 +93,4 @@ public abstract class BaseInfuserBlockEntity extends BlockEntity implements Menu
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
 		return saveWithoutMetadata(registries);
 	}
-
-
 }

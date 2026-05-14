@@ -15,12 +15,12 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.data.gen;
+package io.github.scaredsmods.potion_totems.datagen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.init.ModBlocks;
-import io.github.scaredsmods.potion_totems.init.ModItems;
-import io.github.scaredsmods.potion_totems.init.ModPotions;
+import io.github.scaredsmods.potion_totems.registry.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModItems;
+import io.github.scaredsmods.potion_totems.registry.ModPotions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -69,11 +69,13 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		add("itemGroup.potion_totems.totems", "Potion Totems");
 		add(ModBlocks.INFUSER.get(), "Infuser");
 		add(ModBlocks.ADVANCED_INFUSER.get(), "Advanced Infuser");
+		add(ModBlocks.INFUSER_FRAME.get(), "Infuser Frame");
 		add("potion_totems.be.infuser.name", "Totem Infuser");
 		add("potion_totems.gui.infuser.title", "Totem Infuser");
 		add("potion_totems.be.advanced_infuser.name", "Advanced Totem Infuser");
 		add("potion_totems.gui.advanced_infuser.title", "Advanced Totem Infuser");
 		add("entity.minecraft.villager.potion_totems.totem_master", "Totem Master");
 
+		add(ModItems.INFUSER_CORE.get(), "Infuser Core");
 	}
 }

@@ -15,24 +15,28 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.init;
+package io.github.scaredsmods.potion_totems.registry;
 
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.screen.menu.AdvancedInfuserMenu;
+import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.network.IContainerFactory;
 
-public class ModBlockEntities {
+public class ModMenuTypes {
 
-	public static final ResourcefulRegistry<BlockEntityType<?>> TYPES = ResourcefulRegistries.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, PotionTotems.MOD_ID);
+	public static final ResourcefulRegistry<MenuType<?>> MENUS = ResourcefulRegistries.create(BuiltInRegistries.MENU, PotionTotems.MOD_ID);
+	public static final RegistryEntry<MenuType<InfuserMenu>> INFUSER_MENU = registerMenuType("infuser_menu" , InfuserMenu::new);
+	public static final RegistryEntry<MenuType<AdvancedInfuserMenu>> ADVANCED_INFUSER_MENU = registerMenuType("advanced_infuser_menu", AdvancedInfuserMenu::new);
 
-	public static final RegistryEntry<BlockEntityType<InfuserBlockEntity>> BE_INFUSER = TYPES.register("infuser" , () ->
-			new BlockEntityType<>(InfuserBlockEntity::new, ModBlocks.INFUSER.get()));
 
-	public static final RegistryEntry<BlockEntityType<AdvancedInfuserBlockEntity>> BE_ADVANCED_INFUSER = TYPES.register("advanced_infuser", () ->
-			new BlockEntityType<>(AdvancedInfuserBlockEntity::new, ModBlocks.ADVANCED_INFUSER.get()));
+	private static <T extends AbstractContainerMenu> RegistryEntry<MenuType<T>> registerMenuType(String  name, IContainerFactory<T> factory) {
+		return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
+	}
 }

@@ -18,8 +18,8 @@
 package io.github.scaredsmods.potion_totems.screen.menu;
 
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.init.ModBlocks;
-import io.github.scaredsmods.potion_totems.init.ModMenuTypes;
+import io.github.scaredsmods.potion_totems.registry.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +27,9 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.IndexModifier;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class AdvancedInfuserMenu extends AbstractContainerMenu {
 
@@ -49,10 +51,13 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
 		addPlayerHotbar(pInv);
 		addPlayerInventory(pInv);
 
-		this.addSlot(new SlotItemHandler(blockEntity.stackHandler, 0, 17, 17));
-		this.addSlot(new SlotItemHandler(blockEntity.stackHandler, 1, 17, 53));
-		this.addSlot(new SlotItemHandler(blockEntity.stackHandler, 2, 141, 14));
-		this.addSlot(new SlotItemHandler(blockEntity.stackHandler, 3, 141, 56));
+		IndexModifier<ItemResource> modifier = blockEntity.stackHandler::set;
+
+
+		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,0, 17, 17));
+		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,1, 17, 53));
+		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,2, 141, 14));
+		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,3, 141, 56));
 
 		addDataSlots(data);
 

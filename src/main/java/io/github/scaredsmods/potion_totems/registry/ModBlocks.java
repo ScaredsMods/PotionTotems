@@ -15,9 +15,10 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.init;
+package io.github.scaredsmods.potion_totems.registry;
 
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
+import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
@@ -29,6 +30,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.function.Function;
@@ -36,15 +38,19 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 	public static final ResourcefulRegistry<Block> BLOCKS = ResourcefulRegistries.create(BuiltInRegistries.BLOCK, PotionTotems.MOD_ID);
-	public static final HolderRegistryEntry<Block> INFUSER = registerBlock("infuser", (properties) -> new InfuserBlock(properties.noOcclusion()));
-	public static final HolderRegistryEntry<Block> ADVANCED_INFUSER = registerBlock("advanced_infuser", (properties) -> new AdvancedInfuserBlock(properties.noOcclusion()));
+	public static final HolderRegistryEntry<Block> INFUSER = registerBlock("infuser", (properties) ->
+			new InfuserBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+	public static final HolderRegistryEntry<Block> ADVANCED_INFUSER = registerBlock("advanced_infuser", (properties) ->
+			new AdvancedInfuserBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+	public static final RegistryEntry<Block> INFUSER_FRAME = registerBlock("infuser_frame", properties -> new Block(properties.strength(1.5f).requiresCorrectToolForDrops().sound(SoundType.WOOD)));
+
 
 	private static HolderRegistryEntry<Block> registerBlock(String name, Function<BlockBehaviour.Properties, Block> block) {
 		ResourceKey<Block> bKey = PotionTotems.key(name, Registries.BLOCK);
 		ResourceKey<Item> iKey = PotionTotems.key(name, Registries.ITEM);
 		Supplier<BlockBehaviour.Properties> supplier = BlockBehaviour.Properties::of;
 		HolderRegistryEntry<Block> entry = BLOCKS.registerHolder(name, () -> block.apply(supplier.get().setId(bKey)));
-		ModItems.ITEMS.register(name, () -> new BlockItem(entry.get(), new Item.Properties().useBlockDescriptionPrefix().setId(iKey)));
+		ModItems.ITEMS.registerHolder(name, () -> new BlockItem(entry.get(), new Item.Properties().useBlockDescriptionPrefix().setId(iKey)));
 		return entry;
 	}
 

@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.init;
+package io.github.scaredsmods.potion_totems.registry;
 
 import io.github.scaredsmods.potion_totems.config.ModCommonConfig;
 import io.github.scaredsmods.potion_totems.config.ModDevConfig;

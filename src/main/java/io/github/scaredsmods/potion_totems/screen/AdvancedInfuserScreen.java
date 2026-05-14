@@ -19,7 +19,7 @@ package io.github.scaredsmods.potion_totems.screen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.screen.menu.AdvancedInfuserMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -38,22 +38,15 @@ public class AdvancedInfuserScreen extends AbstractContainerScreen<AdvancedInfus
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-
+	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 		int x = (width - imageWidth) / 2;
 		int y = (height - imageHeight) / 2;
 
-		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x ,y ,0 ,0, imageWidth, imageHeight, 256, 256);
-		renderProgressArrow(guiGraphics, x,y);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x ,y ,0 ,0, imageWidth, imageHeight, 256, 256);
+		renderProgressArrow(graphics, mouseX,mouseY);
 	}
 
-	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
-	}
-
-	private void renderProgressArrow(GuiGraphics graphics, int x, int y) {
+	private void renderProgressArrow(GuiGraphicsExtractor graphics, int x, int y) {
 		if (menu.isCrafting()) {
 			graphics.blit(RenderPipelines.GUI_TEXTURED, ARROW_TEXTURE, x + 35, y + 14, 0, 0 , menu.getScaledArrowProgress(), 57, 96, 57);
 		}

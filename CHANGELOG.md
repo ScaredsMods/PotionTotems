@@ -1,3 +1,13 @@
+## 2.0.0
+- Renamed ```init``` package to ```registry```
+- Removed ```ModResourceKeys``` class
+- Renamed ```data.gen``` package to ```datagen```
+- Reworked both infuser models
+- Reworked infuser recipes
+- New item: Infusion Core
+- New block: Infuser Frame
+- Added loottables for both infusers (Why weren't they here before?)
+
 ## 1.1.3
 This update contains more technical changes than additions.
 NOTE: The brewing recipes are subject to change in the next version (2.0.0) for minecraft 26.1 and more nerfs and changes may follow.

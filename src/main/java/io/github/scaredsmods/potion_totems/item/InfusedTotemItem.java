@@ -19,7 +19,7 @@ package io.github.scaredsmods.potion_totems.item;
 
 
 import io.github.scaredsmods.potion_totems.config.ModCommonConfig;
-import io.github.scaredsmods.potion_totems.init.ModConfigs;
+import io.github.scaredsmods.potion_totems.registry.ModConfigs;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;

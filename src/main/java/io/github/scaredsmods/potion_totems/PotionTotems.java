@@ -17,7 +17,7 @@
 */
 package io.github.scaredsmods.potion_totems;
 
-import io.github.scaredsmods.potion_totems.init.*;
+import io.github.scaredsmods.potion_totems.registry.*;
 import io.github.scaredsmods.potion_totems.pack.Resourcepack;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
@@ -37,6 +37,11 @@ public class PotionTotems {
 	public static final String MOD_ID = "potion_totems";
 	public static final Logger LOGGER = LoggerFactory.getLogger("PotionTotems");
 	public static final Resourcepack GENERATED_PACK = new Resourcepack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", 34);
+
+	/*TODO:
+		- Re-add BER
+		- Re-add VillagerTrades
+	*/
 
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
 		ModItems.ITEMS.init();

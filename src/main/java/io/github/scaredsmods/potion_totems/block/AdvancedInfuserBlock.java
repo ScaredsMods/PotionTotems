@@ -20,7 +20,7 @@ package io.github.scaredsmods.potion_totems.block;
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.init.ModBlockEntities;
+import io.github.scaredsmods.potion_totems.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -55,48 +55,30 @@ public class AdvancedInfuserBlock extends BaseHorizontalBlock {
 
 	public static final VoxelShape SHAPE = Stream.of(
 			Stream.of(
-					Block.box(0, 12, 0, 32, 16, 16),
-					Block.box(28, 0, 0, 32, 12, 4),
-					Block.box(28, 0, 12, 32, 12, 16),
+					Block.box(0, 12, 0, 16, 16, 16),
+					Block.box(12, 0, 0, 16, 12, 4),
+					Block.box(12, 0, 12, 16, 12, 16),
 					Block.box(0, 0, 12, 4, 12, 16),
-					Block.box(0, 0, 0, 4, 12, 4),
-					Stream.of(
-							Block.box(13, 2.5, 4, 13, 4.5, 14),
-							Block.box(6, 2.5, 4, 13, 2.5, 14),
-							Block.box(7, 2.5, 5, 13, 4.5, 13),
-							Block.box(6, 4.5, 4, 13, 4.5, 14)
-					).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-					Stream.of(
-							Block.box(13, 0.25, 4, 13, 2.25, 14),
-							Block.box(6, 0.25, 4, 13, 0.25, 14),
-							Block.box(7, 0.25, 5, 13, 2.25, 13),
-							Block.box(6, 2.25, 4, 13, 2.25, 14)
-					).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-					Stream.of(
-							Block.box(13, 4.75, 4, 13, 6.75, 14),
-							Block.box(6, 4.75, 4, 13, 4.75, 14),
-							Block.box(7, 4.75, 5, 13, 6.75, 13),
-							Block.box(6, 6.75, 4, 13, 6.75, 14)
-					).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()
+					Block.box(0, 0, 0, 4, 12, 4)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
 			Stream.of(
-					Block.box(4, 24, 5, 10, 27, 11),
-					Stream.of(
-							Block.box(3, 16, 4, 11, 22, 4),
-							Block.box(3, 22, 4, 11, 22, 12),
-							Block.box(11, 16, 4, 11, 22, 12),
-							Block.box(3, 16, 12, 11, 22, 12),
-							Block.box(3, 16, 4, 3, 22, 12)
-					).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-					Stream.of(
-							Block.box(5, 22, 6, 9, 24, 6),
-							Block.box(9, 22, 6, 9, 24, 10),
-							Block.box(5, 22, 10, 9, 24, 10),
-							Block.box(5, 22, 6, 5, 24, 10)
-					).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()
+			Stream.of(
+			Block.box(4, 0, 4, 12, 6, 4),
+			Block.box(4, 6, 4, 12, 6, 12),
+			Block.box(12, 0, 4, 12, 6, 12),
+			Block.box(4, 0, 12, 12, 6, 12),
+			Block.box(4, 0, 4, 4, 6, 12)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-			Shapes.join(Block.box(3.25, 16, 4.25, 10.75, 21.75, 11.75), Block.box(5.75, 16.1, 6.15, 8.25, 24.8, 9.899999999999999), BooleanOp.OR)
-	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+			Stream.of(
+			Block.box(6, 6, 6, 10, 8, 6),
+			Block.box(10, 6, 6, 10, 8, 10),
+			Block.box(6, 6, 10, 10, 8, 10),
+			Block.box(6, 6, 6, 6, 8, 10)
+			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+			Block.box(5, 8, 5, 11, 11, 11)
+			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+			Shapes.join(Block.box(4.25, 0, 4.25, 11.75, 5.75, 11.75), Block.box(6.75, 0.1, 6.15, 9.25, 8.8, 9.9), BooleanOp.OR)
+			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {

@@ -15,25 +15,27 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.data.gen;
+package io.github.scaredsmods.potion_totems.datagen;
 
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.init.ModBlocks;
-import io.github.scaredsmods.potion_totems.init.ModItems;
-import io.github.scaredsmods.potion_totems.tint.FromPotion;
+import io.github.scaredsmods.potion_totems.registry.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModItems;
+import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.client.renderer.item.CuboidItemModelWrapper;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 
@@ -45,17 +47,22 @@ public class ModModelProvider extends ModelProvider {
 
 	@Override
 	protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-		itemModels.generateLayeredItem(ModItems.INFUSED_TOTEM.get(), PotionTotems.id("item/totem_base"), PotionTotems.id("item/totem_eye"));
+		itemModels.generateLayeredItem(ModItems.INFUSED_TOTEM.get(), new Material(PotionTotems.id("item/totem_base")), new Material(PotionTotems.id("item/totem_eye")));
 		itemModels.generateFlatItem(ModItems.INFUSER_TOTEM_PH_1.get(), ModelTemplates.FLAT_ITEM);
 		itemModels.generateFlatItem(ModItems.INFUSER_TOTEM_PH_2.get(), ModelTemplates.FLAT_ITEM);
 
 		itemModels.itemModelOutput.accept(
 				ModItems.INFUSED_TOTEM.get(),
-				new BlockModelWrapper.Unbaked(
+				new CuboidItemModelWrapper.Unbaked(
 						ModelLocationUtils.getModelLocation(ModItems.INFUSED_TOTEM.get()),
-						List.of(new FromPotion(0x000000))
+						Optional.empty(),
+						List.of(new ItemFromPotion(0x000000))
 				)
 		);
+		itemModels.generateFlatItem(ModItems.INFUSER_CORE.get(), ModelTemplates.FLAT_ITEM);
+		blockModels.createTrivialCube(ModBlocks.INFUSER_FRAME.get());
+
+
 	}
 
 	@Override
@@ -71,6 +78,7 @@ public class ModModelProvider extends ModelProvider {
 		return ModItems.ITEMS.getEntries().stream()
 				.filter(e -> e instanceof HolderRegistryEntry<Item>)
 				.map(e -> ((HolderRegistryEntry<Item>) e).holder())
-				.filter(h -> !h.is(PotionTotems.id("infuser")) && !h.is(PotionTotems.id("advanced_infuser")));
+				.filter(h -> !h.is(PotionTotems.id("infuser")) && !h.is(PotionTotems.id("advanced_infuser")) && !h.is(PotionTotems.id("infuser_frame")));
+
 	}
 }

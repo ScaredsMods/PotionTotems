@@ -1,5 +1,5 @@
-// 1.21.10	2026-02-21T10:39:00.0197662	PotionTotems - Recipes
+// 26.1	2026-04-01T14:22:06.1431566	PotionTotems - Recipes
 07c1815fb444b7c7f2f22fbed0e2c3c6c74437d4 data/potion_totems/advancement/recipes/brewing/advanced_infuser.json
 b42efa5ff5340222abbaa01d449f0679644ce5e2 data/potion_totems/advancement/recipes/brewing/infuser.json
-5737e4cf280d187379920574f3e794f180ffa23e data/potion_totems/recipe/advanced_infuser.json
-2af7007d7980a28c378bb089bb75fce306120587 data/potion_totems/recipe/infuser.json
+cd45fb594efab185bb129b52119571058b7207ee data/potion_totems/recipe/advanced_infuser.json
+0390cf5946738d83bd9e6741901210c000c5ef53 data/potion_totems/recipe/infuser.json

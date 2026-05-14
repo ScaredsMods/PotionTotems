@@ -29,8 +29,7 @@ val mcVersion : String by project
 val mcVersionRange : String by project
 val neoVersion : String by project
 val neoVersionRange : String by project
-val parchmentMCVersion : String by project
-val parchmentMappingsVersion : String by project
+
 
 // Dependencies
 val resourcefulLibVersion : String by project
@@ -62,7 +61,7 @@ repositories {
         name = "ModMaven"
         url = uri("https://modmaven.dev")
     }
-    maven { url = uri("https://maven.resourcefulbees.com/repository/maven-public/") }
+    maven { url = uri("https://maven.teamresourceful.com/repository/maven-public/") }
     maven {
         name = "FzzyMaven"
         url = uri("https://maven.fzzyhmstrs.me/")
@@ -78,10 +77,10 @@ repositories {
 java {
     toolchain {
         // Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 sourceSets {
@@ -93,10 +92,7 @@ sourceSets {
 
 neoForge {
     version = neoVersion
-    parchment {
-        mappingsVersion = parchmentMappingsVersion
-        minecraftVersion = parchmentMCVersion
-    }
+
 
     runs {
         val client : RunModel by creating {
@@ -155,7 +151,7 @@ dependencies {
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-$mcVersion:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
 
-    implementation("thedarkcolour:kotlinforforge-neoforge:$kffVersion")
+    //implementation("thedarkcolour:kotlinforforge-neoforge:$kffVersion")
 
     //compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
     //runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")

@@ -1,6 +1,7 @@
 {
   "block.potion_totems.advanced_infuser": "Advanced Infuser",
   "block.potion_totems.infuser": "Infuser",
+  "block.potion_totems.infuser_frame": "Infuser Frame",
   "entity.minecraft.villager.potion_totems.totem_master": "Totem Master",
   "item.minecraft.lingering_potion.effect.aggression": "Lingering Potion of Aggression",
   "item.minecraft.lingering_potion.effect.negative": "Lingering Potion of Negative",
@@ -67,6 +68,7 @@
   "item.potion_totems.infused_totem.effect.weakness": "Infused Totem of Weakness",
   "item.potion_totems.infused_totem.effect.weaving": "Infused Totem of Weaving",
   "item.potion_totems.infused_totem.effect.wind_charged": "Infused Totem of Wind Charged",
+  "item.potion_totems.infuser_core": "Infuser Core",
   "item.potion_totems.infuser_totem_placeholder_1": "Placeholder 1",
   "item.potion_totems.infuser_totem_placeholder_2": "Placeholder 2",
   "itemGroup.potion_totems.totems": "Potion Totems",

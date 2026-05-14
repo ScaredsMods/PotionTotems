@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.init;
+package io.github.scaredsmods.potion_totems.registry;
 
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
@@ -33,8 +33,10 @@ public class ModPotions {
 
 	public static final ResourcefulRegistry<Potion> POTIONS = ResourcefulRegistries.create(BuiltInRegistries.POTION, PotionTotems.MOD_ID);
 
-	public static final HolderRegistryEntry<Potion> AGGRESSION = POTIONS.registerHolder("aggression", () -> new Potion("aggressive",new MobEffectInstance(MobEffects.STRENGTH, 6000, 1),
-			new MobEffectInstance(MobEffects.REGENERATION, 6000, 1), new MobEffectInstance(MobEffects.HEALTH_BOOST, 6000, 1),
+	public static final HolderRegistryEntry<Potion> AGGRESSION = POTIONS.registerHolder("aggression", () -> new Potion("aggression",
+			new MobEffectInstance(MobEffects.STRENGTH, 6000, 1),
+			new MobEffectInstance(MobEffects.REGENERATION, 6000, 1),
+			new MobEffectInstance(MobEffects.HEALTH_BOOST, 6000, 1),
 			new MobEffectInstance(MobEffects.INFESTED, 6000)
 	));
 

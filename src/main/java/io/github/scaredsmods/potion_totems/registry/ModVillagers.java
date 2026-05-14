@@ -15,18 +15,20 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.init;
+package io.github.scaredsmods.potion_totems.registry;
 
 import com.google.common.collect.ImmutableSet;
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.item.trading.TradeSets;
 
 
 public class ModVillagers {
@@ -36,8 +38,16 @@ public class ModVillagers {
 			new PoiType(ImmutableSet.copyOf(ModBlocks.INFUSER.get().getStateDefinition().getPossibleStates()), 1, 1));
 
 	public static final HolderRegistryEntry<VillagerProfession> TOTEM_MASTER = VILLAGER_PROFESSIONS.registerHolder("totem_master", () ->
-			new VillagerProfession(Component.literal("totem_master"), holder -> holder.value() == TOTEM_MASTER_POI.holder().value(),
+			new VillagerProfession(Component.literal("totem_Master"), holder -> holder.value() == TOTEM_MASTER_POI.holder().value(), holder ->
+					holder.value() == TOTEM_MASTER_POI.holder().value(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_CLERIC, Int2ObjectMap.ofEntries(Int2ObjectMap.entry(1, TradeSets.FARMER_LEVEL_1), Int2ObjectMap.entry(2, TradeSets.FARMER_LEVEL_2), Int2ObjectMap.entry(3, TradeSets.FARMER_LEVEL_3), Int2ObjectMap.entry(4, TradeSets.FARMER_LEVEL_4), Int2ObjectMap.entry(5, TradeSets.FARMER_LEVEL_5))));
+
+
+
+			;
+
+	/*
+	new VillagerProfession(Component.literal("totem_master"), holder -> holder.value() == TOTEM_MASTER_POI.holder().value(),
 					poiTypeHolder -> poiTypeHolder.value() == TOTEM_MASTER_POI.holder().value(), ImmutableSet.of(), ImmutableSet.of(),
 					SoundEvents.VILLAGER_WORK_CLERIC));
-
+	 */
 }

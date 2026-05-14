@@ -15,9 +15,9 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.data.gen;
+package io.github.scaredsmods.potion_totems.datagen;
 
-import io.github.scaredsmods.potion_totems.init.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;

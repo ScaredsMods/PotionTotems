@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-package io.github.scaredsmods.potion_totems.tint;
+package io.github.scaredsmods.potion_totems.tint.item;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,12 +28,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public record FromPotion(int defaultColor) implements ItemTintSource {
+public record ItemFromPotion(int defaultColor) implements ItemTintSource {
 
-	public static final MapCodec<FromPotion> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+	public static final MapCodec<ItemFromPotion> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
 			instance.group(
-					ExtraCodecs.RGB_COLOR_CODEC.fieldOf("default").forGetter(FromPotion::defaultColor)
-			).apply(instance, FromPotion::new)
+					ExtraCodecs.RGB_COLOR_CODEC.fieldOf("default").forGetter(ItemFromPotion::defaultColor)
+			).apply(instance, ItemFromPotion::new)
 	);
 
 	@Override
@@ -42,7 +42,7 @@ public record FromPotion(int defaultColor) implements ItemTintSource {
 	}
 
 	@Override
-	public MapCodec<FromPotion> type() {
+	public MapCodec<ItemFromPotion> type() {
 		return MAP_CODEC;
 	}
 }
