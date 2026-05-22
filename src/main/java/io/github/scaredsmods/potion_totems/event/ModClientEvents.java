@@ -26,7 +26,6 @@ import io.github.scaredsmods.potion_totems.pack.Resourcepack;
 import io.github.scaredsmods.potion_totems.screen.AdvancedInfuserScreen;
 import io.github.scaredsmods.potion_totems.screen.InfuserScreen;
 import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
-import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;

@@ -80,7 +80,7 @@ public class ModItems {
 	private static HolderRegistryEntry<Item> registerItem(String name, Function<Item.Properties, Item> block) {
 		ResourceKey<Item> key = PotionTotems.resourceKey(Registries.ITEM, name);
 		Supplier<Item.Properties> supplier = Item.Properties::new;
-        return ITEMS.registerHolder(name, () -> block.apply(supplier.get().useItemDescriptionPrefix().setId(key)));
+		return ITEMS.registerHolder(name, () -> block.apply(supplier.get().useItemDescriptionPrefix().setId(key)));
 	}
 
 

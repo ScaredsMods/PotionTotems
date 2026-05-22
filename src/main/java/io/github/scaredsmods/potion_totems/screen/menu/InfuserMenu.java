@@ -65,7 +65,7 @@ public class InfuserMenu extends AbstractContainerMenu {
 	}
 
 
-    public boolean isCrafting() {
+	public boolean isCrafting() {
 		return data.get(0) > 0;
 	}
 
