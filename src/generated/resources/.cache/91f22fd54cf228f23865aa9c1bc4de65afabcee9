@@ -1,5 +1,9 @@
-// 26.1	2026-04-01T14:22:06.1431566	PotionTotems - Recipes
-07c1815fb444b7c7f2f22fbed0e2c3c6c74437d4 data/potion_totems/advancement/recipes/brewing/advanced_infuser.json
-b42efa5ff5340222abbaa01d449f0679644ce5e2 data/potion_totems/advancement/recipes/brewing/infuser.json
-cd45fb594efab185bb129b52119571058b7207ee data/potion_totems/recipe/advanced_infuser.json
-0390cf5946738d83bd9e6741901210c000c5ef53 data/potion_totems/recipe/infuser.json
+// 26.1.2	2026-05-22T13:51:43.876676	PotionTotems - Recipes
+b0217f2a89abcb722dc7d95c917f556a0d822944 data/potion_totems/advancement/recipes/brewing/advanced_infuser.json
+cf8faf3693bc2f9dac6c2ee09c123d974313eace data/potion_totems/advancement/recipes/brewing/infuser.json
+fb4f425938affd189b1f0d4be27fa265a5b421a3 data/potion_totems/advancement/recipes/decorations/infuser_frame.json
+c9b6abaa1ba59cd3c73e821f1dc8b0ad5d1da2bb data/potion_totems/advancement/recipes/misc/infuser_core.json
+7bac536d93e6b6263062b5798230ae9be0f92e6d data/potion_totems/recipe/advanced_infuser.json
+1999fc9e191d28f78a8d9d4ae37b15986f447366 data/potion_totems/recipe/infuser.json
+26f9d11f94fb3c61d093201cb263a834d054d1ca data/potion_totems/recipe/infuser_core.json
+ed81cdde2126ac963d48b4355653c40de8caefae data/potion_totems/recipe/infuser_frame.json

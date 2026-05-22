@@ -1,1 +1,7 @@
-// 26.1	2026-04-01T14:23:58.9875751	Registries
+// 26.1.2	2026-05-22T13:51:43.875677	Registries
+cf79cedc3999c51a17a1386b2477839697281283 data/potion_totems/trade_set/totem_master/level_1.json
+b5ae7d84d53f7f7b3df8375ed5dbb01f9ada4bce data/potion_totems/trade_set/totem_master/level_2.json
+ae1974ae3be1492b9f63f7846b992d61045bd7cb data/potion_totems/villager_trade/totem_master/1/emerald_infused_totem.json
+f77b214d8a4ebcaf72081aba6f93563d8de294fa data/potion_totems/villager_trade/totem_master/1/emerald_potion.json
+b4abb641ee8b9832b93d308df2479292bca64667 data/potion_totems/villager_trade/totem_master/2/emerald_infused_totem.json
+ee3ba21e9754528d76e38057522d055e524b1e57 data/potion_totems/villager_trade/totem_master/2/emerald_potion.json

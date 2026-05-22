@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "potion_totems:block/infuser_frame",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "potion_totems:block/infuser_frame"
+    },
+    "facing=south": {
+      "model": "potion_totems:block/infuser_frame",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "potion_totems:block/infuser_frame",
+      "y": 270
+    }
+  }
+}

@@ -3,13 +3,15 @@
   "category": "misc",
   "key": {
     "B": "minecraft:glass_bottle",
-    "L": "#minecraft:logs",
+    "C": "potion_totems:infuser_core",
+    "D": "minecraft:blue_dye",
+    "F": "potion_totems:infuser_frame",
     "T": "minecraft:totem_of_undying"
   },
   "pattern": [
-    " T ",
-    "LLL",
-    "LBL"
+    "DDD",
+    "TCB",
+    "DFD"
   ],
   "result": {
     "id": "potion_totems:infuser"

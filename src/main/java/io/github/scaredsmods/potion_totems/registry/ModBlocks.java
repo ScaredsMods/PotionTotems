@@ -18,12 +18,12 @@
 package io.github.scaredsmods.potion_totems.registry;
 
 import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
-import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.AdvancedInfuserBlock;
 import io.github.scaredsmods.potion_totems.block.InfuserBlock;
+import io.github.scaredsmods.potion_totems.block.InfuserFrameBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -42,12 +42,12 @@ public class ModBlocks {
 			new InfuserBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final HolderRegistryEntry<Block> ADVANCED_INFUSER = registerBlock("advanced_infuser", (properties) ->
 			new AdvancedInfuserBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
-	public static final RegistryEntry<Block> INFUSER_FRAME = registerBlock("infuser_frame", properties -> new Block(properties.strength(1.5f).requiresCorrectToolForDrops().sound(SoundType.WOOD)));
+	public static final HolderRegistryEntry<Block> INFUSER_FRAME = registerBlock("infuser_frame", properties -> new InfuserFrameBlock(properties.strength(1.5f).requiresCorrectToolForDrops().noOcclusion().sound(SoundType.WOOD)));
 
 
 	private static HolderRegistryEntry<Block> registerBlock(String name, Function<BlockBehaviour.Properties, Block> block) {
-		ResourceKey<Block> bKey = PotionTotems.key(name, Registries.BLOCK);
-		ResourceKey<Item> iKey = PotionTotems.key(name, Registries.ITEM);
+		ResourceKey<Block> bKey = PotionTotems.resourceKey(Registries.BLOCK, name);
+		ResourceKey<Item> iKey = PotionTotems.resourceKey(Registries.ITEM, name);
 		Supplier<BlockBehaviour.Properties> supplier = BlockBehaviour.Properties::of;
 		HolderRegistryEntry<Block> entry = BLOCKS.registerHolder(name, () -> block.apply(supplier.get().setId(bKey)));
 		ModItems.ITEMS.registerHolder(name, () -> new BlockItem(entry.get(), new Item.Properties().useBlockDescriptionPrefix().setId(iKey)));

@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_blue_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:blue_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_bottle": {
       "conditions": {
         "items": [
@@ -11,11 +21,21 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_log": {
+    "has_infuser_core": {
       "conditions": {
         "items": [
           {
-            "items": "#minecraft:logs"
+            "items": "potion_totems:infuser_core"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_infuser_frame": {
+      "conditions": {
+        "items": [
+          {
+            "items": "potion_totems:infuser_frame"
           }
         ]
       },
@@ -43,7 +63,9 @@
       "has_the_recipe",
       "has_totem",
       "has_bottle",
-      "has_log"
+      "has_infuser_frame",
+      "has_blue_dye",
+      "has_infuser_core"
     ]
   ],
   "rewards": {

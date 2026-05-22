@@ -60,8 +60,6 @@ public class ModModelProvider extends ModelProvider {
 				)
 		);
 		itemModels.generateFlatItem(ModItems.INFUSER_CORE.get(), ModelTemplates.FLAT_ITEM);
-		blockModels.createTrivialCube(ModBlocks.INFUSER_FRAME.get());
-
 
 	}
 
@@ -70,7 +68,7 @@ public class ModModelProvider extends ModelProvider {
 		return ModBlocks.BLOCKS.getEntries().stream()
 				.filter(e -> e instanceof HolderRegistryEntry<Block>)
 				.map(e -> ((HolderRegistryEntry<Block>) e).holder())
-				.filter(h -> !h.is(ModBlocks.INFUSER.holder()) && !h.is(ModBlocks.ADVANCED_INFUSER.holder()));
+				.filter(h -> !h.is(ModBlocks.INFUSER.holder()) && !h.is(ModBlocks.ADVANCED_INFUSER.holder()) && !h.is(ModBlocks.INFUSER_FRAME.holder()));
 	}
 
 	@Override

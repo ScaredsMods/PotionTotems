@@ -1,10 +1,8 @@
-// 26.1	2026-04-13T16:59:37.3823491	Model Definitions - potion_totems
-20c56a85b01166940fcfdb640a61bad1ff20902d assets/potion_totems/blockstates/infuser_frame.json
+// 26.1.2	2026-05-22T13:39:44.67436	Model Definitions - potion_totems
 3edb855e1f534a1ca4d8b7e914326c5e8701e531 assets/potion_totems/items/infused_totem.json
 13e0d284fa1c5229fee6d158726cf82137df610c assets/potion_totems/items/infuser_core.json
 3965a0fab975c16941dd04b74cb63d552b3f5c87 assets/potion_totems/items/infuser_totem_placeholder_1.json
 55490bd33b610f1a74d22d73280b77a5d38d537c assets/potion_totems/items/infuser_totem_placeholder_2.json
-400f491bf13b3671c61ce0ee9980d33ba07a7843 assets/potion_totems/models/block/infuser_frame.json
 a61554eaa4569c97cacb5d875143cc2082b7d9dd assets/potion_totems/models/item/infused_totem.json
 c78d5a90a2c47805ca098ab57d2896d7e4e79126 assets/potion_totems/models/item/infuser_core.json
 fe9dd7b5ae2b27f4c43d85a762552f3e9c9a12e9 assets/potion_totems/models/item/infuser_totem_placeholder_1.json

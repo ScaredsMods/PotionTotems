@@ -36,6 +36,7 @@ val resourcefulLibVersion : String by project
 val fzzyConfigVersion : String by project
 val emiVersion : String by project
 val kffVersion : String by project
+val jeiVersion : String by project
 
 // Dev
 var env = project.properties["env"]
@@ -147,10 +148,12 @@ configurations {
 }
 
 dependencies {
-    jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-$mcVersion:$resourcefulLibVersion")
-    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-$mcVersion:$resourcefulLibVersion")
+    jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
+    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
 
+    compileOnly("mezz.jei:jei-${mcVersion}-neoforge-api:${jeiVersion}")
+    runtimeOnly("mezz.jei:jei-${mcVersion}-neoforge:${jeiVersion}")
     //implementation("thedarkcolour:kotlinforforge-neoforge:$kffVersion")
 
     //compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")

@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "potion_totems:totem_master_poi",
-      "required": false
-    }
-  ]
-}

@@ -43,7 +43,7 @@ public class AdvancedInfuserScreen extends AbstractContainerScreen<AdvancedInfus
 		int y = (height - imageHeight) / 2;
 
 		graphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x ,y ,0 ,0, imageWidth, imageHeight, 256, 256);
-		renderProgressArrow(graphics, mouseX,mouseY);
+		renderProgressArrow(graphics, x, y);
 	}
 
 	private void renderProgressArrow(GuiGraphicsExtractor graphics, int x, int y) {

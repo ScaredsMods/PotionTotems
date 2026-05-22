@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:blue_dye",
+    "I": "minecraft:netherite_ingot",
+    "L": "minecraft:light_blue_dye",
+    "N": "minecraft:nether_star"
+  },
+  "pattern": [
+    "BIL",
+    "INI",
+    "LIB"
+  ],
+  "result": {
+    "id": "potion_totems:infuser_core"
+  }
+}

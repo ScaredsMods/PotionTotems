@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,12 +58,12 @@ public abstract class BaseHorizontalBlock extends BaseEntityBlock {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
+	public @NonNull BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation direction) {
+	public @NonNull BlockState rotate(BlockState state, Rotation direction) {
 		return state.setValue(HORIZONTAL_FACING, direction.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
 

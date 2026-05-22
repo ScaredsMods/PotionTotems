@@ -17,12 +17,13 @@
 */
 package io.github.scaredsmods.potion_totems.registry;
 
-import com.teamresourceful.resourcefullib.common.registry.HolderRegistryEntry;
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
+
+import com.teamresourceful.resourcefullib.common.registry.*;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -31,7 +32,9 @@ import net.minecraft.world.item.alchemy.Potion;
 
 public class ModPotions {
 
-	public static final ResourcefulRegistry<Potion> POTIONS = ResourcefulRegistries.create(BuiltInRegistries.POTION, PotionTotems.MOD_ID);
+
+	public static final ResourcefulRegistry<Potion> POTIONS =
+			ResourcefulRegistries.create(BuiltInRegistries.POTION, PotionTotems.MOD_ID);
 
 	public static final HolderRegistryEntry<Potion> AGGRESSION = POTIONS.registerHolder("aggression", () -> new Potion("aggression",
 			new MobEffectInstance(MobEffects.STRENGTH, 6000, 1),
@@ -43,6 +46,10 @@ public class ModPotions {
 	public static final HolderRegistryEntry<Potion> POSITIVE = POTIONS.registerHolder("positive", () -> new Potion("positive", addEffects(MobEffectCategory.BENEFICIAL)));
 	public static final HolderRegistryEntry<Potion> NEGATIVE = POTIONS.registerHolder("negative", () -> new Potion("negative", addEffects(MobEffectCategory.HARMFUL)));
 	public static final HolderRegistryEntry<Potion> NEUTRAL = POTIONS.registerHolder("neutral", () -> new Potion("neutral", addEffects(MobEffectCategory.NEUTRAL)));
+
+	private static Holder.Reference<Potion> register(String name, Potion potion) {
+		return Registry.registerForHolder(BuiltInRegistries.POTION, Identifier.withDefaultNamespace(name), potion);
+	}
 
 	private static MobEffectInstance[] addEffects(MobEffectCategory category) {
 		return BuiltInRegistries.MOB_EFFECT.stream()

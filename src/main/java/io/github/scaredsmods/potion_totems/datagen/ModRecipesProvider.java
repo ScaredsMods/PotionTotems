@@ -18,6 +18,7 @@
 package io.github.scaredsmods.potion_totems.datagen;
 
 import io.github.scaredsmods.potion_totems.registry.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -38,27 +39,57 @@ public class ModRecipesProvider extends RecipeProvider   {
 	@Override
 	protected void buildRecipes() {
 		shaped(RecipeCategory.BREWING, ModBlocks.INFUSER.get())
-				.pattern(" T ")
-				.pattern("LLL")
-				.pattern("LBL")
+				.pattern("DDD")
+				.pattern("TCB")
+				.pattern("DFD")
 				.define('T', Items.TOTEM_OF_UNDYING)
 				.define('B', Items.GLASS_BOTTLE)
-				.define('L', ItemTags.LOGS)
+				.define('F', ModBlocks.INFUSER_FRAME.get())
+				.define('D', Items.BLUE_DYE)
+				.define('C', ModItems.INFUSER_CORE.get())
 				.unlockedBy("has_totem", has(Items.TOTEM_OF_UNDYING))
 				.unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
-				.unlockedBy("has_log", has(ItemTags.LOGS))
+				.unlockedBy("has_infuser_frame", has(ModBlocks.INFUSER_FRAME.get()))
+				.unlockedBy("has_blue_dye", has(Items.BLUE_DYE))
+				.unlockedBy("has_infuser_core", has(ModItems.INFUSER_CORE.get()))
 				.save(output);
 
 		shaped(RecipeCategory.BREWING, ModBlocks.ADVANCED_INFUSER.get())
-				.pattern("TTT")
-				.pattern("LLL")
-				.pattern("LBL")
+				.pattern("RRR")
+				.pattern("TCB")
+				.pattern("RFR")
 				.define('T', Items.TOTEM_OF_UNDYING)
 				.define('B', Items.GLASS_BOTTLE)
-				.define('L', ItemTags.LOGS)
+				.define('F', ModBlocks.INFUSER_FRAME.get())
+				.define('R', Items.RED_DYE)
+				.define('C', ModItems.INFUSER_CORE.get())
 				.unlockedBy("has_totem", has(Items.TOTEM_OF_UNDYING))
 				.unlockedBy("has_bottle", has(Items.GLASS_BOTTLE))
-				.unlockedBy("has_log", has(ItemTags.LOGS))
+				.unlockedBy("has_infuser_frame", has(ModBlocks.INFUSER_FRAME.get()))
+				.unlockedBy("has_red_dye", has(Items.RED_DYE))
+				.unlockedBy("has_infuser_core", has(ModItems.INFUSER_CORE.get()))
+				.save(output);
+
+		shaped(RecipeCategory.DECORATIONS, ModBlocks.INFUSER_FRAME.get())
+				.pattern("   ")
+				.pattern("LLL")
+				.pattern("L L")
+				.define('L', ItemTags.LOGS)
+				.unlockedBy("has_logs", has(ItemTags.LOGS))
+				.save(output);
+
+		shaped(RecipeCategory.MISC, ModItems.INFUSER_CORE.get())
+				.pattern("BIL")
+				.pattern("INI")
+				.pattern("LIB")
+				.define('B', Items.BLUE_DYE)
+				.define('I', Items.NETHERITE_INGOT)
+				.define('L', Items.LIGHT_BLUE_DYE)
+				.define('N', Items.NETHER_STAR)
+				.unlockedBy("has_blue_dye", has(Items.BLUE_DYE))
+				.unlockedBy("has_light_blue_dye", has(Items.LIGHT_BLUE_DYE))
+				.unlockedBy("has_netherite_ingot", has(Items.NETHERITE_INGOT))
+				.unlockedBy("has_nether_star", has(Items.NETHER_STAR))
 				.save(output);
 	}
 

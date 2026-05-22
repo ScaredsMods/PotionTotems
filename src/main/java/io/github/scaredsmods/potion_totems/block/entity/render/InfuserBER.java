@@ -45,7 +45,7 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, Infus
         switch (state.facing) {
             case WEST -> {
                 poseStack.pushPose();
-                poseStack.translate(0.5f, 1.01f, 0.5f);
+                poseStack.translate(0.5f, 1.0f, 0.5f);
                 poseStack.scale(0.35f, 0.35f, 0.35f);
                 poseStack.mulPose(Axis.XP.rotationDegrees(270));
                 poseStack.mulPose(Axis.ZP.rotationDegrees(270));
@@ -55,7 +55,7 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, Infus
             }
             case NORTH -> {
                 poseStack.pushPose();
-                poseStack.translate(0.5f, 1.01f, 0.5f);
+                poseStack.translate(0.5f, 1.0f, 0.5f);
                 poseStack.scale(0.35f, 0.35f, 0.35f);
                 poseStack.mulPose(Axis.XP.rotationDegrees(270));
                 poseStack.mulPose(Axis.ZP.rotationDegrees(180));
@@ -65,7 +65,7 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, Infus
             }
             case EAST -> {
                 poseStack.pushPose();
-                poseStack.translate(0.52f, 1.01f, 0.5f);
+                poseStack.translate(0.50f, 1.0f, 0.5f);
                 poseStack.scale(0.35f, 0.35f, 0.35f);
                 poseStack.mulPose(Axis.XP.rotationDegrees(270));
                 poseStack.mulPose(Axis.ZP.rotationDegrees(90));
@@ -75,7 +75,7 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, Infus
             }
             case SOUTH -> {
                 poseStack.pushPose();
-                poseStack.translate(0.5f, 1.01f, 0.5f);
+                poseStack.translate(0.5f, 1.0f, 0.5f);
                 poseStack.scale(0.35f, 0.35f, 0.35f);
                 poseStack.mulPose(Axis.XP.rotationDegrees(270));
                 state.totemRenderState.submit(poseStack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);
@@ -93,7 +93,7 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, Infus
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
         state.pos = blockEntity.getBlockPos();
         state.level = blockEntity.getLevel();
-        state.facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+        state.facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         itemModelResolver.updateForTopItem(state.totemRenderState,
                 blockEntity.stackHandler.getResource(InfuserBlockEntity.TOTEM_INPUT_SLOT).toStack(),

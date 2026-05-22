@@ -28,23 +28,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import org.jspecify.annotations.NonNull;
 
-import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static io.github.scaredsmods.potion_totems.registry.ModBlocks.BLOCKS;
 
 public class ModItems {
 	public static final ResourcefulRegistry<Item> ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
@@ -89,7 +78,7 @@ public class ModItems {
 			.build());
 
 	private static HolderRegistryEntry<Item> registerItem(String name, Function<Item.Properties, Item> block) {
-		ResourceKey<Item> key = PotionTotems.key(name, Registries.ITEM);
+		ResourceKey<Item> key = PotionTotems.resourceKey(Registries.ITEM, name);
 		Supplier<Item.Properties> supplier = Item.Properties::new;
         return ITEMS.registerHolder(name, () -> block.apply(supplier.get().useItemDescriptionPrefix().setId(key)));
 	}

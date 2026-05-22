@@ -17,11 +17,12 @@
 */
 package io.github.scaredsmods.potion_totems;
 
-import io.github.scaredsmods.potion_totems.registry.*;
 import io.github.scaredsmods.potion_totems.pack.Resourcepack;
+import io.github.scaredsmods.potion_totems.registry.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -59,8 +60,12 @@ public class PotionTotems {
 		return Identifier.fromNamespaceAndPath(MOD_ID, name);
 	}
 
-	public static <T> ResourceKey<T> key(String name, ResourceKey<Registry<T>> key) {
-		return ResourceKey.create(key, PotionTotems.id(name));
+	public static <T> ResourceKey<T> resourceKey(ResourceKey<Registry<T>> registryKey, String name) {
+		return ResourceKey.create(registryKey, PotionTotems.id(name));
+	}
+
+	public static <R> TagKey<R> tag(ResourceKey<Registry<R>> registryKey, String name) {
+		return TagKey.create(registryKey, PotionTotems.id(name));
 	}
 
 }
