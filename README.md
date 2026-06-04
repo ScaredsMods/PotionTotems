@@ -6,7 +6,7 @@
 
 ![](https://raw.githubusercontent.com/ScaredRabbitNL/resources/c9d430112b7fd888ef96ea9a80daf8a711c6dbe6/badges/about_compact_vector.svg)
 
-Dying after your death? Not today! Or maybe today? It all depends on the potion you use! Infuse a totem with **undefinedanyundefined** potion to gain it's effects after using the totem!
+Dying after your death? Not today! Or maybe today? It all depends on the potion you use! Infuse a totem with **any** potion to gain it's effects after using the totem!
 
 ![strip](https://raw.githubusercontent.com/ScaredRabbitNL/resources/main/PotionTotems/strip.png)
 
