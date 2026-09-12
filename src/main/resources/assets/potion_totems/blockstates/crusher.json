@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "potion_totems:block/crusher",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "potion_totems:block/crusher"
+    },
+    "facing=south": {
+      "model": "potion_totems:block/crusher",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "potion_totems:block/crusher",
+      "y": 270
+    }
+  }
+}

@@ -37,6 +37,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 		dropSelf(ModBlocks.INFUSER.get());
 		dropSelf(ModBlocks.ADVANCED_INFUSER.get());
 		dropSelf(ModBlocks.INFUSER_FRAME.get());
+		dropSelf(ModBlocks.CRUSHER.get());
 	}
 
 	@Override

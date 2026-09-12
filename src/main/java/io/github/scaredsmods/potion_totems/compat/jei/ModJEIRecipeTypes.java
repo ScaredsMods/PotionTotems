@@ -18,25 +18,27 @@
 package io.github.scaredsmods.potion_totems.compat.jei;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.recipe.CrusherRecipe;
+import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
 import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class ModJEIRecipeTypes {
-	/*
 
-	public static final IRecipeType<RecipeHolder<InfuserRecipe>> INFUSER =
+
+	public static final IRecipeType<RecipeHolder<InfuserRecipe>> INFUSING =
 			create(PotionTotems.MOD_ID, "infusing", InfuserRecipe.class);
-	public static final IRecipeType<RecipeHolder<AdvancedInfuserRecipe>> ADVANCED_INFUSER =
-			create(PotionTotems.MOD_ID, "advanced_infusing", AdvancedInfuserRecipe.class);
+	public static final IRecipeType<RecipeHolder<CrusherRecipe>> CRUSHING =
+			create(PotionTotems.MOD_ID, "crushing", CrusherRecipe.class);
 
-	 */
+
 
 	// From Occultism: https://github.com/klikli-dev/occultism/blob/version/26.1.2/src/main/java/com/klikli_dev/occultism/integration/jei/impl/JeiRecipeTypes.java
 	// Under MIT-License
-	public static <R extends Recipe<?>> IRecipeType<RecipeHolder<R>> create(String name) {
-		Identifier uid = PotionTotems.id(name);
+	public static <R extends Recipe<?>> IRecipeType<RecipeHolder<R>> create(String modid, String name, Class<? extends R> recipeClass) {
+		Identifier uid = Identifier.fromNamespaceAndPath(modid, name);
 		@SuppressWarnings({"unchecked", "RedundantCast"})
 		Class<? extends RecipeHolder<R>> holderClass = (Class<? extends RecipeHolder<R>>) (Object) RecipeHolder.class;
 		return IRecipeType.create(uid, holderClass);

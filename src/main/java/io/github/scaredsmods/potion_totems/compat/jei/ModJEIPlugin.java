@@ -18,6 +18,11 @@
 package io.github.scaredsmods.potion_totems.compat.jei;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.compat.jei.category.CrushingRecipeCategory;
+import io.github.scaredsmods.potion_totems.compat.jei.category.InfusingRecipeCategory;
+import io.github.scaredsmods.potion_totems.registry.ModBlocks;
+import io.github.scaredsmods.potion_totems.registry.ModRecipes;
+import io.github.scaredsmods.potion_totems.screen.CrusherScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -25,6 +30,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -51,31 +57,39 @@ public class ModJEIPlugin implements IModPlugin {
 		return (List) recipeMap.byType(type);
 	}
 
+
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
-
+		registration.addRecipeCategories(new CrushingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new InfusingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-
+		registration.addRecipes(ModJEIRecipeTypes.INFUSING, this.getRecipes(syncedRecipes, ModRecipes.INFUSER_RECIPE_TYPE.get()));
+		registration.addRecipes(ModJEIRecipeTypes.CRUSHING, this.getRecipes(syncedRecipes, ModRecipes.CRUSHING_RECIPE_TYPE.get()));
 	}
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+		registration.addRecipeClickArea(CrusherScreen.class, 74, 30, 22, 20,
+				ModJEIRecipeTypes.CRUSHING);
 
+		registration.addRecipeClickArea(CrusherScreen.class, 74, 30, 22, 20,
+				ModJEIRecipeTypes.INFUSING);
 	}
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-
+		registration.addCraftingStation(ModJEIRecipeTypes.CRUSHING, new ItemStack(ModBlocks.CRUSHER.get().asItem()));
+		registration.addCraftingStation(ModJEIRecipeTypes.INFUSING, new ItemStack(ModBlocks.INFUSER.get().asItem()));
 	}
 
 	@EventBusSubscriber(modid = PotionTotems.MOD_ID)
 	public static class ServerRecipeSync {
 		@SubscribeEvent
 		public static void onDatapackSync(OnDatapackSyncEvent event) {
-
+			event.sendRecipes(ModRecipes.CRUSHING_RECIPE_TYPE.get(), ModRecipes.INFUSER_RECIPE_TYPE.get());
 		}
 	}
 

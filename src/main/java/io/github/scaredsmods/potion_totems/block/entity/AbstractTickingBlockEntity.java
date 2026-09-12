@@ -27,7 +27,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,15 +37,18 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider {
+import java.util.List;
+import java.util.Optional;
+
+public abstract class AbstractTickingBlockEntity extends BlockEntity implements MenuProvider {
 
 	private final Component displayName;
 
-	public BaseInfuserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public AbstractTickingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		this(type, pos, state, null);
 	}
 
-	public BaseInfuserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, Component displayName) {
+	public AbstractTickingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, Component displayName) {
 		super(type, pos, blockState);
 		this.displayName = displayName;
 	}
@@ -54,30 +59,54 @@ public abstract class BaseInfuserBlockEntity extends BlockEntity implements Menu
 	}
 
 	// Single overload - ItemStackHandler is gone in 26.1, everyone uses ItemStacksResourceHandler
-	public boolean canInsertIntoSlot(ItemStack output, int slot, int count, ItemStacksResourceHandler handler) {
-		return canInsertItemIntoOutputSlot(output, slot, handler)
-				&& canInsertAmountIntoOutputSlot(count, slot, handler);
+	public boolean canInsertIntoSlot(List<ItemStack> outputs, ItemStacksResourceHandler itemStacksResourceHandler) {
+		return canInsertItemIntoOutputSlot(outputs, itemStacksResourceHandler)
+				&& canInsertAmountIntoOutputSlot(outputs, itemStacksResourceHandler);
 	}
 
-	public boolean canInsertItemIntoOutputSlot(ItemStack output, int slot, ItemStacksResourceHandler handler) {
-		return handler.getResource(slot).isEmpty()
-				|| handler.getResource(slot).getItem() == output.getItem();
+	public boolean canInsertIntoSlot(ItemStack output, ItemStacksResourceHandler itemStacksResourceHandler) {
+		List<ItemStack> outputs = List.of(output);
+		return canInsertItemIntoOutputSlot(outputs, itemStacksResourceHandler)
+				&& canInsertAmountIntoOutputSlot(outputs, itemStacksResourceHandler);
 	}
 
-	public boolean canInsertAmountIntoOutputSlot(int count, int slot, ItemStacksResourceHandler handler) {
-		int maxCount = handler.getResource(slot).isEmpty()
-				? 64
-				: handler.getResource(slot).getMaxStackSize();
-		int currentCount = handler.getAmountFrom(handler.getResource(slot).toStack());
-		return maxCount >= currentCount + count;
+	private boolean canInsertItemIntoOutputSlot(List<ItemStack> outputs, ItemStacksResourceHandler itemStacksResourceHandler) {
+		for(int i = 0; i < outputs.size(); i++) {
+			if(!(itemStacksResourceHandler.getResource(i).isEmpty() ||
+					itemStacksResourceHandler.getResource(i).getItem() == outputs.get(i).getItem())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	protected abstract boolean hasRecipe(Level level, BlockPos pos);
-	protected abstract boolean hasCraftingFinished();
-	protected abstract void craftItem();
-	protected abstract void increaseCraftingProgress();
-	protected abstract void resetProgress();
+	private boolean canInsertAmountIntoOutputSlot(List<ItemStack> outputs, ItemStacksResourceHandler itemStacksResourceHandler) {
+		int maxCount;
+		int currentCount;
+
+		for(int i = 0; i < outputs.size(); i++) {
+			maxCount = itemStacksResourceHandler.getResource(i).isEmpty() ? 64
+					: itemStacksResourceHandler.getResource(i).getMaxStackSize();
+			currentCount = itemStacksResourceHandler.getAmountAsInt(i);
+
+			if(!(maxCount >= currentCount + outputs.get(i).getCount())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public abstract boolean hasRecipe();
+	public abstract boolean hasCraftingFinished();
+	public abstract void craftItem();
+	public abstract void increaseCraftingProgress();
+	public abstract void resetProgress();
 	public abstract void drops();
+	public abstract boolean isOutputSlotEmptyOrReceivable();
+	@SuppressWarnings("unchecked")
+	public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> getCurrentRecipe() {
+		return Optional.empty();
+	}
 
 	@Override
 	public void onDataPacket(Connection net, ValueInput valueInput) {

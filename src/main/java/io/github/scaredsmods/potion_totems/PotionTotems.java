@@ -45,8 +45,7 @@ public class PotionTotems {
 	*/
 
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
-		ModItems.ITEMS.init();
-		ModItems.TABS.init();
+		ModItems.init();
 		ModBlocks.BLOCKS.init();
 		ModBlockEntities.TYPES.init();
 		ModMenuTypes.MENUS.init();
@@ -54,6 +53,10 @@ public class PotionTotems {
 		ModVillagers.VILLAGER_PROFESSIONS.init();
 		ModVillagers.POI_TYPES.init();
 		ModConfigs.init();
+		ModRecipes.RECIPE_SERIALIZERS.init();
+		ModRecipes.RECIPE_TYPES.init();
+		ModRecipeBookCategories.RECIPE_BOOK_CATEGORIES.init();
+		ModDataComponents.DATA_COMPONENTS.init();
 	}
 
 	public static Identifier id(String name) {

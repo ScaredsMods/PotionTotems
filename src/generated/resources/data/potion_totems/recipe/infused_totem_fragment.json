@@ -1,0 +1,78 @@
+{
+  "type": "potion_totems:crushing",
+  "ingredients": "potion_totems:infused_totem",
+  "results": [
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 1
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 2
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 3
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 4
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 5
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 6
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 7
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 8
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    },
+    {
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 9
+        }
+      },
+      "id": "potion_totems:infused_totem_fragment"
+    }
+  ]
+}

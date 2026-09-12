@@ -18,7 +18,7 @@
 package io.github.scaredsmods.potion_totems.registry;
 
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntityRework;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
@@ -42,12 +42,12 @@ public class ModBlockTintSources {
 
 			@Override
 			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				Optional<InfuserBlockEntity> blockEntity = level.getBlockEntity(pos, ModBlockEntities.BE_INFUSER.get());
+				Optional<InfuserBlockEntityRework> blockEntity = level.getBlockEntity(pos, ModBlockEntities.BE_INFUSER.get());
 				if (blockEntity.isEmpty()) {
 					return 0xFFFFFF;
 				}
 				ItemStack involvedStack;
-				ItemStack potionStack = blockEntity.get().stackHandler.getResource(InfuserBlockEntity.POTION_INPUT_SLOT).toStack();
+				ItemStack potionStack = blockEntity.get().itemStacksResourceHandler.getResource(InfuserBlockEntityRework.INPUT_SLOT_5).toStack();
 
 				if (!potionStack.isEmpty() && potionStack.has(DataComponents.POTION_CONTENTS)) {
 					involvedStack = potionStack;

@@ -31,6 +31,8 @@ out/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+/src/generated/resources/.cache
+/run-data/
 
 ### NetBeans ###
 /nbproject/private/

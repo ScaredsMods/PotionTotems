@@ -36,7 +36,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 	}
 
 	@Override
-	protected void addTranslations() {
+	public void addTranslations() {
 		add(ModItems.INFUSED_TOTEM.get(), "Infused Totem");
 		add(ModItems.INFUSER_TOTEM_PH_1.get(), "Placeholder 1");
 		add(ModItems.INFUSER_TOTEM_PH_2.get(), "Placeholder 2");
@@ -49,6 +49,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 					.collect(Collectors.joining(" "));
 
 			add("item.potion_totems.infused_totem.effect." + effectName, "Infused Totem of " + formattedName);
+			add("item.potion_totems.infused_totem_fragment." +  effectName, "Infused Totem Fragment of " + formattedName);
 		});
 
 		ModPotions.POTIONS.stream().forEach(potionRegistryEntry -> {
@@ -66,6 +67,8 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 
 		add("item.potion_totems.infused_totem.effect.empty", "Infused Totem");
 		add("item.potion_totems.infused_totem.effect.custom", "Infused Totem");
+		add("item.potion_totems.infused_totem_fragment.effect.empty", "Infused Totem Fragment");
+		add("item.potion_totems.infused_totem_fragment.effect.custom", "Infused Totem Fragment");
 		add("itemGroup.potion_totems.totems", "Potion Totems");
 		add(ModBlocks.INFUSER.get(), "Infuser");
 		add(ModBlocks.ADVANCED_INFUSER.get(), "Advanced Infuser");
@@ -74,8 +77,12 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		add("potion_totems.gui.infuser.title", "Totem Infuser");
 		add("potion_totems.be.advanced_infuser.name", "Advanced Totem Infuser");
 		add("potion_totems.gui.advanced_infuser.title", "Advanced Totem Infuser");
+		add("potion_totems.gui.crusher.title", "Crusher");
 		add("entity.minecraft.villager.potion_totems.totem_master", "Totem Master");
 
-		add(ModItems.INFUSER_CORE.get(), "Infuser Core");
+		add(ModItems.MACHINE_CORE.get(), "Machine Core");
+		add(ModBlocks.CRUSHER.get(), "Crusher");
+		add(ModItems.INFUSED_TOTEM_FRAGMENT.get(), "Infused Totem Fragment");
+		add(ModItems.TOTEM_FRAGMENT.get(), "Totem of Undying Fragment");
 	}
 }

@@ -19,12 +19,11 @@ package io.github.scaredsmods.potion_totems.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntityRework;
 import io.github.scaredsmods.potion_totems.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -43,10 +42,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-
 import java.util.stream.Stream;
 
-public class InfuserBlock extends BaseHorizontalBlock {
+public class InfuserBlock extends AbstractHorizontalBlock {
 
 	public static final MapCodec<InfuserBlock> CODEC = simpleCodec(InfuserBlock::new);
 
@@ -93,21 +91,21 @@ public class InfuserBlock extends BaseHorizontalBlock {
 	}
 
 	@Override
-	protected MapCodec<? extends BaseHorizontalBlock> codec() {
+	protected MapCodec<? extends AbstractHorizontalBlock> codec() {
 		return CODEC;
 	}
 
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new InfuserBlockEntity(pos, state);
+		return new InfuserBlockEntityRework(pos, state);
 	}
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (!level.isClientSide()) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof InfuserBlockEntity baseInfuserBlockEntity) {
+			if (blockEntity instanceof InfuserBlockEntityRework baseInfuserBlockEntity) {
 				player.openMenu(new SimpleMenuProvider(baseInfuserBlockEntity, Component.translatable(PotionTotems.MOD_ID + ".gui.infuser.title")), pos);
 			}else {
 				throw new IllegalStateException("Missing container provider");

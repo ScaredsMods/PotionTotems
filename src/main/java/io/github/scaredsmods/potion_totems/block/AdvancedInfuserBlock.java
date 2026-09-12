@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public class AdvancedInfuserBlock extends BaseHorizontalBlock {
+public class AdvancedInfuserBlock extends AbstractHorizontalBlock {
 	public AdvancedInfuserBlock(Properties properties) {
 		super(properties, SHAPE);
 		runCalculation(SHAPE);

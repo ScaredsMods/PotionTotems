@@ -37,14 +37,14 @@ import org.jspecify.annotations.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseHorizontalBlock extends BaseEntityBlock {
+public abstract class AbstractHorizontalBlock extends BaseEntityBlock {
 
 	protected static final Map<Block, Map<Direction, VoxelShape>> SHAPES = new HashMap<>();
 	public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private final VoxelShape SHAPE;
 
 
-	public BaseHorizontalBlock(Properties properties, VoxelShape shape) {
+	public AbstractHorizontalBlock(Properties properties, VoxelShape shape) {
 		super(properties);
 		this.SHAPE = shape;
 		this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH));

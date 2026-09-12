@@ -26,6 +26,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.jetbrains.annotations.Nullable;
 
 public record ItemFromPotion(int defaultColor) implements ItemTintSource {
@@ -38,7 +39,8 @@ public record ItemFromPotion(int defaultColor) implements ItemTintSource {
 
 	@Override
 	public int calculate(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity) {
-		return ARGB.opaque(stack.get(DataComponents.POTION_CONTENTS).getColor());
+		PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+		return contents != null ? ARGB.opaque(contents.getColor()) : this.defaultColor();
 	}
 
 	@Override

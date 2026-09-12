@@ -1,0 +1,68 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_2"
+        },
+        "threshold": 2.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_3"
+        },
+        "threshold": 3.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_4"
+        },
+        "threshold": 4.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_5"
+        },
+        "threshold": 5.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_6"
+        },
+        "threshold": 6.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_7"
+        },
+        "threshold": 7.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_8"
+        },
+        "threshold": 8.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/totem_fragment_9"
+        },
+        "threshold": 9.0
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "potion_totems:item/totem_fragment_1"
+    },
+    "property": "potion_totems:totem_fragment"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "type": "potion_totems:infusing",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 1
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 2
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 3
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 4
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 5
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 6
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 7
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 8
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "potion_totems:totem_fragment": {
+          "fragmentId": 9
+        }
+      },
+      "items": "potion_totems:totem_fragment",
+      "strict": true
+    }
+  ],
+  "outputs": [
+    {
+      "id": "potion_totems:infused_totem"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ]
+}

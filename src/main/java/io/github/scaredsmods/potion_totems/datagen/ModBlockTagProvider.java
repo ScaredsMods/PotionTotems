@@ -36,12 +36,14 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 	protected void addTags(HolderLookup.Provider registries) {
 		tag(BlockTags.MINEABLE_WITH_PICKAXE)
 				.add(ModBlocks.INFUSER.get())
-				.add(ModBlocks.ADVANCED_INFUSER.get());
+				.add(ModBlocks.ADVANCED_INFUSER.get())
+				.add(ModBlocks.CRUSHER.get());
 
 		tag(BlockTags.NEEDS_STONE_TOOL)
 				.add(ModBlocks.INFUSER.get())
 				.add(ModBlocks.ADVANCED_INFUSER.get())
-				.add(ModBlocks.INFUSER_FRAME.get());
+				.add(ModBlocks.INFUSER_FRAME.get())
+				.add(ModBlocks.CRUSHER.get());
 
 		tag(BlockTags.MINEABLE_WITH_AXE)
 				.add(ModBlocks.INFUSER_FRAME.get());

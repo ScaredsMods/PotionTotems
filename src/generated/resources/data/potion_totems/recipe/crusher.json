@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "potion_totems:machine_core",
+    "G": "minecraft:glass",
+    "L": "#minecraft:logs"
+  },
+  "pattern": [
+    "GGG",
+    "LCL",
+    "L L"
+  ],
+  "result": {
+    "id": "potion_totems:crusher"
+  }
+}

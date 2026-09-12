@@ -21,11 +21,15 @@ package io.github.scaredsmods.potion_totems.event;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.render.AdvancedInfuserBER;
 import io.github.scaredsmods.potion_totems.block.entity.render.InfuserBER;
+import io.github.scaredsmods.potion_totems.component.TotemFragmentComponent;
+import io.github.scaredsmods.potion_totems.component.property.TotemFragmentProperty;
 import io.github.scaredsmods.potion_totems.registry.*;
 import io.github.scaredsmods.potion_totems.pack.Resourcepack;
 import io.github.scaredsmods.potion_totems.screen.AdvancedInfuserScreen;
+import io.github.scaredsmods.potion_totems.screen.CrusherScreen;
 import io.github.scaredsmods.potion_totems.screen.InfuserScreen;
 import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
+import net.minecraft.client.color.item.Potion;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -40,6 +44,7 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforgespi.language.IModInfo;
 
 import java.io.IOException;
@@ -55,6 +60,11 @@ public class ModClientEvents {
 	}
 
 	@SubscribeEvent
+	public static void registerComponentProperties(RegisterRangeSelectItemModelPropertyEvent event) {
+		event.register(PotionTotems.id("totem_fragment"), TotemFragmentProperty.CODEC);
+	}
+
+	@SubscribeEvent
 	public static void registerItemColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
 		event.register(PotionTotems.id("item_from_potion"), ItemFromPotion.MAP_CODEC);
 	}
@@ -67,12 +77,11 @@ public class ModClientEvents {
 
 	}
 
-
-
 	@SubscribeEvent
 	public static void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(ModMenuTypes.INFUSER_MENU.get(), InfuserScreen::new);
 		event.register(ModMenuTypes.ADVANCED_INFUSER_MENU.get(), AdvancedInfuserScreen::new);
+		event.register(ModMenuTypes.CRUSHER_MENU.get(), CrusherScreen::new);
 	}
 
 

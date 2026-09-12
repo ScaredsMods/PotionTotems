@@ -119,6 +119,7 @@ neoForge {
         }
         val data : RunModel by creating {
             clientData()
+            gameDirectory.set(project.file("run-data"))
             programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath())
         }
 

@@ -43,11 +43,11 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
-public class InfuserBlockEntity extends BaseInfuserBlockEntity {
+public class InfuserBlockEntity extends AbstractTickingBlockEntity {
 
 	public final ItemStacksResourceHandler stackHandler = new ItemStacksResourceHandler(4) {
 		@Override
-		protected void onContentsChanged(int index, ItemStack previousContents) {
+		public void onContentsChanged(int index, ItemStack previousContents) {
 			setChanged();
 			if (!level.isClientSide()) {
 				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -106,7 +106,7 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-		if (hasRecipe(level, blockPos)) {
+		if (hasRecipe()) {
 			increaseCraftingProgress();
 			setChanged(level, blockPos, blockState);
 			if (hasCraftingFinished()) {
@@ -119,23 +119,23 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	@Override
-	protected void resetProgress() {
+	public void resetProgress() {
 		currentProgress = 0;
 		maxProgress = 600;
 	}
 
 	@Override
-	protected void increaseCraftingProgress() {
+	public void increaseCraftingProgress() {
 		currentProgress++;
 	}
 
 	@Override
-	protected boolean hasCraftingFinished() {
+	public boolean hasCraftingFinished() {
 		return this.currentProgress >= this.maxProgress;
 	}
 
 	@Override
-	protected void craftItem() {
+	public void craftItem() {
 		ItemResource totemResource = stackHandler.getResource(TOTEM_INPUT_SLOT);
 		ItemResource potionResource = stackHandler.getResource(POTION_INPUT_SLOT);
 
@@ -162,20 +162,20 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	@Override
-	protected boolean hasRecipe(Level level, BlockPos pos) {
+	public boolean hasRecipe() {
 		ItemStack in1 = stackHandler.getResource(TOTEM_INPUT_SLOT).toStack();
 		ItemStack in2 = stackHandler.getResource(POTION_INPUT_SLOT).toStack();
 		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
 		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
 
 		return (in1.is(Items.TOTEM_OF_UNDYING)
-				&& canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), stackHandler))
+				&& canInsertIntoSlot(output1, stackHandler))
 				&& (in2.is(Items.POTION)
-				&& canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount(), stackHandler));
+				&& canInsertIntoSlot(output2, stackHandler));
 	}
 
 	@Override
-	protected void loadAdditional(ValueInput input) {
+	public void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
 		stackHandler.deserialize(input);
 		currentProgress = input.getInt("potion_totems.infuser.currentProgress").get();
@@ -183,7 +183,7 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(ValueOutput output) {
+	public void saveAdditional(ValueOutput output) {
 		stackHandler.serialize(output);
 		output.putInt("potion_totems.infuser.currentProgress", currentProgress);
 		output.putInt("potion_totems.infuser.max_progress", maxProgress);
@@ -205,6 +205,11 @@ public class InfuserBlockEntity extends BaseInfuserBlockEntity {
 			inventory.setItem(i, stackHandler.getResource(i).toStack());
 		}
 		Containers.dropContents(this.level, this.worldPosition, inventory);
+	}
+
+	@Override
+	public boolean isOutputSlotEmptyOrReceivable() {
+		return false;
 	}
 
 	@Override

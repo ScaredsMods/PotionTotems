@@ -23,6 +23,7 @@ import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.component.TotemFragmentComponent;
 import io.github.scaredsmods.potion_totems.item.InfusedTotemItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.alchemy.PotionContents;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public class ModItems {
 	public static final ResourcefulRegistry<Item> ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
@@ -41,7 +43,12 @@ public class ModItems {
 
 	public static final HolderRegistryEntry<Item> INFUSED_TOTEM = registerItem("infused_totem", (properties) ->
 			new InfusedTotemItem(properties.rarity(Rarity.RARE).stacksTo(1).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)));
-	public static final HolderRegistryEntry<Item> INFUSER_CORE = registerItem("infuser_core", Item::new);
+	public static final HolderRegistryEntry<Item> MACHINE_CORE = registerItem("machine_core", Item::new);
+
+
+	public static final ResourcefulRegistry<Item> FRAGMENTS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
+	public static final HolderRegistryEntry<Item> TOTEM_FRAGMENT = registerItem("totem_fragment", (properties) -> new Item(properties.component(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(1))), FRAGMENTS);
+	public static final HolderRegistryEntry<Item> INFUSED_TOTEM_FRAGMENT = registerItem("infused_totem_fragment", (properties) -> new InfusedTotemItem(properties.component(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(1)).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)), FRAGMENTS);
 
 	public static final HolderRegistryEntry<Item> INFUSER_TOTEM_PH_1 = registerItem("infuser_totem_placeholder_1", Item::new);
 	public static final HolderRegistryEntry<Item> INFUSER_TOTEM_PH_2 = registerItem("infuser_totem_placeholder_2", Item::new);
@@ -75,12 +82,30 @@ public class ModItems {
 						stack.set(DataComponents.POTION_CONTENTS, new PotionContents(holder));
 						return stack;
 					}))
+			.addContent(() -> FRAGMENTS.boundStream()
+					.flatMap(item -> IntStream.rangeClosed(1, 9).mapToObj(i -> {
+						ItemStack stack = new ItemStack(item);
+						stack.set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(i));
+						return stack;
+					})))
 			.build());
 
 	private static HolderRegistryEntry<Item> registerItem(String name, Function<Item.Properties, Item> block) {
 		ResourceKey<Item> key = PotionTotems.resourceKey(Registries.ITEM, name);
 		Supplier<Item.Properties> supplier = Item.Properties::new;
 		return ITEMS.registerHolder(name, () -> block.apply(supplier.get().useItemDescriptionPrefix().setId(key)));
+	}
+
+	private static HolderRegistryEntry<Item> registerItem(String name, Function<Item.Properties, Item> block, ResourcefulRegistry<Item> registry) {
+		ResourceKey<Item> key = PotionTotems.resourceKey(Registries.ITEM, name);
+		Supplier<Item.Properties> supplier = Item.Properties::new;
+		return registry.registerHolder(name, () -> block.apply(supplier.get().useItemDescriptionPrefix().setId(key)));
+	}
+
+	public static void init() {
+		ITEMS.init();
+		FRAGMENTS.init();
+		TABS.init();
 	}
 
 

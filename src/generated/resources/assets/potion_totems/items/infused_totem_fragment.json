@@ -1,0 +1,122 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_2",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 2.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_3",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 3.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_4",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 4.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_5",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 5.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_6",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 6.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_7",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 7.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_8",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 8.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "potion_totems:item/infused_totem_fragment_9",
+          "tints": [
+            {
+              "type": "potion_totems:item_from_potion",
+              "default": 0
+            }
+          ]
+        },
+        "threshold": 9.0
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "potion_totems:item/infused_totem_fragment_1",
+      "tints": [
+        {
+          "type": "potion_totems:item_from_potion",
+          "default": 0
+        }
+      ]
+    },
+    "property": "potion_totems:totem_fragment"
+  }
+}

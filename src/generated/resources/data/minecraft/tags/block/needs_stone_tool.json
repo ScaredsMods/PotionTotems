@@ -2,6 +2,7 @@
   "values": [
     "potion_totems:infuser",
     "potion_totems:advanced_infuser",
-    "potion_totems:infuser_frame"
+    "potion_totems:infuser_frame",
+    "potion_totems:crusher"
   ]
 }

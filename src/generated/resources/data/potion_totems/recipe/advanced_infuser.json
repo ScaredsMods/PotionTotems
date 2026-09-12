@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": "minecraft:glass_bottle",
-    "C": "potion_totems:infuser_core",
+    "C": "potion_totems:machine_core",
     "F": "potion_totems:infuser_frame",
     "R": "minecraft:red_dye",
     "T": "minecraft:totem_of_undying"

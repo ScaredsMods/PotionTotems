@@ -33,7 +33,7 @@ NOTE: The brewing recipes are subject to change in the next version (2.0.0) for 
   - ```PTVillagers``` &rarr; ```ModVillagers```
 - Renamed block entity (and related) classes from ```BlockEntity{NameOfBlockEntity}``` to ```{NameOfBlockEntity}BlockEntity```
   - ```BlockEntityAdvancedInfuser``` &rarr; ```AdvancedInfuserBlockEntity```
-  - ```BlockEntityBaseInfuser``` &rarr; ```BaseInfuserBlockEntity```
+  - ```BlockEntityBaseInfuser``` &rarr; ```AbstractTickingBlockEntity```
   - ```BlockEntityInfuser``` &rarr; ```InfuserBlockEntity```
   - ```BERAdvancedInfuser``` &rarr; ```AdvancedInfuserBER```
   - ```BERInfuser``` &rarr; ```InfuserBER```

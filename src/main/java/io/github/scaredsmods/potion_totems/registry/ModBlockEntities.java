@@ -23,7 +23,8 @@ import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.CrusherBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntityRework;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -31,11 +32,13 @@ public class ModBlockEntities {
 
 	public static final ResourcefulRegistry<BlockEntityType<?>> TYPES = ResourcefulRegistries.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, PotionTotems.MOD_ID);
 
-	public static final RegistryEntry<BlockEntityType<InfuserBlockEntity>> BE_INFUSER = TYPES.register("infuser" , () ->
-			new BlockEntityType<>(InfuserBlockEntity::new, ModBlocks.INFUSER.get()));
-
-
+	public static final RegistryEntry<BlockEntityType<InfuserBlockEntityRework>> BE_INFUSER = TYPES.register("infuser" , () ->
+			new BlockEntityType<>(InfuserBlockEntityRework::new, ModBlocks.INFUSER.get()));
 
 	public static final RegistryEntry<BlockEntityType<AdvancedInfuserBlockEntity>> BE_ADVANCED_INFUSER = TYPES.register("advanced_infuser", () ->
 			new BlockEntityType<>(AdvancedInfuserBlockEntity::new, ModBlocks.ADVANCED_INFUSER.get()));
+
+	public static final RegistryEntry<BlockEntityType<CrusherBlockEntity>> BE_CRUSHER = TYPES.register("crusher", () ->
+			new BlockEntityType<>(CrusherBlockEntity::new, ModBlocks.CRUSHER.get()));
+
 }

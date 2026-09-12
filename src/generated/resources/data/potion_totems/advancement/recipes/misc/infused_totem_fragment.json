@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infused_totem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "potion_totems:infused_totem"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "potion_totems:infused_totem_fragment"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_infused_totem"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "potion_totems:infused_totem_fragment"
+    ]
+  }
+}

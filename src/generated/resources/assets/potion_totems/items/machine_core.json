@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "potion_totems:item/infuser_core"
+    "model": "potion_totems:item/machine_core"
   }
 }

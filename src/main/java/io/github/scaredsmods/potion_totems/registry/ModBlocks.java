@@ -22,6 +22,7 @@ import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.AdvancedInfuserBlock;
+import io.github.scaredsmods.potion_totems.block.CrusherBlock;
 import io.github.scaredsmods.potion_totems.block.InfuserBlock;
 import io.github.scaredsmods.potion_totems.block.InfuserFrameBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -43,7 +44,7 @@ public class ModBlocks {
 	public static final HolderRegistryEntry<Block> ADVANCED_INFUSER = registerBlock("advanced_infuser", (properties) ->
 			new AdvancedInfuserBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final HolderRegistryEntry<Block> INFUSER_FRAME = registerBlock("infuser_frame", properties -> new InfuserFrameBlock(properties.strength(1.5f).requiresCorrectToolForDrops().noOcclusion().sound(SoundType.WOOD)));
-
+	public static final HolderRegistryEntry<Block> CRUSHER = registerBlock("crusher", properties -> new CrusherBlock(properties.noOcclusion().strength(3.5f, 3.5f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
 	private static HolderRegistryEntry<Block> registerBlock(String name, Function<BlockBehaviour.Properties, Block> block) {
 		ResourceKey<Block> bKey = PotionTotems.resourceKey(Registries.BLOCK, name);

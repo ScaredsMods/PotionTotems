@@ -21,21 +21,21 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_infuser_core": {
-      "conditions": {
-        "items": [
-          {
-            "items": "potion_totems:infuser_core"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_infuser_frame": {
       "conditions": {
         "items": [
           {
             "items": "potion_totems:infuser_frame"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_machine_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": "potion_totems:machine_core"
           }
         ]
       },
@@ -65,7 +65,7 @@
       "has_bottle",
       "has_infuser_frame",
       "has_blue_dye",
-      "has_infuser_core"
+      "has_machine_core"
     ]
   ],
   "rewards": {
