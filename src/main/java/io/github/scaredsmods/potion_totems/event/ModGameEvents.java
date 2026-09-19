@@ -20,14 +20,26 @@ package io.github.scaredsmods.potion_totems.event;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.registry.ModPotions;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.resource.ResourcePackLoader;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 
 @EventBusSubscriber(modid = PotionTotems.MOD_ID)
@@ -68,6 +80,35 @@ public class ModGameEvents {
 		event.getBuilder().addMix(Potions.WATER, Items.NETHERITE_INGOT, ModPotions.POSITIVE.holder());
 		event.getBuilder().addMix(Potions.WATER, Items.NETHER_STAR, ModPotions.NEGATIVE.holder());
 		event.getBuilder().addMix(Potions.WATER, Items.DRAGON_HEAD, ModPotions.NEUTRAL.holder());
+	}
+
+	@SubscribeEvent
+	public static void addPacks(AddPackFindersEvent event) {
+		if (event.getPackType() != PackType.SERVER_DATA) return;
+		event.addRepositorySource((consumer) -> {
+			Path packPath = PotionTotems.GENERATED_DATA.getPath();
+			if (!Files.isDirectory(packPath)) return;
+
+			PackLocationInfo locationInfo = new PackLocationInfo(
+					"potion_totems_data",
+					Component.literal("PotionTotems Extra Data"),
+					PackSource.BUILT_IN,
+					Optional.empty()
+			);
+
+			Pack.ResourcesSupplier resources = ResourcePackLoader.getPackFor(PotionTotems.MOD_ID).get();
+			Pack pack = Pack.readMetaAndCreate(
+					locationInfo,
+					resources,
+					PackType.SERVER_DATA,
+					new PackSelectionConfig(
+							true,
+							Pack.Position.TOP,
+							false
+					)
+			);
+			if (pack != null) consumer.accept(pack);
+		});
 	}
 
 }

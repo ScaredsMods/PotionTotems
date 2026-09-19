@@ -19,7 +19,6 @@ package io.github.scaredsmods.potion_totems.screen;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
-import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenuRework;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -27,13 +26,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-public class InfuserScreen extends AbstractContainerScreen<InfuserMenuRework> {
-	private static final Identifier GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui_rework.png");
-	private static final Identifier ARROW_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_arrow_progress_rework.png");
+public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
+	private static final Identifier GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui.png");
+	private static final Identifier ARROW_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_arrow_progress.png");
 
 
-	public InfuserScreen(InfuserMenuRework menu, Inventory playerInventory, Component title) {
-		super(menu, playerInventory, title);
+	public InfuserScreen(InfuserMenu menu, Inventory playerInventory, Component title) {
+		super(menu, playerInventory, title, 176, 188);
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
 	}
 
 	@Override
@@ -47,9 +52,9 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenuRework> {
 
 	private void renderProgressArrow(GuiGraphicsExtractor graphics, int x, int y) {
 		if (menu.isCrafting()) {
-			graphics.blit(RenderPipelines.GUI_TEXTURED, ARROW_TEXTURE, x + 92, y + 34, 0, 0 ,
-					34, menu.getScaledArrowProgress(),
-					34, 16);
+			graphics.blit(RenderPipelines.GUI_TEXTURED, ARROW_TEXTURE, x + 92, y + 44, 0, 0 ,
+					menu.getScaledArrowProgress(), 16,
+					40, 16);
 		}
 	}
 

@@ -19,7 +19,7 @@ package io.github.scaredsmods.potion_totems.block.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntityRework;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.block.entity.render.state.InfuserRenderState;
 import io.github.scaredsmods.potion_totems.registry.ModItems;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntityRework, InfuserRenderState> {
+public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntity, InfuserRenderState> {
 
 
 	private final ItemModelResolver itemModelResolver;
@@ -104,16 +104,16 @@ public class InfuserBER implements BlockEntityRenderer<InfuserBlockEntityRework,
 
 
 	@Override
-	public void extractRenderState(InfuserBlockEntityRework blockEntity, InfuserRenderState state,
-								float partialTicks, Vec3 cameraPosition,
-								ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+	public void extractRenderState(InfuserBlockEntity blockEntity, InfuserRenderState state,
+                                   float partialTicks, Vec3 cameraPosition,
+                                   ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		state.pos = blockEntity.getBlockPos();
 		state.level = blockEntity.getLevel();
 		state.facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
 		itemModelResolver.updateForTopItem(state.totemRenderState,
-				blockEntity.itemStacksResourceHandler.getResource(InfuserBlockEntityRework.INPUT_SLOT_1).toStack(),
+				blockEntity.itemStacksResourceHandler.getResource(InfuserBlockEntity.INPUT_SLOT_1).toStack(),
 				ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 1);
 
 		itemModelResolver.updateForTopItem(state.blackTotemRenderState,

@@ -37,9 +37,14 @@ public class PotionUtils {
 		}
 	}
 
-	public static <T> void copyDataComponent(@Nonnull ItemStack source, ItemStack target, DataComponentType<T> dataComponentType) {
-		if (source.has(dataComponentType)) {
-			target.set(dataComponentType, source.get(dataComponentType));
+	public static <T> boolean hasComponent(ItemStack target, DataComponentType<T> type) {
+        return target.has(type);
+    }
+
+	public static <T> void copyDataComponent(@Nonnull ItemStack source, ItemStack target, DataComponentType<T> type) {
+		if (source.has(type)) {
+			T value = source.get(type);
+			target.set(type, value);
 		}
 	}
 

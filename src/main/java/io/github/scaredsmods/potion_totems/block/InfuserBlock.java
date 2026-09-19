@@ -19,7 +19,7 @@ package io.github.scaredsmods.potion_totems.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntityRework;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -98,14 +98,14 @@ public class InfuserBlock extends AbstractHorizontalBlock {
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new InfuserBlockEntityRework(pos, state);
+		return new InfuserBlockEntity(pos, state);
 	}
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (!level.isClientSide()) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof InfuserBlockEntityRework baseInfuserBlockEntity) {
+			if (blockEntity instanceof InfuserBlockEntity baseInfuserBlockEntity) {
 				player.openMenu(new SimpleMenuProvider(baseInfuserBlockEntity, Component.translatable(PotionTotems.MOD_ID + ".gui.infuser.title")), pos);
 			}else {
 				throw new IllegalStateException("Missing container provider");

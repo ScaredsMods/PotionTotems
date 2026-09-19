@@ -17,7 +17,9 @@
 */
 package io.github.scaredsmods.potion_totems;
 
-import io.github.scaredsmods.potion_totems.pack.Resourcepack;
+import io.github.scaredsmods.potion_totems.pack.AbstractPack;
+import io.github.scaredsmods.potion_totems.pack.DataPack;
+import io.github.scaredsmods.potion_totems.pack.ResourcePack;
 import io.github.scaredsmods.potion_totems.registry.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
@@ -30,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 @Mod(PotionTotems.MOD_ID)
@@ -37,12 +40,8 @@ public class PotionTotems {
 
 	public static final String MOD_ID = "potion_totems";
 	public static final Logger LOGGER = LoggerFactory.getLogger("PotionTotems");
-	public static final Resourcepack GENERATED_PACK = new Resourcepack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", 34);
-
-	/*TODO:
-		- Re-add BER
-		- Re-add VillagerTrades
-	*/
+	public static final ResourcePack GENERATED_PACK = new ResourcePack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", new int[]{84,0}, new int[]{84,0}, new int[]{84,0});
+	public static final DataPack GENERATED_DATA = new DataPack("PotionTotemsExtraData", "Adds more data to PotionTotems", new int[]{101,1}, new int[]{101,1}, new int[]{101,1});
 
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
 		ModItems.init();
@@ -57,6 +56,7 @@ public class PotionTotems {
 		ModRecipes.RECIPE_TYPES.init();
 		ModRecipeBookCategories.RECIPE_BOOK_CATEGORIES.init();
 		ModDataComponents.DATA_COMPONENTS.init();
+
 	}
 
 	public static Identifier id(String name) {

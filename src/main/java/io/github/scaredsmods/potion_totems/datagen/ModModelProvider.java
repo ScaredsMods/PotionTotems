@@ -26,10 +26,7 @@ import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.CuboidItemModelWrapper;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -98,14 +95,15 @@ public class ModModelProvider extends ModelProvider {
 				new ClientItem.Properties(true, false, 1.0F)
 		);
 
+		Material eyeOverlay = new Material(PotionTotems.id("item/totem_eye"));
 		List<ItemModel.Unbaked> infusedFragmentModels = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
 			Material fragmentTexture = TextureMapping.getItemTexture(totemFragment, "_" + i);
-			Identifier flatModel = createFlatItemModel(infusedTotemFragment, "_" + i, fragmentTexture, itemModels);
+			Identifier model = (i == 7 || i == 8) ? createLayeredItemModel(infusedTotemFragment, "_" + i, fragmentTexture, eyeOverlay, itemModels) : createFlatItemModel(infusedTotemFragment, "_" + i, fragmentTexture, itemModels);
 
 			infusedFragmentModels.add(
 					new CuboidItemModelWrapper.Unbaked(
-							flatModel,
+							model,
 							Optional.empty(),
 							List.of(new ItemFromPotion(0x000000))
 					)
@@ -151,5 +149,10 @@ public class ModModelProvider extends ModelProvider {
 	public Identifier createFlatItemModel(Item item, String suffix, Material texture, ItemModelGenerators generators) {
 		Identifier location = ModelLocationUtils.getModelLocation(item, suffix);
 		return ModelTemplates.FLAT_ITEM.create(location, TextureMapping.layer0(texture), generators.modelOutput);
+	}
+
+	public Identifier createLayeredItemModel(Item item, String suffix, Material layer0, Material layer1, ItemModelGenerators generators) {
+		Identifier location = ModelLocationUtils.getModelLocation(item, suffix);
+		return ModelTemplates.TWO_LAYERED_ITEM.create(location, TextureMapping.layered(layer0, layer1), generators.modelOutput);
 	}
 }

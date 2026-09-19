@@ -25,23 +25,30 @@ import io.github.scaredsmods.potion_totems.registry.ModBlocks;
 import io.github.scaredsmods.potion_totems.registry.ModDataComponents;
 import io.github.scaredsmods.potion_totems.registry.ModItems;
 import io.github.scaredsmods.potion_totems.registry.ModRecipeBookCategories;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class ModRecipesProvider extends RecipeProvider   {
 
@@ -118,23 +125,49 @@ public class ModRecipesProvider extends RecipeProvider   {
 				.unlockedBy("has_machine_core", has(ModItems.MACHINE_CORE.get()))
 				.save(output);
 
+		/*
+		BuiltInRegistries.POTION.asHolderIdMap().forEach(holder -> {
+			PotionContents contents = new PotionContents(holder);
+			Identifier id = BuiltInRegistries.POTION.getKey(holder.value());
+			String potionName = id.getPath();
+
+			for (int i = 1; i < 10; ++i) {
+				TotemFragmentComponent fragment = new TotemFragmentComponent(i);
+				InfusingRecipeBuilder.infusing(RecipeCategory.MISC,
+								List.of(
+										DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), fragment).build())),
+										DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), fragment).build())),
+										DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), fragment).build())),
+										DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), fragment).build())),
+										DataComponentIngredient.of(true, new ItemStackTemplate(Items.POTION, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, contents).build())))
+
+								,List.of(
+										new ItemStackTemplate(ModItems.INFUSED_TOTEM.get(), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, contents).build()),
+										new ItemStackTemplate(Items.GLASS_BOTTLE)
+								))
+						.unlockedBy("has_totem_fragment", has(ModItems.TOTEM_FRAGMENT.get())).save(output, PotionTotems.resourceKey(Registries.RECIPE, "infused_totem_from_infusing_" + potionName + "_fragment_" + i));
+
+			}
+
+		});
+
+		 */
 
 		InfusingRecipeBuilder.infusing(RecipeCategory.MISC,
 						List.of(
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(1)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(2)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(3)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(4)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(5)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(6)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(7)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(8)).build())),
-								DataComponentIngredient.of(true, new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(9)).build())))
-						,List.of(
-				new ItemStackTemplate(ModItems.INFUSED_TOTEM.get()),
-				new ItemStackTemplate(Items.GLASS_BOTTLE)
-				))
-				.unlockedBy("has_totem_fragment", has(ModItems.TOTEM_FRAGMENT.get())).save(output, PotionTotems.resourceKey(Registries.RECIPE, "infused_totem_from_infusing"));
+								Ingredient.of(ModItems.TOTEM_FRAGMENT.get()),
+								Ingredient.of(ModItems.TOTEM_FRAGMENT.get()),
+								Ingredient.of(ModItems.TOTEM_FRAGMENT.get()),
+								Ingredient.of(ModItems.TOTEM_FRAGMENT.get()),
+								Ingredient.of(Items.POTION)
+						),
+						List.of(
+								new ItemStackTemplate(ModItems.INFUSED_TOTEM.get()),
+								new ItemStackTemplate(Items.GLASS_BOTTLE)
+						))
+				.unlockedBy("has_potion", has(Items.POTION))
+				.unlockedBy("has_totem_fragment", has(ModItems.TOTEM_FRAGMENT.get()))
+				.save(output, PotionTotems.resourceKey(Registries.RECIPE, "infused_totem_from_infusing"));
 
 		CrusherRecipeBuilder.crushing(RecipeCategory.MISC, Ingredient.of(Items.TOTEM_OF_UNDYING), List.of(
 				new ItemStackTemplate(ModItems.TOTEM_FRAGMENT.get(), 1, DataComponentPatch.builder().set(ModDataComponents.TOTEM_FRAGMENT.get(), new TotemFragmentComponent(1)).build()),

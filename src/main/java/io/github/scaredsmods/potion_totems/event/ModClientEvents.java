@@ -21,15 +21,13 @@ package io.github.scaredsmods.potion_totems.event;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.render.AdvancedInfuserBER;
 import io.github.scaredsmods.potion_totems.block.entity.render.InfuserBER;
-import io.github.scaredsmods.potion_totems.component.TotemFragmentComponent;
 import io.github.scaredsmods.potion_totems.component.property.TotemFragmentProperty;
 import io.github.scaredsmods.potion_totems.registry.*;
-import io.github.scaredsmods.potion_totems.pack.Resourcepack;
+import io.github.scaredsmods.potion_totems.pack.ResourcePack;
 import io.github.scaredsmods.potion_totems.screen.AdvancedInfuserScreen;
 import io.github.scaredsmods.potion_totems.screen.CrusherScreen;
 import io.github.scaredsmods.potion_totems.screen.InfuserScreen;
 import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
-import net.minecraft.client.color.item.Potion;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -85,7 +83,7 @@ public class ModClientEvents {
 	}
 
 
-	//TODO: Re-add BER's
+
 	@SubscribeEvent
 	public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(ModBlockEntities.BE_INFUSER.get(), InfuserBER::new);
@@ -95,7 +93,7 @@ public class ModClientEvents {
 
 	@SubscribeEvent
 	public static void onFMLLoadComplete(FMLLoadCompleteEvent event) throws IOException {
-		Resourcepack pack = PotionTotems.GENERATED_PACK;
+		ResourcePack pack = PotionTotems.GENERATED_PACK;
 		BuiltInRegistries.POTION.stream().forEach(potion -> {
 			List<MobEffect> effects = potion.getEffects().stream()
 					.map(MobEffectInstance::getEffect)
@@ -133,4 +131,5 @@ public class ModClientEvents {
 			PotionTotems.LOGGER.info("No new mods found! {} will not re-apply!", pack.getName());
 		}
 	}
+
 }

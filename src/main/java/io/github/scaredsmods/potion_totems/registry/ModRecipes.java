@@ -4,6 +4,7 @@ import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.recipe.AdvancedInfuserRecipe;
 import io.github.scaredsmods.potion_totems.recipe.CrusherRecipe;
 import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,6 +24,14 @@ public class ModRecipes {
     });
 
     public static final RegistryEntry<RecipeSerializer<InfuserRecipe>> INFUSER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("infusing", () -> new RecipeSerializer<>(InfuserRecipe.CODEC, InfuserRecipe.STREAM_CODEC));
+
+    public static final RegistryEntry<RecipeType<AdvancedInfuserRecipe>> ADVANCED_INFUSER_RECIPE_TYPE = RECIPE_TYPES.register("advanced_infusing", () -> new RecipeType<>() {
+        @Override
+        public String toString() {
+            return "advanced_infusing";
+        }
+    });
+    public static final RegistryEntry<RecipeSerializer<AdvancedInfuserRecipe>> ADVANCED_INFUSER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("advanced_infusing", () -> new RecipeSerializer<>(AdvancedInfuserRecipe.CODEC, AdvancedInfuserRecipe.STREAM_CODEC));
 
     public static final RegistryEntry<RecipeType<CrusherRecipe>> CRUSHING_RECIPE_TYPE = RECIPE_TYPES.register("crushing", () -> new RecipeType<>() {
         @Override

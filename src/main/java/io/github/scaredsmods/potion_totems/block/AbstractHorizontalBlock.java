@@ -17,18 +17,24 @@
 */
 package io.github.scaredsmods.potion_totems.block;
 
+import io.github.scaredsmods.potion_totems.block.entity.AbstractTickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -77,6 +83,14 @@ public abstract class AbstractHorizontalBlock extends BaseEntityBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(HORIZONTAL_FACING);
+	}
+	@Override
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		if (blockEntity instanceof AbstractTickingBlockEntity ticking) {
+			ticking.drops();
+		}
+		return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
 	}
 
 	protected static VoxelShape calculateShapes(Direction to, VoxelShape shape) {

@@ -1,16 +1,19 @@
 package io.github.scaredsmods.potion_totems.recipe;
 
+import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.scaredsmods.potion_totems.recipe.input.InfuserRecipeInput;
 import io.github.scaredsmods.potion_totems.registry.ModRecipeBookCategories;
 import io.github.scaredsmods.potion_totems.registry.ModRecipes;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
@@ -43,10 +46,21 @@ public record InfuserRecipe(List<Ingredient> inputs, List<ItemStackTemplate> out
     public boolean matches(InfuserRecipeInput infuserRecipeInput, Level level) {
         if (level.isClientSide()) return false;
         for (int i = 0; i < inputs.size(); i++) {
-            if(!inputs.get(i).test(infuserRecipeInput.getItem(i))) {
+            if (!inputs.get(i).test(infuserRecipeInput.getItem(i))) {
                 return false;
             }
         }
+
+        ItemStack potionStack = infuserRecipeInput.getItem(4);
+
+        if (!potionStack.has(DataComponents.POTION_CONTENTS)) {
+            return false;
+        }
+        PotionContents contents = potionStack.get(DataComponents.POTION_CONTENTS);
+        if (Iterables.isEmpty(contents.getAllEffects())) {
+            return false;
+        }
+
         return true;
     }
 

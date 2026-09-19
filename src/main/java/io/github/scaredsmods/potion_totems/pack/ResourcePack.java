@@ -37,38 +37,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class Resourcepack {
+public class ResourcePack extends AbstractPack {
 
-	private final String name;
-	private final String description;
-	private final int packFormat;
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Map<String, String> translationMap = new HashMap<>();
 
-	public Resourcepack(String name, String description, int packFormat) {
-		this.name = name;
-		this.description = description;
-		this.packFormat = packFormat;
+	public ResourcePack(String name, String description, int[] packFormat, int[] minPackFormat, int[] maxPackFormat) {
+		super(name, description, PackType.RESOURCE_PACK, packFormat, minPackFormat, maxPackFormat);
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-	public int getPackFormat() {
-		return this.packFormat;
-	}
-
+	@Override
 	public void write() throws IOException {
 		if (!Files.exists(this.getPath())) {
-			Files.createDirectory(getPath());
+			Files.createDirectory(this.getPath());
 		}
 		writeMetadata();
 		JsonObject json = new JsonObject();
@@ -81,35 +65,7 @@ public class Resourcepack {
 		}
 	}
 
-	private void writeMetadata() throws IOException {
-		JsonObject root = new JsonObject();
-		JsonObject pack = new JsonObject();
 
-		root.add("pack", pack);
-		pack.addProperty("pack_format", this.packFormat);
-		pack.addProperty("description", this.description);
-		Files.writeString(this.getPath().resolve("pack.mcmeta"), GSON.toJson(root), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-	}
-
-	public void writePackIcon(String modId) {
-		Path filePath = getPath().resolve("pack.png");
-		ModList.get().getMods().forEach(mod -> {
-			if (mod.getModId().equals(modId)) {
-				mod.getLogoFile().map(logoFile -> {
-					Pack.ResourcesSupplier resourcePack = ResourcePackLoader.getPackFor(mod.getModId()).get();
-					try (PackResources packResources = resourcePack.openPrimary(new PackLocationInfo("mod/" + mod.getModId(), Component.empty(), PackSource.BUILT_IN, Optional.empty()))) {
-						IoSupplier<InputStream> logoResource = packResources.getRootResource(logoFile.split("[/\\\\]"));
-						assert logoResource != null;
-						InputStream resources = logoResource.get();
-						Files.write(filePath, resources.readAllBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-					} catch (IOException | IllegalArgumentException e) {
-						throw new RuntimeException(e);
-					}
-					return logoFile;
-				});
-			}
-		});
-	}
 
 public TranslationModule getTranslationModule() {
 		return new TranslationModule();
@@ -119,14 +75,11 @@ public TranslationModule getTranslationModule() {
 		Minecraft mc = Minecraft.getInstance();
 		PackRepository packRepository = mc.getResourcePackRepository();
 		packRepository.reload();
-		packRepository.addPack("file/" + this.name);
+		packRepository.addPack("file/" + getName());
 		packRepository.reload();
 		mc.reloadResourcePacks();
 	}
 
-	private Path getPath() {
-		return Paths.get("resourcepacks/" + name);
-	}
 
 	public static class TranslationModule {
 

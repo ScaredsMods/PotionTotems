@@ -23,7 +23,7 @@ import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.screen.menu.AdvancedInfuserMenu;
 import io.github.scaredsmods.potion_totems.screen.menu.CrusherMenu;
-import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenuRework;
+import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -33,7 +33,7 @@ import net.neoforged.neoforge.network.IContainerFactory;
 public class ModMenuTypes {
 
 	public static final ResourcefulRegistry<MenuType<?>> MENUS = ResourcefulRegistries.create(BuiltInRegistries.MENU, PotionTotems.MOD_ID);
-	public static final RegistryEntry<MenuType<InfuserMenuRework>> INFUSER_MENU = registerMenuType("infuser" , InfuserMenuRework::new);
+	public static final RegistryEntry<MenuType<InfuserMenu>> INFUSER_MENU = registerMenuType("infuser" , InfuserMenu::new);
 	public static final RegistryEntry<MenuType<AdvancedInfuserMenu>> ADVANCED_INFUSER_MENU = registerMenuType("advanced_infuser", AdvancedInfuserMenu::new);
 	public static final RegistryEntry<MenuType<CrusherMenu>> CRUSHER_MENU = registerMenuType("crusher", CrusherMenu::new);
 
