@@ -25,7 +25,8 @@ jobs:
       # You can run `git update-index --chmod +x gradlew` then remove this step.
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
-
+      - name: Apply Spotless
+        run: ./gradlew spotlessApply
       - name: Build with Gradle
         run: ./gradlew build
       - name: Publish to CurseForge and Modrinth
