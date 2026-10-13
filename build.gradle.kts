@@ -76,6 +76,8 @@ repositories {
 
 
 java {
+    withSourcesJar()
+    withJavadocJar()
     toolchain {
         // Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
         languageVersion = JavaLanguageVersion.of(25)
@@ -161,7 +163,6 @@ dependencies {
     //runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
 }
 tasks {
-
     withType<ProcessResources> {
         val replaceProperties = mapOf(
             "minecraft_version" to mcVersion,
@@ -185,6 +186,9 @@ tasks {
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+    }
+    withType<Javadoc> {
+        classpath = configurations["runtimeClasspath"].asFileTree
     }
     withType<Jar> {
         when(env) {
