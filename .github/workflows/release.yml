@@ -1,0 +1,40 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: chmod +x ./gradlew
+      - run: ./gradlew build -Penv=release
+
+      - run: ./gradlew uploadArtifacts -Penv=release
+        env:
+          CF_TOKEN: ${{ secrets.CF_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            build/libs/*-javadoc.jar
+            build/libs/*-sources.jar
+            build/libs/!(*-@(sources|javadoc)).jar
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

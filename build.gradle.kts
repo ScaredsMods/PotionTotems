@@ -191,6 +191,7 @@ tasks {
         classpath = configurations["runtimeClasspath"].asFileTree
     }
     withType<Jar> {
+        if (name == "sourcesJar" || name == "javadocJar") return@withType
         when(env) {
             "dev" -> archiveFileName = "${modName}-${modVersion}.$env+$devVersion.jar"
             "release" -> archiveFileName = "$modName-${modVersion}.jar"
