@@ -9,7 +9,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.140"
     id("me.shedaniel.unified-publishing") version "0.1.13"
     id("com.diffplug.spotless") version("6.19.0")
-    id("org.jetbrains.dokka") version("2.0.0")
+    id("org.jetbrains.dokka") version("1.9.20")
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -152,7 +152,7 @@ configurations {
 }
 
 dependencies {
-    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:2.0.0")
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.20")
     jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
