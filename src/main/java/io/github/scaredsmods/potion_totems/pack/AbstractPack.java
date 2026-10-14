@@ -4,6 +4,7 @@ import com.google.gson.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
@@ -22,21 +23,24 @@ import java.util.Optional;
 
 public abstract class AbstractPack {
 
+    /**
+     * {@link String} name - The name of the pack that get's generated <br>
+     * {@link String} description - A description of the pack, that shortly describes what the pack does <br>
+     * {@link PackType} packType - What type of pack this is: Resource or datapack <br>
+     * {@link PackFormat.IntermediaryFormat} packFormat - The format this pack was developed for. Example: For 26.1.2, this would be 84.0. Where 84 is the major version and 0 is the minor version. <br>
+     * {@link Gson} GSON - Writes json objects to json files <br>
+     */
     private final String name;
     private final String description;
     private final PackType type;
-    private final int[] packFormat;
-    private final int[] minPackFormat;
-    private final int[] maxPackFormat;
+    private final PackFormat.IntermediaryFormat packFormat;
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public AbstractPack(String name, String description, PackType type, int packFormat[], int[] minPackFormat, int[] maxPackFormat) {
+    public AbstractPack(String name, String description, PackType type, PackFormat.IntermediaryFormat packFormat) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.packFormat = packFormat;
-        this.minPackFormat = minPackFormat;
-        this.maxPackFormat = maxPackFormat;
     }
 
     public Path getPath() {
@@ -50,16 +54,8 @@ public abstract class AbstractPack {
     public String getDescription() {
         return this.description;
     }
-    public int[] getPackFormat() {
+    public PackFormat.IntermediaryFormat getPackFormat() {
         return this.packFormat;
-    }
-
-    public int[] getMinPackFormat() {
-        return this.minPackFormat;
-    }
-
-    public int[] getMaxPackFormat() {
-        return this.maxPackFormat;
     }
 
     public abstract void write() throws IOException;
@@ -68,17 +64,19 @@ public abstract class AbstractPack {
         JsonObject root = new JsonObject();
         JsonObject pack = new JsonObject();
 
-        JsonArray format = new JsonArray();
-        Arrays.stream(getPackFormat()).asDoubleStream().forEach(format::add);
-        JsonArray minFormat = new JsonArray();
-        Arrays.stream(getMinPackFormat()).asDoubleStream().forEach(minFormat::add);
-        JsonArray maxFormat = new JsonArray();
-        Arrays.stream(getMaxPackFormat()).asDoubleStream().forEach(maxFormat::add);
+        JsonArray minArray =  new JsonArray();
+        if (getPackFormat().min().isEmpty()) return;
+        minArray.add(getPackFormat().min().get().major());
+        minArray.add(getPackFormat().min().get().minor());
+
+        JsonArray maxArray =  new JsonArray();
+        if (getPackFormat().max().isEmpty()) return;
+        maxArray.add(getPackFormat().max().get().major());
+        maxArray.add(getPackFormat().max().get().minor());
 
         root.add("pack", pack);
-        pack.add("pack_format", format);
-        pack.add("min_format", minFormat);
-        pack.add("max_format", maxFormat);
+        pack.add("min_format", minArray);
+        pack.add("max_format", maxArray);
         pack.addProperty("description", getDescription());
         Files.writeString(this.getPath().resolve("pack.mcmeta"), GSON.toJson(root), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class DataPack extends AbstractPack {
 
-    public DataPack(String name, String description, int[] packFormat, int[] minPackFormat, int[] maxPackFormat) {
+    public DataPack(String name, String description, double packFormat, double minPackFormat, double maxPackFormat) {
         super(name, description, PackType.DATA_PACK, packFormat, minPackFormat, maxPackFormat);
     }
 

@@ -40,8 +40,8 @@ public class PotionTotems {
 
 	public static final String MOD_ID = "potion_totems";
 	public static final Logger LOGGER = LoggerFactory.getLogger("PotionTotems");
-	public static final ResourcePack GENERATED_PACK = new ResourcePack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", new int[]{84,0}, new int[]{84,0}, new int[]{84,0});
-	public static final DataPack GENERATED_DATA = new DataPack("PotionTotemsExtraData", "Adds more data to PotionTotems", new int[]{101,1}, new int[]{101,1}, new int[]{101,1});
+	public static final ResourcePack GENERATED_PACK = new ResourcePack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", 84.0, 84.0, 84.0);
+	public static final DataPack GENERATED_DATA = new DataPack("PotionTotemsExtraData", "Adds more data to PotionTotems", 101.1, 101.1, 101.1);
 
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
 		ModItems.init();

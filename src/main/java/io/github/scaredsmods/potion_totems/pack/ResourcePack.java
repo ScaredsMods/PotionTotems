@@ -45,7 +45,7 @@ public class ResourcePack extends AbstractPack {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Map<String, String> translationMap = new HashMap<>();
 
-	public ResourcePack(String name, String description, int[] packFormat, int[] minPackFormat, int[] maxPackFormat) {
+	public ResourcePack(String name, String description, double packFormat, double minPackFormat, double maxPackFormat) {
 		super(name, description, PackType.RESOURCE_PACK, packFormat, minPackFormat, maxPackFormat);
 	}
 
