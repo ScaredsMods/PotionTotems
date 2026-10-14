@@ -218,7 +218,8 @@ tasks {
             create("main") {
                 sourceRoots.from(file("src/main/java"))
                 classpath.from(sourceSets.main.get().runtimeClasspath)
-                //jdkVersion.set(25)
+                noJdkLink.set(true)
+                noStdlibLink.set(true)
                 skipEmptyPackages.set(true)
             }
         }
