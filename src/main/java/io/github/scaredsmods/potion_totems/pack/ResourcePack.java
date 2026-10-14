@@ -25,6 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
@@ -45,8 +46,8 @@ public class ResourcePack extends AbstractPack {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Map<String, String> translationMap = new HashMap<>();
 
-	public ResourcePack(String name, String description, double packFormat, double minPackFormat, double maxPackFormat) {
-		super(name, description, PackType.RESOURCE_PACK, packFormat, minPackFormat, maxPackFormat);
+	public ResourcePack(String name, String description, PackFormat.IntermediaryFormat packFormat) {
+		super(name, description, PackType.RESOURCE_PACK, packFormat);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import io.github.scaredsmods.potion_totems.registry.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.tags.TagKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 @Mod(PotionTotems.MOD_ID)
@@ -40,9 +42,8 @@ public class PotionTotems {
 
 	public static final String MOD_ID = "potion_totems";
 	public static final Logger LOGGER = LoggerFactory.getLogger("PotionTotems");
-	public static final ResourcePack GENERATED_PACK = new ResourcePack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", 84.0, 84.0, 84.0);
-	public static final DataPack GENERATED_DATA = new DataPack("PotionTotemsExtraData", "Adds more data to PotionTotems", 101.1, 101.1, 101.1);
-
+	public static final ResourcePack GENERATED_PACK = new ResourcePack("PotionTotemsExtraAssets", "Adds more assets to PotionTotems.", new PackFormat.IntermediaryFormat(Optional.of(PackFormat.of(84)), Optional.of(PackFormat.of(84)), Optional.empty(), Optional.empty()));
+	public static final DataPack GENERATED_DATA = new DataPack("PotionTotemsExtraData", "Adds more data to PotionTotems", new PackFormat.IntermediaryFormat(Optional.of(PackFormat.of(84)), Optional.of(PackFormat.of(84)), Optional.empty(), Optional.empty()));
 	public PotionTotems(IEventBus bus, ModContainer container) throws IOException {
 		ModItems.init();
 		ModBlocks.BLOCKS.init();

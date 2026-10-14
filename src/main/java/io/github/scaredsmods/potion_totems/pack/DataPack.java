@@ -1,11 +1,13 @@
 package io.github.scaredsmods.potion_totems.pack;
 
+import net.minecraft.server.packs.metadata.pack.PackFormat;
+
 import java.io.IOException;
 
 public class DataPack extends AbstractPack {
 
-    public DataPack(String name, String description, double packFormat, double minPackFormat, double maxPackFormat) {
-        super(name, description, PackType.DATA_PACK, packFormat, minPackFormat, maxPackFormat);
+    public DataPack(String name, String description, PackFormat.IntermediaryFormat packFormat) {
+        super(name, description, PackType.DATA_PACK, packFormat);
     }
 
     @Override
