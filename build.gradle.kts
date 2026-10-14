@@ -172,10 +172,10 @@ val mainCompileClasspath = sourceSets.main.get().compileClasspath
 dokka {
     moduleName.set(modName)
 
-    dokkaSourceSets.register("main") {
-        // Java-only project (no Kotlin plugin), so the source set is declared manually.
-        sourceRoots.from(file("src/main/java"))
-        // NeoForge/Minecraft + library classes, so signatures resolve.
+    // Dokka already creates a source set for the Java plugin's "main" sources,
+    // so don't register another one (that caused "common source roots" errors).
+    // Only make sure NeoForge/Minecraft + library classes are on its classpath.
+    dokkaSourceSets.configureEach {
         classpath.from(mainCompileClasspath)
     }
 

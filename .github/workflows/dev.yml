@@ -27,7 +27,7 @@ jobs:
 
       - name: Zip Dokka output
         run: |
-          test -d build/dokka/gfm || { echo "No Dokka GFM output found:"; ls -R build/dokka || true; exit 1; }
+          find build/dokka/gfm -name '*.md' 2>/dev/null | grep -q . || { echo "No Markdown output in build/dokka/gfm:"; ls -R build/dokka || true; exit 1; }
           cd build/dokka/gfm
           zip -r ../../dokka-gfm.zip .
 
