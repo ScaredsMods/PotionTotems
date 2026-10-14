@@ -9,7 +9,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.140"
     id("me.shedaniel.unified-publishing") version "0.1.13"
     id("com.diffplug.spotless") version("6.19.0")
-    id("org.jetbrains.dokka") version("1.9.20")
+    id("org.jetbrains.dokka") version "2.2.0"
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -152,7 +152,8 @@ configurations {
 }
 
 dependencies {
-    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.20")
+    dokkaPlugin("org.jetbrains.dokka:gfm-plugin:2.2.0")
+
     jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
@@ -164,6 +165,25 @@ dependencies {
     //compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
     //runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
 }
+// Dokka (V2 plugin): Markdown (GFM) API reference for the docs website.
+// The GFM plugin above makes Dokka render Markdown; the zip step in the workflows expects build/dokka/gfm.
+val mainCompileClasspath = sourceSets.main.get().compileClasspath
+
+dokka {
+    moduleName.set(modName)
+
+    dokkaSourceSets.register("main") {
+        // Java-only project (no Kotlin plugin), so the source set is declared manually.
+        sourceRoots.from(file("src/main/java"))
+        // NeoForge/Minecraft + library classes, so signatures resolve.
+        classpath.from(mainCompileClasspath)
+    }
+
+    dokkaPublications.configureEach {
+        outputDirectory.set(layout.buildDirectory.dir("dokka/gfm"))
+    }
+}
+
 tasks {
     withType<ProcessResources> {
         val replaceProperties = mapOf(
@@ -211,20 +231,7 @@ tasks {
     }
 }
 
-tasks {
-    val dokkaGfm by getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
-        outputDirectory.set(file("build/dokka/gfm"))
-        dokkaSourceSets {
-            create("main") {
-                sourceRoots.from(file("src/main/java"))
-                classpath.from(sourceSets.main.get().runtimeClasspath)
-                noJdkLink.set(true)
-                noStdlibLink.set(true)
-                skipEmptyPackages.set(true)
-            }
-        }
-    }
-}
+
 
 spotless {
     java {
@@ -285,5 +292,3 @@ idea {
 fun setEnv(value : String) {
     env = value
 }
-
-
