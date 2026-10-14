@@ -9,7 +9,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.140"
     id("me.shedaniel.unified-publishing") version "0.1.13"
     id("com.diffplug.spotless") version("6.19.0")
-    id("org.jetbrains.dokka") version("2.1.0")
+    id("org.jetbrains.dokka") version("2.0.0")
 }
 
 tasks.named<Wrapper>("wrapper").configure {
