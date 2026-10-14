@@ -1,7 +1,6 @@
 name: release
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - 'v*'
@@ -23,8 +22,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - run: chmod +x ./gradlew
-      - run: ./gradlew spotlessApply
-      - run: ./gradlew build -Penv=release
+      - run: ./gradlew build dokkaGfm -Penv=release
+
+      - name: Zip Dokka output
+        run: |
+          cd build/dokka/gfm
+          zip -r ../../dokka-gfm.zip .
 
       - run: ./gradlew uploadArtifacts -Penv=release
         env:
@@ -34,9 +37,9 @@ jobs:
       - uses: softprops/action-gh-release@v3
         with:
           files: |
-            build/libs/*-javadoc.jar
             build/libs/*-sources.jar
-            build/libs/!(*-@(sources|javadoc)).jar
+            build/libs/!(*-@(sources)).jar
+            build/dokka-gfm.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

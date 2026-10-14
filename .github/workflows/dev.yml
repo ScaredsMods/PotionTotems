@@ -1,9 +1,8 @@
 name: dev-build
 
 on:
-  workflow_dispatch:
   push:
-    branches: [26.1]
+    branches: [main]
 
 permissions:
   contents: write
@@ -22,13 +21,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - run: chmod +x ./gradlew
-      - run: ./gradlew spotlessApply
-      - run: ./gradlew build -Penv=dev -PdevVersion=${{ github.run_number }}
+      - run: ./gradlew build dokkaGfm -Penv=dev -PdevVersion=${{ github.run_number }}
+
+      - name: Zip Dokka output
+        run: |
+          cd build/dokka/gfm
+          zip -r ../../dokka-gfm.zip .
 
       - uses: softprops/action-gh-release@v3
         with:
           tag_name: "dev-${{ github.run_number }}"
-          files: build/libs/*.jar
+          files: |
+            build/libs/*.jar
+            build/dokka-gfm.zip
           generate_release_notes: false
           prerelease: true
           make_latest: false

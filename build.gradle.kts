@@ -9,6 +9,7 @@ plugins {
     id("net.neoforged.moddev") version "2.0.140"
     id("me.shedaniel.unified-publishing") version "0.1.13"
     id("com.diffplug.spotless") version("6.19.0")
+    id("org.jetbrains.dokka") version("2.0.0")
 }
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -151,6 +152,7 @@ configurations {
 }
 
 dependencies {
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:2.0.0")
     jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1:$resourcefulLibVersion")
     implementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+neoforge")
@@ -205,6 +207,20 @@ tasks {
                 println("Release $modVersion: Artifacts were published to curseforge and modrinth!")
             }
             "dev" -> println("Dev environment found. No artifacts were published!")
+        }
+    }
+}
+
+tasks {
+    val dokkaGfm by getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
+        outputDirectory.set(file("build/dokka/gfm"))
+        dokkaSourceSets {
+            create("main") {
+                sourceRoots.from(file("src/main/java"))
+                classpath.from(sourceSets.main.get().runtimeClasspath)
+                jdkVersion.set(25)
+                skipEmptyPackages.set(true)
+            }
         }
     }
 }
