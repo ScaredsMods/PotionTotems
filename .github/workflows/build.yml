@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
 
       - uses: gradle/actions/setup-gradle@v4
-
+      - run: ./gradlew spotlessApply
       - run: chmod +x ./gradlew
       - run: ./gradlew spotlessApply
       - run: ./gradlew build -Penv=dev
