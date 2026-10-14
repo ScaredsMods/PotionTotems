@@ -177,6 +177,8 @@ dokka {
     // Only make sure NeoForge/Minecraft + library classes are on its classpath.
     dokkaSourceSets.configureEach {
         classpath.from(mainCompileClasspath)
+        // Don't list the dozens of members inherited from Minecraft classes on every page.
+        suppressInheritedMembers.set(true)
     }
 
     dokkaPublications.configureEach {
