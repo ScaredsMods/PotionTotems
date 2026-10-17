@@ -24,16 +24,24 @@ import java.util.Optional;
 public abstract class AbstractPack {
 
     /**
-     * {@link String} name - The name of the pack that get's generated <br>
-     * {@link String} description - A description of the pack, that shortly describes what the pack does <br>
-     * {@link PackType} packType - What type of pack this is: Resource or datapack <br>
-     * {@link PackFormat.IntermediaryFormat} packFormat - The format this pack was developed for. Example: For 26.1.2, this would be 84.0. Where 84 is the major version and 0 is the minor version. <br>
-     * {@link Gson} GSON - Writes json objects to json files <br>
+     * {@link String} name - The name of the pack that gets generated <br>
      */
     private final String name;
+    /**
+     * {@link String} description - A description of the pack, that shortly describes what the pack does <br>
+     */
     private final String description;
+    /**
+     * {@link PackType} packType - What type of pack this is: Resource or datapack <br>
+     */
     private final PackType type;
+    /**
+     * {@link PackFormat.IntermediaryFormat} packFormat - The format this pack was developed for. Example: For 26.1.2, this would be 84.0. Where 84 is the major version and 0 is the minor version. <br>
+     */
     private final PackFormat.IntermediaryFormat packFormat;
+    /**
+     * {@link Gson} GSON - Writes json objects to json files <br>
+     */
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public AbstractPack(String name, String description, PackType type, PackFormat.IntermediaryFormat packFormat) {
@@ -58,8 +66,20 @@ public abstract class AbstractPack {
         return this.packFormat;
     }
 
+    /**
+     * <p>A method that writes <b>all</b> data to disk.</p>
+     * <p>Since that data can be different, this method is meant to be implemented by the extending class.</p>
+     * <p>Example data would be {@link AbstractPack#writeMetadata()} <b>and must be included, otherwise Minecraft will not recognise the pack!</b></p>
+     * @throws IOException
+     */
     public abstract void write() throws IOException;
 
+    /**
+     * <p>This method is used for writing the pack.mcmeta file characterising the pack.</p>
+     * <p>This doesn't really need to be changed, as the format is pretty much the same for basic resource and datapacks, it doesn't need to be implemented.</p>
+     * <p><b>This method must be called in {@link AbstractPack#write()}, otherwise Minecraft will not recognise the pack!</b></p>
+     * @throws IOException
+     */
     public void writeMetadata() throws IOException {
         JsonObject root = new JsonObject();
         JsonObject pack = new JsonObject();
@@ -81,6 +101,11 @@ public abstract class AbstractPack {
         Files.writeString(this.getPath().resolve("pack.mcmeta"), GSON.toJson(root), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
 
+    /**
+     * An optional method that does not need to be called, but exists to give authors an option to customise their pack.
+     * By default, it will get the logoFile of the given mod_id, however you can override this method if you want to specify a different location.
+     * @param modId The mod_id to grab the logoFile from
+     */
     public void writePackIcon(String modId) {
         Path filePath = getPath().resolve("pack.png");
         ModList.get().getMods().forEach(mod -> {

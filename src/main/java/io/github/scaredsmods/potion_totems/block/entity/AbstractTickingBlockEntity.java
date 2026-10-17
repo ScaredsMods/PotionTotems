@@ -106,14 +106,9 @@ public abstract class AbstractTickingBlockEntity extends BlockEntity implements 
 	public abstract void resetProgress();
 	public abstract void drops();
 	public abstract boolean isOutputSlotEmptyOrReceivable();
-	@SuppressWarnings("unchecked")
 	public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> getCurrentRecipe() {
 		return Optional.empty();
 	}
-
-
-
-
 	@Override
 	public void onDataPacket(Connection net, ValueInput valueInput) {
 		loadAdditional(valueInput);

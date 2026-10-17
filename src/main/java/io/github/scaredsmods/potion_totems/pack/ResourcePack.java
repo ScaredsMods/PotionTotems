@@ -17,38 +17,36 @@
 */
 package io.github.scaredsmods.potion_totems.pack;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.PackLocationInfo;
-import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.metadata.pack.PackFormat;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.world.item.Item;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.resource.ResourcePackLoader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResourcePack extends AbstractPack {
 
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static final Map<String, String> translationMap = new HashMap<>();
+    /**
+     * Key-Value map of String and String, symbolising the translation key and the readable representation.
+     */
+    private static final Map<String, String> translationMap = new HashMap<>();
 
 	public ResourcePack(String name, String description, PackFormat.IntermediaryFormat packFormat) {
 		super(name, description, PackType.RESOURCE_PACK, packFormat);
 	}
+
+    /**
+     * An example implementation of {@link AbstractPack#write()}, used for resourcepacks.
+     * In this case, only translations get written to disk, since that is all this mod needs.
+     * @throws IOException
+     */
 
 	@Override
 	public void write() throws IOException {
@@ -66,12 +64,15 @@ public class ResourcePack extends AbstractPack {
 		}
 	}
 
-
-
-public TranslationModule getTranslationModule() {
+    public TranslationModule getTranslationModule() {
 		return new TranslationModule();
-}
+    }
 
+    /**
+     * A method that must be called if you want to actually use the resources generated.
+     * It works purely client-side, as it should, and adds your pack to the pack repository, ready to be loaded.
+     * It can be loaded anytime a client-side event happens, like pressing a key.
+     */
 	public void apply() {
 		Minecraft mc = Minecraft.getInstance();
 		PackRepository packRepository = mc.getResourcePackRepository();
