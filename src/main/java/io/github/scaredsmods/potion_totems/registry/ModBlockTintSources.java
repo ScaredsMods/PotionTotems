@@ -79,7 +79,7 @@ public class ModBlockTintSources {
 					return 0xFFFFFF;
 				}
 				ItemStack involvedStack;
-				ItemStack potionStack = blockEntity.get().stackHandler.getResource(AdvancedInfuserBlockEntity.POTION_INPUT_SLOT).toStack();
+				ItemStack potionStack = blockEntity.get().itemStacksResourceHandler.getResource(AdvancedInfuserBlockEntity.INPUT_SLOT_5).toStack();
 
 				if (!potionStack.isEmpty() && potionStack.has(DataComponents.POTION_CONTENTS)) {
 					involvedStack = potionStack;

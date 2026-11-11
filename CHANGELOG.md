@@ -1,4 +1,6 @@
 ## 2.0.0
+- Update to 26.1.2
+
 - Renamed ```init``` package to ```registry```
 - Removed ```ModResourceKeys``` class
 - Renamed ```data.gen``` package to ```datagen```
@@ -6,9 +8,9 @@
 - Reworked infuser recipes
 - New item: Infusion Core
 - New block: Infuser Frame
-- Added loottables for both infusers (Why weren't they here before?)
+- Added loot tables for both infusers (Why weren't they here before?)
 - New machine: Crusher. The crusher crushes totems down to fragments. They are then used in the infuser recipes (see below)
-- Infusers rework: They no longer accept a totem and a potion: Instead they accept four fragments and a potion. They have custom recipe types, so you can add custom recipes. 
+- Infusers rework: They no longer accept a totem and a potion: Instead they accept four fragments and a potion. They have custom recipe types, so you can add custom recipes.
 
 ## 1.1.3
 This update contains more technical changes than additions.

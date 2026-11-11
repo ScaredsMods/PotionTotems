@@ -18,17 +18,15 @@
 package io.github.scaredsmods.potion_totems.event;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.registry.ModPacks;
 import io.github.scaredsmods.potion_totems.registry.ModPotions;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -38,77 +36,17 @@ import net.neoforged.neoforge.resource.ResourcePackLoader;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 
 
 @EventBusSubscriber(modid = PotionTotems.MOD_ID)
 public class ModGameEvents {
 
-	private static final List<Holder<Potion>> regularPotionsTier1 = List.of(Potions.INFESTED, Potions.OOZING, Potions.LUCK, Potions.LEAPING, Potions.HEALING);
-	private static final List<Holder<Potion>> regularPotionsTier2 = List.of(Potions.NIGHT_VISION, Potions.STRONG_REGENERATION, Potions.POISON);
-	private static final List<Holder<Potion>> regularPotionsTier3 = List.of(ModPotions.AGGRESSION.holder(), Potions.STRONG_STRENGTH, Potions.STRONG_POISON);
-	private static final List<Holder<Potion>> potionTotemsTier1 = List.of(Potions.INVISIBILITY, Potions.LEAPING, Potions.FIRE_RESISTANCE);
-	private static final List<Holder<Potion>> potionTotemsTier2 = List.of(Potions.HEALING, Potions.REGENERATION, Potions.STRENGTH);
-	private static final List<Holder<Potion>> potionTotemsTier3 = List.of(ModPotions.AGGRESSION.holder());
-
-	/*
-	@SubscribeEvent
-	public static void addCustomTrades(VillagerTradesEvent event) {
-		if(event.getType() == ModVillagers.TOTEM_MASTER.holder().getKey()) {
-			Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-
-			int emeraldCost = 32;
-			int maxUses = 15;
-			float priceMultiplier = 0.05F;
-
-			VillagerUtils.makeTrade(trades, regularPotionsTier1, PotionType.POTION, 1, 1, priceMultiplier,  maxUses, emeraldCost);
-			VillagerUtils.makeTrade(trades, potionTotemsTier1, PotionType.POTION_TOTEM, 1,  0, maxUses - 10, 3, priceMultiplier * 1.5F, 0, emeraldCost);
-			VillagerUtils.makeTrade(trades, regularPotionsTier2, PotionType.POTION, 2, 2, priceMultiplier * 1.05F, maxUses - 5, emeraldCost + (emeraldCost / 2));
-			VillagerUtils.makeTrade(trades, potionTotemsTier2, PotionType.POTION, 2, 2, priceMultiplier * 1.05F, maxUses - 5, emeraldCost + (emeraldCost / 2));
-			VillagerUtils.makeTrade(trades, regularPotionsTier3, PotionType.POTION, 3, 3, priceMultiplier * 1.5F, maxUses - 10, emeraldCost * 2);
-			VillagerUtils.makeTrade(trades, potionTotemsTier3, PotionType.POTION_TOTEM, 3, 3, priceMultiplier * 1.5F, maxUses - 10, emeraldCost * 2);
-
-
-		}
-	}
-
-	 */
-
 	@SubscribeEvent
 	public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
 		event.getBuilder().addMix(Potions.WATER, Items.NETHERITE_INGOT, ModPotions.POSITIVE.holder());
 		event.getBuilder().addMix(Potions.WATER, Items.NETHER_STAR, ModPotions.NEGATIVE.holder());
 		event.getBuilder().addMix(Potions.WATER, Items.DRAGON_HEAD, ModPotions.NEUTRAL.holder());
-	}
-
-	@SubscribeEvent
-	public static void addPacks(AddPackFindersEvent event) {
-		if (event.getPackType() != PackType.SERVER_DATA) return;
-		event.addRepositorySource((consumer) -> {
-			Path packPath = PotionTotems.GENERATED_DATA.getPath();
-			if (!Files.isDirectory(packPath)) return;
-
-			PackLocationInfo locationInfo = new PackLocationInfo(
-					"potion_totems_data",
-					Component.literal("PotionTotems Extra Data"),
-					PackSource.BUILT_IN,
-					Optional.empty()
-			);
-
-			Pack.ResourcesSupplier resources = ResourcePackLoader.getPackFor(PotionTotems.MOD_ID).get();
-			Pack pack = Pack.readMetaAndCreate(
-					locationInfo,
-					resources,
-					PackType.SERVER_DATA,
-					new PackSelectionConfig(
-							true,
-							Pack.Position.TOP,
-							false
-					)
-			);
-			if (pack != null) consumer.accept(pack);
-		});
 	}
 
 }

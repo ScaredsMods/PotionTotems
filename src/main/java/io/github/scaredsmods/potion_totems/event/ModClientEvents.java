@@ -22,12 +22,14 @@ import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.render.AdvancedInfuserBER;
 import io.github.scaredsmods.potion_totems.block.entity.render.InfuserBER;
 import io.github.scaredsmods.potion_totems.component.property.TotemFragmentProperty;
+import io.github.scaredsmods.potion_totems.pack.resource.TranslationHolder;
 import io.github.scaredsmods.potion_totems.registry.*;
-import io.github.scaredsmods.potion_totems.pack.ResourcePack;
+import io.github.scaredsmods.potion_totems.pack.resource.ResourcePack;
 import io.github.scaredsmods.potion_totems.screen.AdvancedInfuserScreen;
 import io.github.scaredsmods.potion_totems.screen.CrusherScreen;
 import io.github.scaredsmods.potion_totems.screen.InfuserScreen;
 import io.github.scaredsmods.potion_totems.tint.item.ItemFromPotion;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -35,7 +37,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -43,7 +44,6 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
-import net.neoforged.neoforgespi.language.IModInfo;
 
 import java.io.IOException;
 import java.util.*;
@@ -92,44 +92,44 @@ public class ModClientEvents {
 
 
 	@SubscribeEvent
-	public static void onFMLLoadComplete(FMLLoadCompleteEvent event) throws IOException {
-		ResourcePack pack = PotionTotems.GENERATED_PACK;
-		BuiltInRegistries.POTION.stream().forEach(potion -> {
-			List<MobEffect> effects = potion.getEffects().stream()
-					.map(MobEffectInstance::getEffect)
-					.map(Holder::value)
-					.toList();
-			for (MobEffect effect : effects) {
-				Identifier id = BuiltInRegistries.MOB_EFFECT.getKey(effect);
-				String formattedName = Arrays.stream(id.getPath().split("_"))
-						.map(word -> word.substring(0,1).toUpperCase() + word.substring(1))
-						.collect(Collectors.joining(" "));
-				String translationKey = "item.potion_totems.infused_totem.effect." + id.getPath();
+	public static void onFMLLoadComplete(FMLLoadCompleteEvent event) {
+		event.enqueueWork(() -> {
+			try {
+				ResourcePack pack = ModPacks.initResources(Minecraft.getInstance().getResourcePackDirectory());
+				TranslationHolder enUs = pack.translations("en_us");
 
-				if (!id.getNamespace().equals("minecraft") && !id.getNamespace().equals(PotionTotems.MOD_ID)) {
-					pack.getTranslationModule().addTranslation(translationKey, "Infused Totem of " + formattedName);
+				BuiltInRegistries.POTION.stream().forEach(potion -> {
+					List<MobEffect> effects = potion.getEffects().stream()
+							.map(MobEffectInstance::getEffect)
+							.map(Holder::value)
+							.toList();
+					for (MobEffect effect : effects) {
+						Identifier id = BuiltInRegistries.MOB_EFFECT.getKey(effect);
+						String formattedName = Arrays.stream(id.getPath().split("_"))
+								.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+								.collect(Collectors.joining(" "));
+						String translationKey = "item.potion_totems.infused_totem.effect." + id.getPath();
+
+						if (!id.getNamespace().equals("minecraft") && !id.getNamespace().equals(PotionTotems.MOD_ID)) {
+							enUs.addTranslation(translationKey, "Infused Totem of " + formattedName);
+						}
+					}
+				});
+
+				boolean changed = pack.compareDiskBytes();
+				if (changed) {
+					pack.write();
+					pack.writePackIcon(PotionTotems.MOD_ID);
+					pack.apply();
+					PotionTotems.LOGGER.info("New mods were found! To be sure that no values are missed, {} will now re-apply!", pack.getName());
+				} else {
+					PotionTotems.LOGGER.info("No new mods found! {} will not re-apply!", pack.getName());
 				}
+
+			} catch (IOException e) {
+				PotionTotems.LOGGER.error("Failed to generate the extra assets pack", e);
 			}
 		});
-
-		Set<String> previousModIdsSet = new HashSet<>(ModConfigs.devConfig.devSection.loadedModIds.get());
-		Set<String> currentModIds = ModList.get().getMods().stream()
-				.map(IModInfo::getModId)
-				.filter(modId -> !modId.equals("java"))
-				.collect(Collectors.toSet());
-		Set<String> newMods = new HashSet<>(currentModIds);
-		newMods.removeAll(previousModIdsSet);
-		boolean hasNewMods = !newMods.isEmpty();
-		pack.write();
-		pack.writePackIcon(PotionTotems.MOD_ID);
-		if(hasNewMods) {
-			pack.apply();
-			PotionTotems.LOGGER.info("New mods were found! To be sure that no values are missed, {} will now re-apply!", pack.getName());
-			ModConfigs.devConfig.devSection.loadedModIds.validateAndSet(new ArrayList<>(currentModIds));
-			ModConfigs.devConfig.save();
-		} else {
-			PotionTotems.LOGGER.info("No new mods found! {} will not re-apply!", pack.getName());
-		}
 	}
 
 }
