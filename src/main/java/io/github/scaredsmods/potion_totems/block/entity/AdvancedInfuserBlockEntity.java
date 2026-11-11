@@ -17,8 +17,13 @@
 */
 package io.github.scaredsmods.potion_totems.block.entity;
 
+import io.github.scaredsmods.potion_totems.recipe.AdvancedInfuserRecipe;
+import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
+import io.github.scaredsmods.potion_totems.recipe.input.AdvancedInfuserRecipeInput;
+import io.github.scaredsmods.potion_totems.recipe.input.InfuserRecipeInput;
 import io.github.scaredsmods.potion_totems.registry.ModBlockEntities;
 import io.github.scaredsmods.potion_totems.registry.ModItems;
+import io.github.scaredsmods.potion_totems.registry.ModRecipes;
 import io.github.scaredsmods.potion_totems.screen.menu.AdvancedInfuserMenu;
 import io.github.scaredsmods.potion_totems.util.PotionUtils;
 import net.minecraft.core.BlockPos;
@@ -30,6 +35,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -39,73 +45,90 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Optional;
+
 public class AdvancedInfuserBlockEntity extends AbstractTickingBlockEntity {
 
-
-	public final ItemStacksResourceHandler stackHandler = new ItemStacksResourceHandler(4) {
+	public final ItemStacksResourceHandler itemStacksResourceHandler = new ItemStacksResourceHandler(7) {
 		@Override
-		public void onContentsChanged(int index, ItemStack previousContents) {
-			setChanged();
-			if (level != null && !level.isClientSide()) {
-				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-			}
-		}
-		@Override
-		public boolean isValid(int index, ItemResource resource) {
-			return switch (index) {
-				case INFUSED_TOTEM_INPUT_SLOT -> resource.is(ModItems.INFUSED_TOTEM.get());
-				case POTION_INPUT_SLOT -> resource.is(Items.POTION);
-				case INFUSED_TOTEM_OUTPUT_SLOT, BOTTLE_OUTPUT_SLOT -> false; // output only
-				default -> false;
-			};
+		protected void onContentsChanged(int index, ItemStack previousContents) {
+			super.onContentsChanged(index, previousContents);
+			AdvancedInfuserBlockEntity.this.setChanged();
 		}
 	};
 
-	public static final int INFUSED_TOTEM_INPUT_SLOT = 0;
-	public static final int POTION_INPUT_SLOT = 1;
-	public static final int INFUSED_TOTEM_OUTPUT_SLOT = 2;
-	public static final int BOTTLE_OUTPUT_SLOT = 3;
+	public static final int INPUT_SLOT_1 = 0;
+	public static final int INPUT_SLOT_2 = 1;
+	public static final int INPUT_SLOT_3 = 2;
+	public static final int INPUT_SLOT_4 = 3;
+	public static final int INPUT_SLOT_5 = 4;
+	public static final int OUTPUT_SLOT_1 = 5;
+	public static final int OUTPUT_SLOT_2 = 6;
 
+	private int progress = 0;
 	private int maxProgress = 1200;
-	private int currentProgress = 0;
-
-	private final ContainerData data = new ContainerData() {
-		@Override
-		public int get(int index) {
-			return switch (index) {
-				case 0 -> AdvancedInfuserBlockEntity.this.currentProgress;
-				case 1 -> AdvancedInfuserBlockEntity.this.maxProgress;
-				default -> 2;
-			};
-		}
-
-		@Override
-		public void set(int index, int value) {
-			switch (index) {
-				case 0 -> AdvancedInfuserBlockEntity.this.currentProgress = value;
-				case 1 -> AdvancedInfuserBlockEntity.this.maxProgress = value;
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return 2;
-		}
-	};
+	private final int DEFAULT_MAX_PROGRESS = 1200;
+	private final ContainerData data;
 
 	public AdvancedInfuserBlockEntity(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState,
-				Component.translatable("potion_totems.be.advanced_infuser.name"));
+		super(ModBlockEntities.BE_ADVANCED_INFUSER.get(), pos, blockState);
+		this.data = new ContainerData() {
+			@Override
+			public int get(int dataId) {
+				return switch (dataId) {
+					case 0 -> AdvancedInfuserBlockEntity.this.progress;
+					case 1 -> AdvancedInfuserBlockEntity.this.maxProgress;
+					default -> 0;
+				};
+			}
+
+			@Override
+			public void set(int dataId, int value) {
+				switch (dataId) {
+					case 0 -> AdvancedInfuserBlockEntity.this.progress = value;
+					case 1 -> AdvancedInfuserBlockEntity.this.maxProgress = value;
+				}
+			}
+
+			@Override
+			public int getCount() {
+				return 2;
+			}
+		};
+	}
+
+	@Override
+	public Component getDisplayName() {
+		return Component.translatable("block.potion_totems.advanced_infuser");
+	}
+
+	@Override
+	public void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		progress = input.getInt("potion_totems.advanced_infuser.progress").get();
+		maxProgress = input.getInt("potion_totems.advanced_infuser.max_progress").get();
+		input.child("potion_totems.advanced_infuser.inv").ifPresent(itemStacksResourceHandler::deserialize);
+	}
+
+	@Override
+	public void saveAdditional(ValueOutput output) {
+		output.putInt("potion_totems.advanced_infuser.progress", progress);
+		output.putInt("potion_totems.advanced_infuser.max_progress", maxProgress);
+		output.putChild("potion_totems.advanced_infuser.inv", itemStacksResourceHandler);
+		super.saveAdditional(output);
 	}
 
 	public void tick(Level level, BlockPos blockPos, BlockState blockState) {
@@ -122,130 +145,103 @@ public class AdvancedInfuserBlockEntity extends AbstractTickingBlockEntity {
 	}
 
 	@Override
-	public void craftItem() {
-		ItemResource totemResource = stackHandler.getResource(INFUSED_TOTEM_INPUT_SLOT);
-		ItemResource potionResource = stackHandler.getResource(POTION_INPUT_SLOT);
-
-		ItemStack in1 = totemResource.toStack();
-		ItemStack in2 = potionResource.toStack();
-		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get(), 1);
-		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
-
-		PotionContents contents = in1.get(DataComponents.POTION_CONTENTS);
-		if (contents != null && contents.hasEffects()) {
-			PotionUtils.copyContents(output1, in1, in2);
-		} else {
-			PotionUtils.copyContents(in2, output1);
+	public boolean hasRecipe() {
+		Optional<RecipeHolder<AdvancedInfuserRecipe>> recipe = getCurrentRecipe();
+		if (recipe.isEmpty()) {
+			return false;
 		}
 
-		try (Transaction tx = Transaction.openRoot()) {
-			int extracted1 = stackHandler.extract(INFUSED_TOTEM_INPUT_SLOT, totemResource, 1, tx);
-			int extracted2 = stackHandler.extract(POTION_INPUT_SLOT, potionResource, 1, tx);
-			if (extracted1 != 1 || extracted2 != 1) return;
+		List<ItemStack> outputs = recipe.get().value().getOutputs();
+		return canInsertOutput(outputs.get(0), OUTPUT_SLOT_1) && canInsertOutput(outputs.get(1), OUTPUT_SLOT_2);
+	}
 
+	private boolean canInsertOutput(ItemStack output, int slot) {
+		ItemResource resource = itemStacksResourceHandler.getResource(slot);
+		boolean itemMatches = resource.isEmpty() || resource.getItem() == output.getItem();
+		if (!itemMatches) return false;
 
-			ItemResource outResource1 = ItemResource.of(output1);
-			int currentAmount1 = stackHandler.getAmountAsInt(INFUSED_TOTEM_OUTPUT_SLOT);
-			stackHandler.set(INFUSED_TOTEM_OUTPUT_SLOT, outResource1, currentAmount1 + 1);
-
-			ItemResource outResource2 = ItemResource.of(output2);
-			int currentAmount2 = stackHandler.getAmountAsInt(BOTTLE_OUTPUT_SLOT);
-			stackHandler.set(BOTTLE_OUTPUT_SLOT, outResource2, currentAmount2 + 1);
-
-			tx.commit();
-		}
+		int maxCount = resource.isEmpty() ? output.getMaxStackSize() : resource.getMaxStackSize();
+		int currentCount = itemStacksResourceHandler.getAmountAsInt(slot);
+		return maxCount >= currentCount + output.getCount();
 	}
 
 	@Override
 	public boolean hasCraftingFinished() {
-		return this.currentProgress >= this.maxProgress;
+		return this.progress >= this.maxProgress;
+	}
+
+	@Override
+	public void craftItem() {
+		Optional<RecipeHolder<AdvancedInfuserRecipe>> recipe = getCurrentRecipe();
+		List<ItemStack> outputs = recipe.get().value().getOutputs();
+
+		try (Transaction transaction = Transaction.open(null)) {
+			ItemStack potion = itemStacksResourceHandler.getResource(INPUT_SLOT_5).toStack();
+
+			for (int i = 0; i < 5; i++) {
+				itemStacksResourceHandler.extract(itemStacksResourceHandler.getResource(i), 1, transaction);
+			}
+
+			ItemAccess output1 = ItemAccess.forHandlerIndex(itemStacksResourceHandler, OUTPUT_SLOT_1);
+			ItemAccess output2 = ItemAccess.forHandlerIndex(itemStacksResourceHandler, OUTPUT_SLOT_2);
+
+			ItemStack infTotemStack = outputs.getFirst().copy();
+			PotionUtils.copyContents(potion, infTotemStack);
+
+			itemStacksResourceHandler.set(OUTPUT_SLOT_1, ItemResource.of(infTotemStack), output1.getAmount() + outputs.get(0).getCount());
+			itemStacksResourceHandler.set(OUTPUT_SLOT_2, ItemResource.of(outputs.get(1)), output2.getAmount() + outputs.get(1).getCount());
+
+			transaction.commit();
+		}
 	}
 
 	@Override
 	public void increaseCraftingProgress() {
-		currentProgress++;
+		progress++;
 	}
 
 	@Override
 	public void resetProgress() {
-		currentProgress = 0;
-		maxProgress = 1200;
+		this.progress = 0;
+		this.maxProgress = DEFAULT_MAX_PROGRESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void drops() {
-		SimpleContainer inventory = new SimpleContainer(stackHandler.size());
-		for (int i = 0; i < stackHandler.size(); i++) {
-			inventory.setItem(i, stackHandler.getResource(i).toStack());
-		}
-		Containers.dropContents(this.level, this.worldPosition, inventory);
+	public Optional<RecipeHolder<AdvancedInfuserRecipe>> getCurrentRecipe() {
+		return ((ServerLevel) this.level).recipeAccess()
+				.getRecipeFor(ModRecipes.ADVANCED_INFUSER_RECIPE_TYPE.get(),
+						new AdvancedInfuserRecipeInput(
+								itemStacksResourceHandler.getResource(INPUT_SLOT_1).toStack(),
+								itemStacksResourceHandler.getResource(INPUT_SLOT_2).toStack(),
+								itemStacksResourceHandler.getResource(INPUT_SLOT_3).toStack(),
+								itemStacksResourceHandler.getResource(INPUT_SLOT_4).toStack(),
+								itemStacksResourceHandler.getResource(INPUT_SLOT_5).toStack()), level);
 	}
-
 	@Override
 	public boolean isOutputSlotEmptyOrReceivable() {
-		return false;
-	}
-
-	@Override
-	public boolean hasRecipe() {
-		ItemStack in1 = stackHandler.getResource(INFUSED_TOTEM_INPUT_SLOT).toStack();
-		ItemStack in2 = stackHandler.getResource(POTION_INPUT_SLOT).toStack();
-		ItemStack output1 = new ItemStack(ModItems.INFUSED_TOTEM.get());
-		ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
-
-		return (in1.is(ModItems.INFUSED_TOTEM.get())
-				&& canInsertIntoSlot(output1, stackHandler))
-				&& (in2.is(Items.POTION)
-				&& canInsertIntoSlot(output2, stackHandler));
-	}
-
-	@Override
-	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		drops();
-		super.preRemoveSideEffects(pos, state);
-	}
-
-	@Override
-	public void setChanged() {
-		super.setChanged();
-		if (level != null && level.isClientSide()) {
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+		for (int i : new int[]{OUTPUT_SLOT_1, OUTPUT_SLOT_2}) {
+			ItemResource resource = itemStacksResourceHandler.getResource(i);
+			if (!(resource.isEmpty() || itemStacksResourceHandler.getAmountAsInt(i) < resource.getMaxStackSize())) {
+				return false;
+			}
 		}
+		return true;
+	}
+	@Override
+	public void drops() {
+		SimpleContainer inv = new SimpleContainer(itemStacksResourceHandler.size());
+		for (int i = 0; i < itemStacksResourceHandler.size(); i++) {
+			ItemAccess itemAccess = ItemAccess.forHandlerIndex(itemStacksResourceHandler, i);
+			inv.setItem(i, new ItemStack(itemAccess.getResource().getItem(), itemAccess.getAmount()));
+		}
+
+		Containers.dropContents(this.level, this.worldPosition, inv);
 	}
 
 	@Override
-	public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return new AdvancedInfuserMenu(containerId, playerInventory, this, this.data);
+	public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+		return new AdvancedInfuserMenu(containerId, inventory, this, this.itemStacksResourceHandler, this.data);
 	}
 
-	@Override
-	public void loadAdditional(ValueInput input) {
-		super.loadAdditional(input);
-		stackHandler.deserialize(input);
-		currentProgress = input.getInt("potion_totems.advanced_infuser.currentProgress").get();
-		maxProgress = input.getInt("potion_totems.advanced_infuser.max_progress").get();
-	}
-
-	@Override
-	public void saveAdditional(ValueOutput output) {
-		stackHandler.serialize(output);
-		output.putInt("potion_totems.advanced_infuser.currentProgress", currentProgress);
-		output.putInt("potion_totems.advanced_infuser.max_progress", maxProgress);
-		super.saveAdditional(output);
-	}
-
-	@Override
-	public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return saveWithoutMetadata(registries);
-	}
-
-	@Override
-	public void onDataPacket(Connection net, ValueInput valueInput) {
-		loadAdditional(valueInput);
-	}
 }

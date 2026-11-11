@@ -18,6 +18,7 @@
 package io.github.scaredsmods.potion_totems.screen.menu;
 
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.registry.ModBlocks;
 import io.github.scaredsmods.potion_totems.registry.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.transfer.IndexModifier;
 import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class AdvancedInfuserMenu extends AbstractContainerMenu {
@@ -37,44 +39,54 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
 	private final Level level;
 	private final ContainerData data;
 
-
-	public AdvancedInfuserMenu(int containerId, Inventory pInv, FriendlyByteBuf extraData) {
-		this(containerId, pInv, pInv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+	public AdvancedInfuserMenu(int containerId, Inventory inv, FriendlyByteBuf buf) {
+		this(containerId, inv, inv.player.level().getBlockEntity(buf.readBlockPos()), new ItemStacksResourceHandler(7), new SimpleContainerData(2));
 	}
 
-	public AdvancedInfuserMenu(int containerId, Inventory pInv, BlockEntity entity, ContainerData data) {
-		super(ModMenuTypes.ADVANCED_INFUSER_MENU.get(), containerId);
-		this.blockEntity = (AdvancedInfuserBlockEntity) entity;
-		this.level = pInv.player.level();
+	public AdvancedInfuserMenu(int containerId, Inventory inv, BlockEntity blockEntity, ItemStacksResourceHandler resourceHandler, ContainerData data) {
+		super(ModMenuTypes.INFUSER_MENU.get(), containerId);
+		this.blockEntity = (AdvancedInfuserBlockEntity) blockEntity;
+		this.level = inv.player.level();
 		this.data = data;
 
-		addPlayerHotbar(pInv);
-		addPlayerInventory(pInv);
+		addPlayerHotbar(inv);
+		addPlayerInventory(inv);
 
-		IndexModifier<ItemResource> modifier = blockEntity.stackHandler::set;
+		// Input Slots
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 0, 39,19));
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 1, 65,45));
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 2, 39,71));
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 3, 13,45));
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 4, 39,45));
 
-
-		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,0, 17, 17));
-		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,1, 17, 53));
-		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,2, 141, 14));
-		this.addSlot(new ResourceHandlerSlot(blockEntity.stackHandler, modifier ,3, 141, 56));
+		// Output Slots
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 5, 139,27){
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return false;
+			}
+		});
+		this.addSlot(new ResourceHandlerSlot(resourceHandler, resourceHandler::set, 6, 139,61) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return false;
+			}
+		});
 
 		addDataSlots(data);
-
-
-	}
-
-	public boolean isCrafting() {
-		return data.get(0) > 0;
 	}
 
 	public int getScaledArrowProgress() {
 		int progress = this.data.get(0);
 		int maxProgress = this.data.get(1);
-		int arrowPixelSize = 96;
+		int arrowPixelSize = 19;
 
 		return maxProgress != 0 && progress != 0 ? progress * arrowPixelSize / maxProgress : 0;
 	}
+	public boolean isCrafting() {
+		return data.get(0) > 0;
+	}
+
 
 	// CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
 	// must assign a slot number to each of the slots used by the GUI.
@@ -92,7 +104,7 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
 	private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
 	// THIS YOU HAVE TO DEFINE!
-	private static final int TE_INVENTORY_SLOT_COUNT = 4;  // must be the number of slots you have!
+	private static final int TE_INVENTORY_SLOT_COUNT = 7;  // must be the number of slots you have!
 
 	@Override
 	public ItemStack quickMoveStack(Player playerIn, int pIndex) {
@@ -128,22 +140,22 @@ public class AdvancedInfuserMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public boolean stillValid(Player pPlayer) {
+	public boolean stillValid(Player player) {
 		return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-				pPlayer, ModBlocks.ADVANCED_INFUSER.get());
+				player, ModBlocks.INFUSER.get());
 	}
 
-	private void addPlayerInventory(Inventory playerInventory) {
-		for (int i = 0; i < 3; ++i) {
-			for (int l = 0; l < 9; ++l) {
-				this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
+	private void addPlayerInventory(Inventory playerInv) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 107 + i * 18));
 			}
 		}
 	}
 
-	private void addPlayerHotbar(Inventory playerInventory) {
-		for (int i = 0; i < 9; ++i) {
-			this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+	private void addPlayerHotbar(Inventory playerInv) {
+		for (int i = 0; i < 9; i++) {
+			this.addSlot(new Slot(playerInv, i, 8 + i * 18, 165));
 		}
 	}
 }

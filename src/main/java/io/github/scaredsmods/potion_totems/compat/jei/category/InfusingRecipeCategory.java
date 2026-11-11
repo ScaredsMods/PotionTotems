@@ -38,7 +38,7 @@ import org.jspecify.annotations.Nullable;
 
 public class InfusingRecipeCategory implements IRecipeCategory<RecipeHolder<InfuserRecipe>> {
 
-    private static final Identifier GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui.png");
+    private static final Identifier GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/advanced_infuser_gui.png");
     private final IDrawable icon;
     private final IDrawable overlay;
 

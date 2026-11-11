@@ -22,14 +22,14 @@ public class InfusingRecipeBuilder implements RecipeBuilder {
     private final RecipeUnlockAdvancementBuilder advancementBuilder = new RecipeUnlockAdvancementBuilder();
     private @Nullable String group;
 
-    private InfusingRecipeBuilder(RecipeCategory category, List<Ingredient> ingredient, List<ItemStackTemplate> results) {
+    private InfusingRecipeBuilder(RecipeCategory category, List<Ingredient> ingredients, List<ItemStackTemplate> results) {
         this.category = category;
         this.results = results;
-        this.ingredients = ingredient;
+        this.ingredients = ingredients;
     }
 
-    public static InfusingRecipeBuilder infusing(RecipeCategory category, List<Ingredient> inputItem, List<ItemStackTemplate> items) {
-        return new InfusingRecipeBuilder(category, inputItem, items);
+    public static InfusingRecipeBuilder infusing(RecipeCategory category, List<Ingredient> inputs, List<ItemStackTemplate> results) {
+        return new InfusingRecipeBuilder(category, inputs, results);
     }
 
     @Override

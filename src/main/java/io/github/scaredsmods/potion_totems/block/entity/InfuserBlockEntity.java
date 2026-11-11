@@ -88,7 +88,7 @@ public class InfuserBlockEntity extends AbstractTickingBlockEntity {
     @Override
     public void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        progress = input.getInt("potion_totems.infuser.currentProgress").get();
+        progress = input.getInt("potion_totems.infuser.progress").get();
         maxProgress = input.getInt("potion_totems.infuser.max_progress").get();
         input.child("potion_totems.infuser.inv").ifPresent(itemStacksResourceHandler::deserialize);
     }
@@ -147,7 +147,7 @@ public class InfuserBlockEntity extends AbstractTickingBlockEntity {
         List<ItemStack> outputs = recipe.get().value().getOutputs();
 
         try (Transaction transaction = Transaction.open(null)) {
-            ItemStack potion = itemStacksResourceHandler.getResource(INPUT_SLOT_5).toStack(); // read first
+            ItemStack potion = itemStacksResourceHandler.getResource(INPUT_SLOT_5).toStack();
 
             for (int i = 0; i < 5; i++) {
                 itemStacksResourceHandler.extract(itemStacksResourceHandler.getResource(i), 1, transaction);

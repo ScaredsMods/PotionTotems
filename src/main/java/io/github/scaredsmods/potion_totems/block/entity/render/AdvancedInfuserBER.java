@@ -20,6 +20,7 @@ package io.github.scaredsmods.potion_totems.block.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import io.github.scaredsmods.potion_totems.block.entity.AdvancedInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.block.entity.render.state.InfuserRenderState;
 import io.github.scaredsmods.potion_totems.registry.ModItems;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -40,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class AdvancedInfuserBER implements BlockEntityRenderer<AdvancedInfuserBlockEntity, InfuserRenderState> {
+
 	private final ItemModelResolver itemModelResolver;
 
 	public AdvancedInfuserBER(BlockEntityRendererProvider.Context context) {
@@ -54,7 +56,7 @@ public class AdvancedInfuserBER implements BlockEntityRenderer<AdvancedInfuserBl
 
 	@Override
 	public void submit(InfuserRenderState state, PoseStack poseStack,
-					SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+					   SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		int light = getLightLevel(state.level, state.pos);
 
 		switch (state.facing) {
@@ -103,19 +105,19 @@ public class AdvancedInfuserBER implements BlockEntityRenderer<AdvancedInfuserBl
 
 	@Override
 	public void extractRenderState(AdvancedInfuserBlockEntity blockEntity, InfuserRenderState state,
-								float partialTicks, Vec3 cameraPosition,
-								ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+								   float partialTicks, Vec3 cameraPosition,
+								   ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		state.pos = blockEntity.getBlockPos();
 		state.level = blockEntity.getLevel();
 		state.facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
 		itemModelResolver.updateForTopItem(state.totemRenderState,
-				blockEntity.stackHandler.getResource(AdvancedInfuserBlockEntity.INFUSED_TOTEM_INPUT_SLOT).toStack(),
+				blockEntity.itemStacksResourceHandler.getResource(InfuserBlockEntity.INPUT_SLOT_1).toStack(),
 				ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 1);
 
 		itemModelResolver.updateForTopItem(state.blackTotemRenderState,
-				new ItemStack(ModItems.INFUSER_TOTEM_PH_2.get()),
+				new ItemStack(ModItems.INFUSER_TOTEM_PH_1.get()),
 				ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 2);
 	}
 
